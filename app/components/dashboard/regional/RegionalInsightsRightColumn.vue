@@ -1,0 +1,17 @@
+<script setup lang="ts">
+import type { ChartPanelData, RequestSummaryData } from '../../../../types'
+import MonthlyRegistrationTrendPanel from './MonthlyRegistrationTrendPanel.vue'
+import RequestSummaryPanel from './RequestSummaryPanel.vue'
+
+defineProps<{
+  requestSummary: RequestSummaryData
+  monthlyRegistrationTrend: ChartPanelData
+}>()
+</script>
+
+<template>
+  <div class="grid gap-6">
+    <RequestSummaryPanel :data="requestSummary" />
+    <MonthlyRegistrationTrendPanel :data="monthlyRegistrationTrend" />
+  </div>
+</template>
