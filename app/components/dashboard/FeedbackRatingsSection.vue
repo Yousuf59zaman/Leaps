@@ -16,9 +16,12 @@ withDefaults(
 </script>
 
 <template>
-  <section class="space-y-4">
-    <DashboardSectionHeading :title="title" icon="thumbs-up" />
-    <div class="grid gap-6 xl:grid-cols-[0.82fr_1.18fr]">
+  <section class="space-y-[18px]">
+    <div class="border-b border-[#DEE2E7] pb-[14px]">
+      <DashboardSectionHeading :title="title" icon="feedback-sheet" />
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-[590.67px_minmax(0,1212px)] xl:gap-[30.33px]">
       <OverallSatisfactionPanel :data="data.summary" />
       <ServiceRatingDetailsPanel :data="data.details" />
     </div>

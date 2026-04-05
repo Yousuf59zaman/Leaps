@@ -115,7 +115,21 @@ const iconShapes: Record<string, IconShape[]> = {
     { tag: 'path', attrs: { d: 'M8.5 11.5V20H5a2 2 0 0 1-2-2v-4.5a2 2 0 0 1 2-2h3.5Z' } },
     { tag: 'path', attrs: { d: 'M9.5 20h6.4a2 2 0 0 0 2-1.6l1.3-6.2a2 2 0 0 0-2-2.4H13V6.7A2.7 2.7 0 0 0 10.3 4L8.5 11.5' } }
   ],
+  like: [
+    { tag: 'path', attrs: { d: 'M8 11V20H4.8A1.8 1.8 0 0 1 3 18.2v-5.4A1.8 1.8 0 0 1 4.8 11H8Z' } },
+    { tag: 'path', attrs: { d: 'M9.3 20h6.3a2.2 2.2 0 0 0 2.1-1.5l1.4-4.6a2.2 2.2 0 0 0-2.1-2.9H13V7.5A2.5 2.5 0 0 0 10.5 5L9.3 11' } },
+    { tag: 'circle', attrs: { cx: 18.2, cy: 5.8, r: 2.2 } },
+    { tag: 'line', attrs: { x1: 18.2, y1: 4.6, x2: 18.2, y2: 7 } },
+    { tag: 'line', attrs: { x1: 17, y1: 5.8, x2: 19.4, y2: 5.8 } }
+  ],
   star: [{ tag: 'polygon', attrs: { points: '12 3.5 14.7 9 20.6 9.8 16.3 14 17.4 20 12 17.1 6.6 20 7.7 14 3.4 9.8 9.3 9' } }],
+  'feedback-sheet': [
+    { tag: 'path', attrs: { d: 'M7 3h9l4 4v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z' } },
+    { tag: 'path', attrs: { d: 'M16 3v4h4' } },
+    { tag: 'line', attrs: { x1: 9, y1: 11, x2: 15.5, y2: 11 } },
+    { tag: 'line', attrs: { x1: 9, y1: 14.5, x2: 14, y2: 14.5 } },
+    { tag: 'polyline', attrs: { points: '9.2 18 10.6 19.4 13.2 16.8' } }
+  ],
   ticket: [
     { tag: 'path', attrs: { d: 'M5 7h14v3a2 2 0 0 0 0 4v3H5v-3a2 2 0 0 0 0-4V7Z' } },
     { tag: 'line', attrs: { x1: 10, y1: 7, x2: 10, y2: 17 } }
@@ -147,11 +161,37 @@ const iconShapes: Record<string, IconShape[]> = {
     { tag: 'circle', attrs: { cx: 12, cy: 12, r: 3 } },
     { tag: 'path', attrs: { d: 'M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1-1.8 3.1-.2-.1a1.8 1.8 0 0 0-2 .1l-.2.1a1.8 1.8 0 0 0-.9 1.5V22H9.3v-.3a1.8 1.8 0 0 0-.9-1.5l-.2-.1a1.8 1.8 0 0 0-2-.1l-.2.1-1.8-3.1.1-.1A1.7 1.7 0 0 0 4.6 15l-.1-.2a1.7 1.7 0 0 0-1.5-.8H3V10h.1a1.7 1.7 0 0 0 1.5-.8l.1-.2A1.7 1.7 0 0 0 4.4 7l-.1-.1L6.1 3.8l.2.1a1.8 1.8 0 0 0 2-.1l.2-.1c.5-.3.9-.9.9-1.5V2h5.4v.3c0 .6.3 1.2.9 1.5l.2.1a1.8 1.8 0 0 0 2 .1l.2-.1 1.8 3.1-.1.1A1.7 1.7 0 0 0 19.4 9l.1.2c.3.5.9.8 1.5.8h.1v4h-.1c-.6 0-1.2.3-1.5.8l-.1.2Z' } }
   ],
+  benchmark: [
+    { tag: 'path', attrs: { d: 'M4 19.5V6.5h4.8l2.7 3.1h8.5v9.9' } },
+    { tag: 'line', attrs: { x1: 6.5, y1: 15.5, x2: 9.2, y2: 12.7 } },
+    { tag: 'line', attrs: { x1: 9.2, y1: 12.7, x2: 12.2, y2: 14.6 } },
+    { tag: 'line', attrs: { x1: 12.2, y1: 14.6, x2: 17.5, y2: 9.3 } },
+    { tag: 'circle', attrs: { cx: 17.5, cy: 9.3, r: 1.1 } }
+  ],
+  indicator: [
+    { tag: 'rect', attrs: { x: 4.5, y: 5, width: 15, height: 14, rx: 2 } },
+    { tag: 'line', attrs: { x1: 8, y1: 10.5, x2: 8, y2: 15.5 } },
+    { tag: 'line', attrs: { x1: 12, y1: 12.5, x2: 12, y2: 15.5 } },
+    { tag: 'line', attrs: { x1: 16, y1: 8.5, x2: 16, y2: 15.5 } }
+  ],
+  'list-filter': [
+    { tag: 'line', attrs: { x1: 4.5, y1: 7, x2: 19.5, y2: 7 } },
+    { tag: 'line', attrs: { x1: 7.5, y1: 12, x2: 16.5, y2: 12 } },
+    { tag: 'line', attrs: { x1: 10.5, y1: 17, x2: 13.5, y2: 17 } }
+  ],
   'refresh-cw': [
     { tag: 'path', attrs: { d: 'M20 6v5h-5' } },
     { tag: 'path', attrs: { d: 'M4 18v-5h5' } },
     { tag: 'path', attrs: { d: 'M6.4 8.4A7 7 0 0 1 18 10' } },
     { tag: 'path', attrs: { d: 'M17.6 15.6A7 7 0 0 1 6 14' } }
+  ],
+  'arrow-rise': [
+    { tag: 'path', attrs: { d: 'M4 16L10 10L13.5 13.5L20 7' } },
+    { tag: 'polyline', attrs: { points: '15.5 7 20 7 20 11.5' } }
+  ],
+  'arrow-fall': [
+    { tag: 'path', attrs: { d: 'M4 8L10 14L13.5 10.5L20 17' } },
+    { tag: 'polyline', attrs: { points: '15.5 17 20 17 20 12.5' } }
   ],
   eye: [
     { tag: 'path', attrs: { d: 'M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12Z' } },

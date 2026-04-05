@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid gap-6">
+  <div class="grid gap-6 xl:gap-[31px]">
     <RequestSummaryPanel :data="requestSummary" />
     <MonthlyRegistrationTrendPanel :data="monthlyRegistrationTrend" />
   </div>

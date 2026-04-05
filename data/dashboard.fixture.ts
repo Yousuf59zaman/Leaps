@@ -34,8 +34,8 @@ export const dashboardFixture = {
       { key: 'suspended-users', label: 'Suspended Users', value: '12.4K', icon: 'circle-x', tone: 'danger' },
       { key: 'total-applications', label: 'Total Applications', value: '8.1M', icon: 'file-text', tone: 'brand' },
       { key: 'pending-applications', label: 'Pending Applications', value: '450K', icon: 'clock', tone: 'warning' },
-      { key: 'completed-apps', label: 'Completed Apps', value: '7.2M', icon: 'badge-check', tone: 'success' },
-      { key: 'rejected-apps', label: 'Rejected Apps', value: '310K', icon: 'ban', tone: 'danger' },
+        { key: 'completed-apps', label: 'Completed Apps', value: '7.2M', icon: 'feedback-sheet', tone: 'success' },
+        { key: 'rejected-apps', label: 'Rejected Apps', value: '310K', icon: 'receipt', tone: 'danger' },
       { key: 'cancelled-apps', label: 'Cancelled Apps', value: '140K', icon: 'circle-alert', tone: 'neutral' }
     ]
   },
@@ -63,17 +63,17 @@ export const dashboardFixture = {
     },
     request_summary: {
       title: 'System Overview',
-      icon: 'pie-chart',
+      icon: 'map',
       badge_label: 'Month',
       total_requests: 3088,
       total_label: 'Total Requests',
       period_label: 'Month',
       statuses: [
-        { key: 'open', label: 'Open Requests', value: 27, tone: 'brand' },
-        { key: 'rejected', label: 'Rejected Requests', value: 212, tone: 'warning' },
-        { key: 'cancelled', label: 'Cancelled Requests', value: 83, tone: 'danger' },
-        { key: 'complete', label: 'Complete Requests', value: 1271, tone: 'success' },
-        { key: 'overdue', label: 'Overdue Requests', value: 1495, tone: 'warning' }
+        { key: 'open', label: 'Open Requests', value: 27, color: '#FF9330' },
+        { key: 'rejected', label: 'Rejected Requests', value: 212, color: '#F3F5F7' },
+        { key: 'cancelled', label: 'Cancelled Requests', value: 83, color: '#FF4343' },
+        { key: 'complete', label: 'Complete Requests', value: 1271, color: '#4FD463' },
+        { key: 'overdue', label: 'Overdue Requests', value: 1495, color: '#F4C533' }
       ],
       chart_legend: [
         { key: 'open', label: 'Open', color: '#4C96FF', value: 27 },
@@ -104,7 +104,7 @@ export const dashboardFixture = {
           key: 'monthly-registrations',
           label: 'Registrations',
           chart_type: 'line',
-          color: '#4C96FF',
+          color: '#3899FA',
           smooth: true,
           values: [120000, 138000, 132000, 180000, 215000, 198000, 248000, 264000, 220000, 286000, 320000, 356000]
         }
@@ -115,7 +115,7 @@ export const dashboardFixture = {
     top_service_popularity: {
       title: 'Top 10 Service Popularity',
       subtitle: 'By total application volume',
-      icon: 'bar-chart-3',
+      icon: 'indicator',
       categories: [
         'Business Permit Registration',
         'Birth Certificate Request',
@@ -133,7 +133,7 @@ export const dashboardFixture = {
           key: 'applications',
           label: 'Applications',
           chart_type: 'bar',
-          color: '#31C97A',
+          color: '#22C358',
           values: [920000, 790000, 650000, 555000, 492000, 410000, 350000, 300000, 250000, 180000]
         }
       ]
@@ -141,58 +141,60 @@ export const dashboardFixture = {
     regional_office_performance: {
       title: 'Regional Office Performance',
       subtitle: 'Applications Received vs Completed vs Pending',
-      icon: 'building',
+      icon: 'indicator',
       categories: ['NCR North', 'Cebu City Hub', 'Davao Central', 'Iloilo Regional', 'Baguio District'],
       chart_series: [
-        { key: 'received', label: 'Received', chart_type: 'bar', color: '#4C96FF', values: [40000, 34500, 29800, 25900, 19800] },
-        { key: 'completed', label: 'Completed', chart_type: 'bar', color: '#31C97A', values: [34000, 28900, 25400, 22100, 16700] },
-        { key: 'pending', label: 'Pending', chart_type: 'bar', color: '#F4B548', values: [5200, 4300, 2900, 1800, 1500] }
+        { key: 'received', label: 'Received', chart_type: 'bar', color: '#3899FA', values: [40000, 34500, 29800, 25900, 19800] },
+        { key: 'completed', label: 'Completed', chart_type: 'bar', color: '#22C358', values: [34000, 28900, 25400, 22100, 16700] },
+        { key: 'pending', label: 'Pending', chart_type: 'bar', color: '#FCB11D', values: [5200, 4300, 2900, 1800, 1500] }
       ],
       chart_legend: [
-        { key: 'received', label: 'Received', color: '#4C96FF' },
-        { key: 'completed', label: 'Completed', color: '#31C97A' },
-        { key: 'pending', label: 'Pending', color: '#F4B548' }
+        { key: 'received', label: 'Received', color: '#3899FA' },
+        { key: 'completed', label: 'Completed', color: '#22C358' },
+        { key: 'pending', label: 'Pending', color: '#FCB11D' }
       ]
     }
   },
   service_request_timeline: {
     title: 'Service Request Trendline',
-    icon: 'activity',
+    icon: 'building-2',
     categories: ['Oct 2023', 'Dec 2023', 'Feb 2024', 'Apr 2024', 'Jun 2024', 'Aug 2024', 'Oct 2024', 'Dec 2024', 'Feb 2025', 'Apr 2025', 'Jun 2025', 'Aug 2025', 'Oct 2025', 'Dec 2025', 'Feb 2026'],
     chart_series: [
-      { key: 'business-permit', label: 'Business Permit Registration', chart_type: 'line', color: '#4C96FF', smooth: true, values: [35, 54, 120, 83, 60, 58, 64, 132, 118, 79, 72, 80, 95, 142, 128] },
-      { key: 'birth-certificate', label: 'Certificate of Live Birth (COLB)', chart_type: 'line', color: '#F46A6A', smooth: true, values: [74, 82, 76, 86, 104, 112, 106, 96, 112, 118, 126, 122, 131, 139, 136] },
-      { key: 'issuance', label: 'Issuance of Services', chart_type: 'line', color: '#9ACA3C', smooth: true, values: [58, 52, 70, 66, 48, 60, 78, 74, 88, 92, 104, 110, 112, 117, 120] },
-      { key: 'authority-to-travel', label: 'Authority to Travel', chart_type: 'line', color: '#A56EFF', smooth: true, values: [42, 34, 28, 44, 55, 61, 58, 112, 41, 46, 52, 57, 65, 126, 54] },
-      { key: 'building-permit', label: 'Building Permit', chart_type: 'line', color: '#E559A8', smooth: true, values: [28, 24, 20, 26, 38, 54, 60, 82, 44, 42, 52, 60, 68, 74, 62] },
-      { key: 'zoning-clearance', label: 'Zoning Clearance', chart_type: 'line', color: '#1FC8C0', smooth: true, values: [18, 22, 25, 28, 36, 48, 54, 72, 50, 58, 61, 64, 72, 88, 80] },
-      { key: 'motorized', label: 'Motorized Vehicle Operators Permit', chart_type: 'line', color: '#0C8B3F', smooth: true, values: [62, 68, 74, 70, 60, 56, 50, 82, 76, 78, 92, 104, 98, 120, 116] },
-      { key: 'tourist-attractions', label: 'Tourist Attractions', chart_type: 'line', color: '#1A7E3D', smooth: true, values: [96, 126, 98, 110, 118, 129, 138, 87, 140, 133, 146, 154, 149, 160, 156] },
-      { key: 'real-property', label: 'Real Property Assessment', chart_type: 'line', color: '#D12B2B', smooth: true, values: [44, 48, 55, 60, 118, 102, 110, 96, 108, 117, 123, 120, 128, 133, 118] },
-      { key: 'wastewater', label: 'Wastewater Discharge Permit', chart_type: 'line', color: '#26A3FF', smooth: true, values: [22, 20, 24, 28, 34, 42, 52, 48, 60, 68, 74, 80, 86, 92, 88] },
-      { key: 'kalinga', label: 'KALINGA Program', chart_type: 'line', color: '#E5AF23', smooth: true, values: [12, 18, 44, 30, 28, 36, 40, 54, 48, 56, 68, 74, 82, 84, 90] },
-      { key: 'special-fund', label: 'Special Development Fund Release', chart_type: 'line', color: '#9D620D', smooth: true, values: [10, 8, 12, 16, 20, 22, 28, 18, 32, 34, 40, 48, 50, 58, 56] },
-      { key: 'citizen-feedback', label: 'Citizen Feedback', chart_type: 'line', color: '#82D87A', smooth: true, values: [16, 18, 20, 24, 30, 36, 44, 38, 48, 52, 56, 62, 66, 72, 68] }
+      { key: 'business-permit-renewal', label: 'Business Permit Registration and Renewal', chart_type: 'line', color: '#3B82F6', smooth: true, values: [35, 54, 120, 83, 60, 58, 64, 132, 118, 79, 72, 80, 95, 142, 128] },
+      { key: 'birth-certificate', label: 'Certificate of Live Birth (COLB)', chart_type: 'line', color: '#EF4444', smooth: true, values: [74, 82, 76, 86, 104, 112, 106, 96, 112, 118, 126, 122, 131, 139, 136] },
+      { key: 'issuance', label: 'Issuance of services rendered for local Sangguniang members', chart_type: 'line', color: '#86EFAC', smooth: true, values: [16, 18, 20, 24, 30, 36, 44, 38, 48, 52, 56, 62, 66, 72, 68] },
+      { key: 'authority-to-travel', label: 'Authority to Travel', chart_type: 'line', color: '#A855F7', smooth: true, values: [42, 34, 28, 44, 55, 61, 58, 112, 41, 46, 52, 57, 65, 126, 54] },
+      { key: 'building-permit', label: 'Building Permit', chart_type: 'line', color: '#EC4899', smooth: true, values: [28, 24, 20, 26, 38, 54, 60, 82, 44, 42, 52, 60, 68, 74, 62] },
+      { key: 'zoning-clearance', label: 'Zoning Clearance', chart_type: 'line', color: '#14B8A6', smooth: true, values: [18, 22, 25, 28, 36, 48, 54, 72, 50, 58, 61, 64, 72, 88, 80] },
+      { key: 'motorized', label: 'Motorized Vehicle Operators Permit', chart_type: 'line', color: '#84CC16', smooth: true, values: [62, 68, 74, 70, 60, 56, 50, 82, 76, 78, 92, 104, 98, 120, 116] },
+      { key: 'tourist-attractions', label: 'Tourist Attractions', chart_type: 'line', color: '#15803D', smooth: true, values: [96, 126, 98, 110, 118, 129, 138, 87, 140, 133, 146, 154, 149, 160, 156] },
+      { key: 'real-property', label: 'Real Property Assessment', chart_type: 'line', color: '#B91C1C', smooth: true, values: [44, 48, 55, 60, 118, 102, 110, 96, 108, 117, 123, 120, 128, 133, 118] },
+      { key: 'wastewater', label: 'Wastewater Discharge Permit', chart_type: 'line', color: '#0EA5E9', smooth: true, values: [22, 20, 24, 28, 34, 42, 52, 48, 60, 68, 74, 80, 86, 92, 88] },
+      { key: 'kalinga', label: 'KALINGA Program', chart_type: 'line', color: '#EAB308', smooth: true, values: [12, 18, 44, 30, 28, 36, 40, 54, 48, 56, 68, 74, 82, 84, 90] },
+      { key: 'special-fund', label: 'Special Development Fund Release', chart_type: 'line', color: '#A16207', smooth: true, values: [10, 8, 12, 16, 20, 22, 28, 18, 32, 34, 40, 48, 50, 58, 56] },
+      { key: 'appointment-health', label: 'Appointment for Health Services', chart_type: 'line', color: '#22C55E', smooth: true, values: [110, 132, 108, 120, 126, 134, 142, 110, 138, 147, 156, 162, 158, 165, 162] },
+      { key: 'citizen-feedback', label: 'Citizen Feedback', chart_type: 'line', color: '#06B6D4', smooth: true, values: [18, 16, 22, 28, 34, 40, 48, 42, 50, 56, 62, 68, 72, 82, 76] }
     ],
     chart_legend: [
-      { key: 'business-permit', label: 'Business Permit Registration and Renewal', color: '#4C96FF' },
-      { key: 'birth-certificate', label: 'Certificate of Live Birth (COLB)', color: '#F46A6A' },
-      { key: 'issuance', label: 'Issuance of services rendered', color: '#9ACA3C' },
-      { key: 'authority-to-travel', label: 'Authority to Travel', color: '#A56EFF' },
-      { key: 'building-permit', label: 'Building Permit', color: '#E559A8' },
-      { key: 'zoning-clearance', label: 'Zoning Clearance', color: '#1FC8C0' },
-      { key: 'motorized', label: 'Motorized Vehicle Operators Permit', color: '#0C8B3F' },
-      { key: 'tourist-attractions', label: 'Tourist Attractions', color: '#1A7E3D' },
-      { key: 'real-property', label: 'Real Property Assessment', color: '#D12B2B' },
-      { key: 'wastewater', label: 'Wastewater Discharge Permit', color: '#26A3FF' },
-      { key: 'kalinga', label: 'KALINGA Program', color: '#E5AF23' },
-      { key: 'special-fund', label: 'Special Development Fund Release', color: '#9D620D' },
-      { key: 'citizen-feedback', label: 'Citizen Feedback', color: '#82D87A' }
+      { key: 'business-permit-renewal', label: 'Business Permit Registration and Renewal', color: '#3B82F6' },
+      { key: 'birth-certificate', label: 'Certificate of Live Birth (COLB)', color: '#EF4444' },
+      { key: 'issuance', label: 'Issuance of services rendered for local Sangguniang members', color: '#86EFAC' },
+      { key: 'authority-to-travel', label: 'Authority to Travel', color: '#A855F7' },
+      { key: 'building-permit', label: 'Building Permit', color: '#EC4899' },
+      { key: 'zoning-clearance', label: 'Zoning Clearance', color: '#14B8A6' },
+      { key: 'motorized', label: 'Motorized Vehicle Operators Permit', color: '#84CC16' },
+      { key: 'tourist-attractions', label: 'Tourist Attractions', color: '#15803D' },
+      { key: 'real-property', label: 'Real Property Assessment', color: '#B91C1C' },
+      { key: 'wastewater', label: 'Wastewater Discharge Permit', color: '#0EA5E9' },
+      { key: 'kalinga', label: 'KALINGA Program', color: '#EAB308' },
+      { key: 'special-fund', label: 'Special Development Fund Release', color: '#A16207' },
+      { key: 'appointment-health', label: 'Appointment for Health Services', color: '#22C55E' },
+      { key: 'citizen-feedback', label: 'Citizen Feedback', color: '#06B6D4' }
     ]
   },
   payment_information: {
     title: 'Payment Information',
-    icon: 'receipt',
+    icon: 'building-2',
     columns: [
       { field: 'serial', label: 'SI', align: 'center', width: '72px' },
       { field: 'service_name', label: 'Service Name' },
@@ -204,7 +206,7 @@ export const dashboardFixture = {
       { serial: 2, service_name: 'Building Permit', receivable_amount: 31897884, received_amount: 31888670 },
       { serial: 3, service_name: 'Motorized Vehicle Operators Permit', receivable_amount: 2478195, received_amount: 2412865 },
       { serial: 4, service_name: 'Zoning Clearance', receivable_amount: 147735775, received_amount: 147674819 },
-      { serial: 5, service_name: 'Business Permit Registration and Renewal', receivable_amount: 10779911, received_amount: 9514555 },
+      { serial: 5, service_name: 'Business Permit Registration and Renewal', receivable_amount: 10779911, received_amount: 1514555 },
       { serial: 6, service_name: 'Wastewater Discharge Permit', receivable_amount: 2229394, received_amount: 2229394 },
       { serial: 7, service_name: 'Certificate of Live Birth (COLB)', receivable_amount: 21399, received_amount: 19398 },
       { serial: 8, service_name: 'Real Property Assessment', receivable_amount: 89782, received_amount: 89675 }
@@ -213,12 +215,13 @@ export const dashboardFixture = {
   reporting_analytics: {
     demographic: {
       title: 'Reporting Analytics',
-      icon: 'pie-chart',
+      icon: 'building-2',
+      actions: [{ key: 'download-reporting-analytics', label: '', icon: 'download' }],
       center_label: 'Male',
       chart_legend: [
-        { key: 'male', label: 'Male', color: '#4C96FF', percentage: 24 },
-        { key: 'female', label: 'Female', color: '#31C97A', percentage: 60 },
-        { key: 'common', label: 'Common', color: '#FF9330', percentage: 16 }
+        { key: 'male', label: 'Male', color: '#339AF0', percentage: 32 },
+        { key: 'female', label: 'Female', color: '#51CF66', percentage: 45 },
+        { key: 'common', label: 'Common', color: '#FF922B', percentage: 23 }
       ],
       chart_series: [
         {
@@ -226,21 +229,22 @@ export const dashboardFixture = {
           label: 'Demographic Distribution',
           chart_type: 'donut',
           values: [
-            { label: 'Male', value: 164, color: '#4C96FF' },
-            { label: 'Female', value: 410, color: '#31C97A' },
-            { label: 'Common', value: 109, color: '#FF9330' }
+            { label: 'Male', value: 32, color: '#339AF0' },
+            { label: 'Female', value: 45, color: '#51CF66' },
+            { label: 'Common', value: 23, color: '#FF922B' }
           ]
         }
       ]
     },
     vulnerability: {
       title: 'Reporting Analytics',
-      icon: 'pie-chart',
+      icon: 'building-2',
       center_label: 'Vulnerability',
       chart_legend: [
-        { key: 'male', label: 'Male', color: '#4C96FF', percentage: 23 },
-        { key: 'female', label: 'Female', color: '#31C97A', percentage: 59 },
-        { key: 'common', label: 'Common', color: '#FF9330', percentage: 18 }
+        { key: 'vulnerability', label: 'Vulnerability', color: '#477EFB', percentage: 24 },
+        { key: 'male', label: 'Male', color: '#339AF0', percentage: 22 },
+        { key: 'female', label: 'Female', color: '#51CF66', percentage: 38 },
+        { key: 'common', label: 'Common', color: '#FF922B', percentage: 16 }
       ],
       chart_series: [
         {
@@ -248,16 +252,17 @@ export const dashboardFixture = {
           label: 'Vulnerability Distribution',
           chart_type: 'donut',
           values: [
-            { label: 'Male', value: 24, color: '#4C96FF' },
-            { label: 'Female', value: 14, color: '#31C97A' },
-            { label: 'Common', value: 7, color: '#FF9330' }
+            { label: 'Vulnerability', value: 24, color: '#477EFB' },
+            { label: 'Male', value: 22, color: '#339AF0' },
+            { label: 'Female', value: 38, color: '#51CF66' },
+            { label: 'Common', value: 16, color: '#FF922B' }
           ]
         }
       ]
     },
     age_groups: {
       title: 'Reporting Analytics',
-      icon: 'table',
+      icon: 'building-2',
       actions: [
         { key: 'download-age-group', label: '', icon: 'file-text' },
         { key: 'export-age-group', label: '', icon: 'file-spreadsheet' }
@@ -279,7 +284,7 @@ export const dashboardFixture = {
     },
     vulnerability_matrix: {
       title: 'Reporting Analytics',
-      icon: 'table',
+      icon: 'building-2',
       actions: [
         { key: 'download-vulnerability', label: '', icon: 'file-text' },
         { key: 'export-vulnerability', label: '', icon: 'file-spreadsheet' }
@@ -305,13 +310,13 @@ export const dashboardFixture = {
     variant: 'service-feedback',
     summary: {
       title: 'Overall Satisfaction',
-      icon: 'thumbs-up',
+      icon: 'like',
       center_label: 'Very Good',
       chart_legend: [
-        { key: 'very-good', label: 'Very Good', color: '#31C97A', percentage: 45 },
-        { key: 'good', label: 'Good', color: '#4C96FF', percentage: 30 },
-        { key: 'average', label: 'Average', color: '#FF9330', percentage: 15 },
-        { key: 'bad', label: 'Bad', color: '#F46A6A', percentage: 7 },
+        { key: 'very-good', label: 'Very Good', color: '#22C358', percentage: 45 },
+        { key: 'good', label: 'Good', color: '#3899FA', percentage: 30 },
+        { key: 'average', label: 'Average', color: '#FCB11D', percentage: 15 },
+        { key: 'bad', label: 'Bad', color: '#EF4343', percentage: 7 },
         { key: 'very-bad', label: 'Very Bad', color: '#9CA3AF', percentage: 3 }
       ],
       chart_series: [
@@ -320,18 +325,18 @@ export const dashboardFixture = {
           label: 'Overall Satisfaction',
           chart_type: 'donut',
           values: [
-            { label: 'Very Good', value: 45, color: '#31C97A' },
-            { label: 'Good', value: 30, color: '#4C96FF' },
-            { label: 'Average', value: 15, color: '#FF9330' },
-            { label: 'Bad', value: 7, color: '#F46A6A' },
-            { label: 'Very Bad', value: 3, color: '#9CA3AF' }
+            { label: 'Very Good', value: 45, color: '#22C358' },
+            { label: 'Good', value: 30, color: '#3899FA' },
+            { label: 'Average', value: 15, color: '#FCB11D' },
+            { label: 'Bad', value: 7, color: '#EF4343' },
+            { label: 'Very Bad', value: 3, color: '#8D97A5' }
           ]
         }
       ]
     },
     details: {
       title: 'Service Rating Details',
-      icon: 'star',
+      icon: 'feedback-sheet',
       actions: [{ key: 'view-service-feedback', label: 'View All Feedback', icon: 'eye' }],
       columns: [
         { field: 'service_name', label: 'Service Name' },
@@ -352,42 +357,42 @@ export const dashboardFixture = {
   qms_analytics: {
     title: 'Queue Management System (QMS) Analytics',
     cards: [
-      { key: 'tokens-issued', label: 'Total Tokens Issued', value: '1.2M', icon: 'ticket', tone: 'brand', delta_value: '-12%', delta_label: 'vs last month', delta_direction: 'down' },
+      { key: 'tokens-issued', label: 'Total Tokens Issued', value: '1.2M', icon: 'ticket', tone: 'brand', delta_value: '+12%', delta_label: 'vs last month', delta_direction: 'up' },
       { key: 'average-service-time', label: 'Average Service Time', value: '14m 30s', icon: 'timer', tone: 'brand', delta_value: '-2m', delta_label: 'improvement', delta_direction: 'down' },
-      { key: 'average-waiting-time', label: 'Average Waiting Time', value: '28m 15s', icon: 'clock-3', tone: 'warning' },
-      { key: 'male-visitors', label: 'Total Visitors (Male)', value: '540K', icon: 'user-round', tone: 'warning' },
-      { key: 'female-visitors', label: 'Total Visitors (Female)', value: '660K', icon: 'user-round-check', tone: 'success' },
+      { key: 'average-waiting-time', label: 'Average Waiting Time', value: '28m 15s', icon: 'clock-3', tone: 'warning', footnote: 'Needs attention' },
+      { key: 'male-visitors', label: 'Total Visitors (Male)', value: '540K', icon: 'user-round', tone: 'warning', footnote: '45% of total' },
+      { key: 'female-visitors', label: 'Total Visitors (Female)', value: '660K', icon: 'user-round-check', tone: 'success', footnote: '45% of total' },
       { key: 'active-counters', label: 'Total Active Counters', value: '3,450', icon: 'scan-line', tone: 'neutral', footnote: 'Across 1,248 offices' }
     ]
   },
   qms_activity_trend: {
     title: 'QMS Activity Trend',
-    subtitle: 'Tokens issued, served, and abandoned over time',
-    icon: 'activity',
+    subtitle: 'Tokens Issued, Served, and Abandoned over time',
+    icon: 'indicator',
     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     chart_series: [
-      { key: 'issued', label: 'Tokens Issued', chart_type: 'bar', color: '#31C97A', values: [86000, 92000, 89000, 104000, 112000, 118000] },
-      { key: 'served', label: 'Tokens Served', chart_type: 'bar', color: '#4C96FF', values: [80000, 87000, 85000, 98000, 103000, 110000] },
-      { key: 'abandoned', label: 'Abandoned', chart_type: 'line', color: '#F46A6A', smooth: true, values: [5400, 6100, 5900, 7200, 6800, 7600] }
+      { key: 'issued', label: 'Tokens Issued', chart_type: 'bar', color: '#3CD856', values: [86000, 92000, 88000, 105000, 112000, 118000] },
+      { key: 'served', label: 'Tokens Served', chart_type: 'bar', color: '#3899FA', values: [81000, 86000, 85000, 97000, 104000, 110000] },
+      { key: 'abandoned', label: 'Abandoned', chart_type: 'line', color: '#EF4343', smooth: true, values: [5200, 6100, 4700, 7600, 7000, 8400] }
     ],
     chart_legend: [
-      { key: 'issued', label: 'Tokens Issued', color: '#31C97A' },
-      { key: 'served', label: 'Tokens Served', color: '#4C96FF' },
-      { key: 'abandoned', label: 'Abandoned', color: '#F46A6A' }
+      { key: 'issued', label: 'Tokens Issued', color: '#3CD856' },
+      { key: 'served', label: 'Tokens Served', color: '#3899FA' },
+      { key: 'abandoned', label: 'Abandoned', color: '#EF4343' }
     ]
   },
   channel_feedback: {
     variant: 'channel-feedback',
     summary: {
       title: 'Overall Satisfaction',
-      icon: 'thumbs-up',
+      icon: 'like',
       center_label: 'Very Good',
       actions: [{ key: 'download-channel-feedback', label: 'Download', icon: 'download' }],
       chart_legend: [
-        { key: 'very-good', label: 'Very Good', color: '#31C97A', percentage: 45 },
-        { key: 'good', label: 'Good', color: '#4C96FF', percentage: 30 },
-        { key: 'average', label: 'Average', color: '#FF9330', percentage: 15 },
-        { key: 'bad', label: 'Bad', color: '#F46A6A', percentage: 7 },
+        { key: 'very-good', label: 'Very Good', color: '#22C358', percentage: 45 },
+        { key: 'good', label: 'Good', color: '#3899FA', percentage: 30 },
+        { key: 'average', label: 'Average', color: '#FCB11D', percentage: 15 },
+        { key: 'bad', label: 'Bad', color: '#EF4343', percentage: 7 },
         { key: 'very-bad', label: 'Very Bad', color: '#9CA3AF', percentage: 3 }
       ],
       chart_series: [
@@ -396,18 +401,18 @@ export const dashboardFixture = {
           label: 'Channel Satisfaction',
           chart_type: 'donut',
           values: [
-            { label: 'Very Good', value: 45, color: '#31C97A' },
-            { label: 'Good', value: 30, color: '#4C96FF' },
-            { label: 'Average', value: 15, color: '#FF9330' },
-            { label: 'Bad', value: 7, color: '#F46A6A' },
-            { label: 'Very Bad', value: 3, color: '#9CA3AF' }
+            { label: 'Very Good', value: 45, color: '#22C358' },
+            { label: 'Good', value: 30, color: '#3899FA' },
+            { label: 'Average', value: 15, color: '#FCB11D' },
+            { label: 'Bad', value: 7, color: '#EF4343' },
+            { label: 'Very Bad', value: 3, color: '#8D97A5' }
           ]
         }
       ]
     },
     details: {
       title: 'Service Rating Details',
-      icon: 'star',
+      icon: 'feedback-sheet',
       actions: [{ key: 'view-channel-feedback', label: 'View All Feedback', icon: 'eye' }],
       columns: [
         { field: 'service_name', label: 'Service' },
@@ -426,9 +431,9 @@ export const dashboardFixture = {
     form: {
       title: 'Custom Reporting',
       icon: 'settings-2',
-      report_type: 'office-efficiency',
-      layer: 'office',
-      office: 'metro-manila',
+      report_type: null,
+      layer: null,
+      office: null,
       from_date: '2024-01-01',
       to_date: '2024-06-30',
       export_format: 'preview',

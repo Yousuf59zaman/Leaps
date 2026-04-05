@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DashboardPageData } from '../../../../types'
-import AgeGroupTablePanel from './AgeGroupTablePanel.vue'
-import VulnerabilityTablePanel from './VulnerabilityTablePanel.vue'
+import ReportingTableCard from './ReportingTableCard.vue'
 
 defineProps<{
   ageGroups: DashboardPageData['reportingAnalytics']['ageGroups']
@@ -10,8 +9,23 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid gap-6">
-    <AgeGroupTablePanel :data="ageGroups" />
-    <VulnerabilityTablePanel :data="vulnerabilityMatrix" />
+  <div class="grid gap-[31px]">
+    <ReportingTableCard
+      :title="ageGroups.title"
+      :icon="ageGroups.icon"
+      :actions="ageGroups.actions"
+      :columns="ageGroups.columns"
+      :rows="ageGroups.rows"
+      variant="age"
+    />
+
+    <ReportingTableCard
+      :title="vulnerabilityMatrix.title"
+      :icon="vulnerabilityMatrix.icon"
+      :actions="vulnerabilityMatrix.actions"
+      :columns="vulnerabilityMatrix.columns"
+      :rows="vulnerabilityMatrix.rows"
+      variant="vulnerability"
+    />
   </div>
 </template>

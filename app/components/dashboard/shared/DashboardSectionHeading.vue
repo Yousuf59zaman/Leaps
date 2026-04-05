@@ -11,16 +11,16 @@ defineProps<{
 
 <template>
   <div class="flex flex-wrap items-start justify-between gap-4">
-    <div class="flex items-start gap-3">
-      <span class="mt-1 h-8 w-1 rounded-full bg-[color:var(--color-success-500)]" />
+    <div class="flex items-start gap-[11px]">
+      <span class="h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
       <div class="space-y-1">
-        <div class="flex items-center gap-2">
-          <DashboardIcon v-if="icon" :name="icon" :size="18" class="text-[color:var(--color-brand-500)]" />
-          <h2 class="text-[length:var(--text-section-title)] leading-[var(--text-section-title--line-height)] font-semibold text-[color:var(--color-text-strong)]">
+        <div class="flex items-center gap-[10px]">
+          <DashboardIcon v-if="icon" :name="icon" :size="27" class="text-[#3899FA]" />
+          <h2 class="text-[20px] font-semibold leading-[30px] text-[#15191E] lg:text-[24px] lg:leading-[37px]">
             {{ title }}
           </h2>
         </div>
-        <p v-if="subtitle" class="text-sm text-[color:var(--color-text-muted)]">
+        <p v-if="subtitle" class="text-sm leading-6 text-[#8D97A5] lg:text-[18.6667px] lg:leading-[27px]">
           {{ subtitle }}
         </p>
       </div>

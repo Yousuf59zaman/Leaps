@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-6 xl:gap-[21px]">
     <QmsMetricCard v-for="card in cards" :key="card.id" :data="card" />
   </div>
 </template>

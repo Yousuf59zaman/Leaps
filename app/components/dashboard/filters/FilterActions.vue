@@ -12,8 +12,15 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-wrap items-end gap-3">
-    <DashboardActionButton label="Reset" icon="refresh-cw" variant="secondary" :disabled="!isDirty" @click="$emit('reset')" />
-    <DashboardActionButton label="Apply Filters" variant="primary" @click="$emit('apply')" />
+  <div class="flex flex-wrap justify-end gap-[8px]">
+    <DashboardActionButton
+      label="Reset"
+      icon="refresh-cw"
+      variant="secondary"
+      :disabled="!isDirty"
+      class="w-[82.25px]"
+      @click="$emit('reset')"
+    />
+    <DashboardActionButton label="Apply Filters" variant="primary" class="w-[96px]" @click="$emit('apply')" />
   </div>
 </template>

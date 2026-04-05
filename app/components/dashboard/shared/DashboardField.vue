@@ -31,8 +31,8 @@ const model = computed({
 </script>
 
 <template>
-  <label class="block space-y-2">
-    <span class="text-sm font-medium text-[color:var(--color-text-strong)]">
+  <label class="block space-y-2.5 xl:space-y-[4.76px]">
+    <span class="text-[15px] font-medium leading-[20px] text-[rgba(0,0,0,0.7)] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]">
       {{ label }}
     </span>
 
@@ -40,7 +40,7 @@ const model = computed({
       <select
         v-if="type === 'select'"
         v-model="model"
-        class="h-12 w-full appearance-none rounded-[var(--radius-card)] border border-[color:var(--app-surface-border)] bg-white px-4 pr-11 text-sm text-[color:var(--color-text-strong)] shadow-[var(--shadow-card)] transition-colors focus:border-[rgba(76,150,255,0.4)]"
+        class="dashboard-field-select h-14 w-full appearance-none rounded-[5px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-[rgba(0,0,0,0.7)] shadow-none transition-colors focus:border-[rgba(56,153,250,0.42)] focus:outline-none xl:h-[64.96px] xl:px-[19.99px] xl:pr-[54px] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]"
       >
         <option value="" disabled>{{ placeholder }}</option>
         <option v-for="option in options" :key="option.value" :value="option.value">
@@ -52,11 +52,11 @@ const model = computed({
         v-else
         v-model="model"
         type="date"
-        class="h-12 w-full rounded-[var(--radius-card)] border border-[color:var(--app-surface-border)] bg-white px-4 pr-11 text-sm text-[color:var(--color-text-strong)] shadow-[var(--shadow-card)] transition-colors focus:border-[rgba(76,150,255,0.4)]"
+        class="dashboard-date-field h-14 w-full rounded-[5px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-[rgba(0,0,0,0.7)] shadow-none transition-colors focus:border-[rgba(56,153,250,0.42)] focus:outline-none xl:h-[64.96px] xl:px-[19.99px] xl:pr-[54px] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]"
       />
 
-      <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[color:var(--color-text-muted)]">
-        <DashboardIcon :name="type === 'date' ? 'calendar' : icon" :size="16" />
+      <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-black xl:right-[19px]">
+        <DashboardIcon :name="type === 'date' ? 'calendar' : icon" :size="18" :stroke-width="1.8" />
       </span>
     </span>
   </label>
