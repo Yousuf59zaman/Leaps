@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { DonutPanelData } from '../../../../types'
 import DashboardIcon from '../shared/DashboardIcon.vue'
 
 const props = defineProps<{
   data: DonutPanelData
 }>()
+
+const activeSegmentId = ref<string | null>(null)
 
 const chartSegments = computed(() => {
   const orderedIds = ['good', 'very-good', 'average', 'bad', 'very-bad']
@@ -14,6 +16,20 @@ const chartSegments = computed(() => {
   return orderedIds
     .map((id) => byId.get(id))
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
+})
+
+const activeSegment = computed(() => {
+  const item = chartSegments.value.find((segment) => segment.id === activeSegmentId.value)
+
+  if (!item) {
+    return null
+  }
+
+  return {
+    label: item.label,
+    value: item.percentage ?? 0,
+    color: item.color
+  }
 })
 
 const donutGeometry = {
@@ -64,6 +80,30 @@ function buildSlicePath(startAngle: number, endAngle: number, outerRadius: numbe
   ].join(' ')
 }
 
+function buildHoverTransform(angle: number, distance: number) {
+  if (distance === 0) {
+    return 'translate(0 0)'
+  }
+
+  const radians = (angle * Math.PI) / 180
+  const x = Math.sin(radians) * distance
+  const y = -Math.cos(radians) * distance
+
+  return `translate(${x.toFixed(2)} ${y.toFixed(2)})`
+}
+
+function setActiveSegment(id: string) {
+  activeSegmentId.value = id
+}
+
+function clearActiveSegment() {
+  activeSegmentId.value = null
+}
+
+function isDimmed(id: string) {
+  return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
+}
+
 const donutSlices = computed(() => {
   let currentAngle = donutGeometry.startAngle
 
@@ -77,6 +117,8 @@ const donutSlices = computed(() => {
 
     return {
       ...segment,
+      midAngle: startAngle + (endAngle - startAngle) / 2,
+      transform: buildHoverTransform(startAngle + (endAngle - startAngle) / 2, segment.id === activeSegmentId.value ? 10 : 0),
       path: buildSlicePath(
         startAngle,
         endAngle,
@@ -113,17 +155,44 @@ const donutSlices = computed(() => {
 
       <div class="mt-[24px] flex justify-center">
         <div class="relative h-[240px] w-[240px] sm:h-[308px] sm:w-[308px]">
+          <div
+            class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[92px] w-[92px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200 sm:h-[114px] sm:w-[114px]"
+            :class="{ 'opacity-0 scale-90': !activeSegment, 'opacity-100 scale-100': activeSegment }"
+          >
+            <template v-if="activeSegment">
+              <span class="max-w-[72px] text-[10px] font-medium leading-[13px] text-[#8D97A5] sm:max-w-[88px] sm:text-[12px] sm:leading-4">
+                {{ activeSegment.label }}
+              </span>
+              <span class="mt-1 text-[16px] font-semibold leading-5 sm:text-[20px] sm:leading-6" :style="{ color: activeSegment.color }">
+                {{ activeSegment.value }}%
+              </span>
+            </template>
+          </div>
+
           <svg
             class="h-full w-full overflow-visible"
             :viewBox="`0 0 ${donutGeometry.viewBoxSize} ${donutGeometry.viewBoxSize}`"
             aria-hidden="true"
           >
-            <path
+            <g
               v-for="segment in donutSlices"
               :key="segment.id"
-              :d="segment.path"
-              :fill="segment.color"
-            />
+              :transform="segment.transform"
+              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+              :class="{ 'opacity-40': isDimmed(segment.id) }"
+              @mouseenter="setActiveSegment(segment.id)"
+              @mouseleave="clearActiveSegment"
+              @focus="setActiveSegment(segment.id)"
+              @blur="clearActiveSegment"
+            >
+              <path
+                :d="segment.path"
+                :fill="segment.color"
+                tabindex="0"
+                focusable="true"
+                class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)]"
+              />
+            </g>
 
             <circle
               :cx="donutGeometry.center"
@@ -136,11 +205,17 @@ const donutSlices = computed(() => {
       </div>
 
       <div class="mt-[30px] grid gap-x-[24px] gap-y-[10px] sm:mt-[38px] sm:grid-cols-2 sm:px-[22px]">
-        <div
+        <button
           v-for="item in data.legend"
           :key="item.id"
-          class="flex items-center justify-between gap-4"
+          type="button"
+          class="flex appearance-none items-center justify-between gap-4 rounded-[12px] border-0 bg-transparent px-2 py-1 text-left transition-all duration-200 hover:bg-[#F8FAFC]"
           :class="{ 'sm:col-span-2 sm:max-w-[228px]': item.id === 'very-bad' }"
+          :style="activeSegmentId === item.id ? 'box-shadow: inset 0 0 0 1px rgba(56,153,250,0.14); background:#F8FAFC;' : ''"
+          @mouseenter="setActiveSegment(item.id)"
+          @mouseleave="clearActiveSegment"
+          @focus="setActiveSegment(item.id)"
+          @blur="clearActiveSegment"
         >
           <div class="flex min-w-0 items-center gap-[10px]">
             <span class="h-4 w-4 rounded-full" :style="{ backgroundColor: item.color }" />
@@ -152,7 +227,7 @@ const donutSlices = computed(() => {
           <span class="text-[15px] font-medium leading-6 text-[#15191E] sm:text-[18.6667px] sm:leading-[27px]">
             {{ item.percentage }}%
           </span>
-        </div>
+        </button>
       </div>
     </div>
   </article>

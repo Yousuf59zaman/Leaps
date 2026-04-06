@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { RequestSummaryData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
 import DashboardIcon from '../shared/DashboardIcon.vue'
@@ -7,6 +7,8 @@ import DashboardIcon from '../shared/DashboardIcon.vue'
 const props = defineProps<{
   data: RequestSummaryData
 }>()
+
+const activeSegmentId = ref<string | null>(null)
 
 interface SummaryRow {
   id: string
@@ -51,6 +53,8 @@ const summaryRows = computed<SummaryRow[]>(() =>
     ...getBadgeStyle(status.id)
   }))
 )
+
+const requestRows = computed<SummaryRow[]>(() => [totalRow.value, ...summaryRows.value])
 
 const donutLayout = {
   size: 292,
@@ -142,15 +146,57 @@ const donutSlices = computed(() => {
     const nextAngle = currentAngle + sweepAngle
     const startAngle = currentAngle + donutLayout.gapAngle / 2
     const endAngle = Math.max(startAngle + 0.01, nextAngle - donutLayout.gapAngle / 2)
+    const midAngle = startAngle + (endAngle - startAngle) / 2
 
     currentAngle = nextAngle
 
     return {
       ...segment,
+      midAngle,
+      transform: buildHoverTransform(midAngle, segment.id === activeSegmentId.value ? 10 : 0),
       path: buildSlicePath(startAngle, endAngle, segment.outerRadius, donutLayout.innerRadius)
     }
   })
 })
+
+const activeDetail = computed(() => {
+  const row = requestRows.value.find((item) => item.id === activeSegmentId.value)
+
+  if (!row) {
+    return null
+  }
+
+  return {
+    ...row,
+    percentage: props.data.totalRequests > 0
+      ? Math.round((row.rawValue / props.data.totalRequests) * 100)
+      : 0
+  }
+})
+
+function buildHoverTransform(angle: number, distance: number) {
+  if (distance === 0) {
+    return 'translate(0 0)'
+  }
+
+  const radians = (angle * Math.PI) / 180
+  const x = Math.sin(radians) * distance
+  const y = -Math.cos(radians) * distance
+
+  return `translate(${x.toFixed(2)} ${y.toFixed(2)})`
+}
+
+function setActiveSegment(id: string) {
+  activeSegmentId.value = id
+}
+
+function clearActiveSegment() {
+  activeSegmentId.value = null
+}
+
+function isDimmed(id: string) {
+  return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
+}
 </script>
 
 <template>
@@ -177,40 +223,84 @@ const donutSlices = computed(() => {
 
     <div class="grid gap-6 px-5 py-5 sm:px-6 md:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[1fr_305px] lg:px-[31.67px] lg:py-[18px]">
       <div class="space-y-[18px] lg:pt-[2px]">
-        <div class="flex items-center justify-between gap-4 text-base leading-6 text-[#15191E] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]">
+        <button
+          type="button"
+          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === totalRow.id }"
+          @mouseenter="setActiveSegment(totalRow.id)"
+          @mouseleave="clearActiveSegment"
+          @focus="setActiveSegment(totalRow.id)"
+          @blur="clearActiveSegment"
+        >
           <span class="font-normal">{{ totalRow.label }}</span>
           <span
-            class="inline-flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] px-2.5 text-sm font-semibold leading-5 sm:min-w-[74px] sm:px-3 sm:text-[16px] sm:leading-[21px]"
+            class="inline-flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] px-2.5 text-sm font-semibold leading-5 transition-transform duration-200 group-hover:scale-105 sm:min-w-[74px] sm:px-3 sm:text-[16px] sm:leading-[21px]"
             :style="{ backgroundColor: totalRow.background, color: totalRow.color }"
           >
             {{ totalRow.value }}
           </span>
-        </div>
+        </button>
 
-        <div
+        <button
           v-for="row in summaryRows"
           :key="row.id"
-          class="flex items-center justify-between gap-4 text-base leading-6 text-[#15191E] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          type="button"
+          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === row.id }"
+          @mouseenter="setActiveSegment(row.id)"
+          @mouseleave="clearActiveSegment"
+          @focus="setActiveSegment(row.id)"
+          @blur="clearActiveSegment"
         >
           <span class="font-normal">{{ row.label }}</span>
           <span
-            class="inline-flex h-[28px] min-w-[64px] items-center justify-center rounded-[6px] px-2.5 text-sm font-semibold leading-5 sm:min-w-[70px] sm:px-3 sm:text-[16px] sm:leading-[21px]"
+            class="inline-flex h-[28px] min-w-[64px] items-center justify-center rounded-[6px] px-2.5 text-sm font-semibold leading-5 transition-transform duration-200 group-hover:scale-105 sm:min-w-[70px] sm:px-3 sm:text-[16px] sm:leading-[21px]"
             :style="{ backgroundColor: row.background, color: row.color }"
           >
             {{ row.value }}
           </span>
-        </div>
+        </button>
       </div>
 
       <div class="flex items-center justify-center lg:justify-end">
         <div class="relative size-[180px] sm:size-[210px] lg:size-[292px]">
+          <div
+            class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200 sm:h-[88px] sm:w-[88px] lg:h-[104px] lg:w-[104px]"
+            :class="{ 'opacity-0 scale-90': !activeDetail, 'opacity-100 scale-100': activeDetail }"
+          >
+            <template v-if="activeDetail">
+              <span class="max-w-[70px] text-[10px] font-medium leading-3 text-[#8D97A5] sm:max-w-[78px] sm:text-[11px] sm:leading-[14px] lg:max-w-[90px] lg:text-[12px] lg:leading-4">
+                {{ activeDetail.label }}
+              </span>
+              <span class="mt-1 text-[14px] font-semibold leading-4 text-[#15191E] sm:text-[15px] sm:leading-5 lg:text-[18px] lg:leading-6">
+                {{ activeDetail.value }}
+              </span>
+              <span class="mt-1 text-[10px] font-medium leading-3 text-[#3899FA] lg:text-[11px] lg:leading-4">
+                {{ activeDetail.percentage }}%
+              </span>
+            </template>
+          </div>
+
           <svg class="h-full w-full overflow-visible" :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`" aria-hidden="true">
-            <path
+            <g
               v-for="segment in donutSlices"
               :key="segment.id"
-              :d="segment.path"
-              :fill="segment.color"
-            />
+              :transform="segment.transform"
+              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+              :class="{ 'opacity-35': isDimmed(segment.id) }"
+              @mouseenter="setActiveSegment(segment.id)"
+              @mouseleave="clearActiveSegment"
+              @focus="setActiveSegment(segment.id)"
+              @blur="clearActiveSegment"
+            >
+              <path
+                :d="segment.path"
+                :fill="segment.color"
+                tabindex="0"
+                focusable="true"
+                class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)] transition-[filter] duration-200"
+              />
+            </g>
             <circle
               :cx="donutLayout.center"
               :cy="donutLayout.center"

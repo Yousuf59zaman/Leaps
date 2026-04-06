@@ -16,6 +16,7 @@ const orderedIds = computed(() => (
 const viewportWidth = ref(1280)
 const chartFrameRef = ref<HTMLElement | null>(null)
 const chartFrameWidth = ref(0)
+const activeSegmentId = ref<string | null>(null)
 let chartResizeObserver: ResizeObserver | null = null
 
 const chartSegments = computed(() => {
@@ -103,9 +104,30 @@ const labelTextClass = computed(() => (
 ))
 
 const donutHoleSize = computed(() => `${donutLayout.value.innerRadius * 2}px`)
+const donutHoleClass = computed(() => (
+  donutLayout.value.width < 300
+    ? 'h-[76px] w-[76px]'
+    : donutLayout.value.width < 380
+      ? 'h-[90px] w-[90px]'
+      : donutLayout.value.width < 460
+        ? 'h-[104px] w-[104px]'
+        : 'h-[118px] w-[118px]'
+))
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
+}
+
+function setActiveSegment(id: string) {
+  activeSegmentId.value = id
+}
+
+function clearActiveSegment() {
+  activeSegmentId.value = null
+}
+
+function isDimmed(id: string) {
+  return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
 }
 
 function outerRadiusForSegment(segmentId: string) {
@@ -177,6 +199,18 @@ function buildSlicePath(startAngle: number, endAngle: number, outerRadius: numbe
   ].join(' ')
 }
 
+function buildHoverTransform(angle: number, distance: number) {
+  if (distance === 0) {
+    return 'translate(0 0)'
+  }
+
+  const radians = (angle * Math.PI) / 180
+  const x = Math.sin(radians) * distance
+  const y = -Math.cos(radians) * distance
+
+  return `translate(${x.toFixed(2)} ${y.toFixed(2)})`
+}
+
 const donutSlices = computed(() => {
   const layout = donutLayout.value
   let currentAngle = layout.startAngle
@@ -194,9 +228,24 @@ const donutSlices = computed(() => {
       ...segment,
       outerRadius,
       midAngle: startAngle + (endAngle - startAngle) / 2,
+      transform: buildHoverTransform(startAngle + (endAngle - startAngle) / 2, segment.id === activeSegmentId.value ? (layout.width < 300 ? 6 : layout.width < 380 ? 8 : 10) : 0),
       path: buildSlicePath(startAngle, endAngle, outerRadius, layout.innerRadius)
     }
   })
+})
+
+const activeSegment = computed(() => {
+  const matched = chartSegments.value.find((segment) => segment.id === activeSegmentId.value)
+
+  if (!matched) {
+    return null
+  }
+
+  return {
+    label: matched.id === 'vulnerability' && props.data.centerLabel ? props.data.centerLabel : matched.label,
+    value: matched.percentage ?? 0,
+    color: matched.color
+  }
 })
 
 const sliceLabels = computed(() => {
@@ -257,12 +306,22 @@ const sliceLabels = computed(() => {
   <article class="rounded-[15px] bg-white px-4 py-4 shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] sm:px-[18px] sm:py-[18px] lg:px-[28px] lg:py-[24px]">
     <div class="grid gap-5 xl:grid-cols-[150px_minmax(0,1fr)] xl:items-center xl:gap-4">
       <div class="space-y-3 self-start pt-1 sm:space-y-[14px] lg:space-y-[18px] lg:pt-[10px]">
-        <div v-for="item in data.legend" :key="item.id" class="flex items-center gap-[9px]">
+        <button
+          v-for="item in data.legend"
+          :key="item.id"
+          type="button"
+          class="flex w-full appearance-none items-center gap-[9px] rounded-[10px] border-0 bg-transparent px-2 py-1 text-left transition-all duration-200 hover:bg-[#F8FAFC]"
+          :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.14)]': activeSegmentId === item.id }"
+          @mouseenter="setActiveSegment(item.id)"
+          @mouseleave="clearActiveSegment"
+          @focus="setActiveSegment(item.id)"
+          @blur="clearActiveSegment"
+        >
           <span class="h-[10px] w-[10px] rounded-full" :style="{ backgroundColor: item.color }" />
           <span class="text-[14px] font-medium leading-5 sm:text-[16px] sm:leading-6 lg:text-[17.8111px] lg:leading-[27px]" :style="{ color: item.color }">
             {{ item.label }}
           </span>
-        </div>
+        </button>
       </div>
 
       <div
@@ -270,31 +329,63 @@ const sliceLabels = computed(() => {
         class="relative mx-auto w-full max-w-[440px] overflow-visible md:max-w-[500px] lg:max-w-[540px] xl:max-w-[500px]"
         :style="{ height: `${donutLayout.height}px` }"
       >
-        <span
+        <button
           v-for="item in sliceLabels"
           :key="item.id"
-          class="absolute z-10 whitespace-nowrap font-medium text-[#171A1F]"
+          type="button"
+          class="absolute z-10 appearance-none whitespace-nowrap border-0 bg-transparent p-0 font-medium text-[#171A1F] transition-all duration-200"
           :class="[labelTextClass, item.class]"
           :style="item.style"
+          @mouseenter="setActiveSegment(item.id)"
+          @mouseleave="clearActiveSegment"
+          @focus="setActiveSegment(item.id)"
+          @blur="clearActiveSegment"
         >
           {{ item.label }}
-        </span>
+        </button>
 
         <div
           class="absolute left-1/2 top-0 z-0 -translate-x-1/2"
           :style="{ top: `${donutLayout.top}px`, width: `${donutLayout.size}px`, height: `${donutLayout.size}px` }"
         >
+          <div
+            class="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200"
+            :class="[donutHoleClass, { 'opacity-0 scale-90': !activeSegment, 'opacity-100 scale-100': activeSegment }]"
+          >
+            <div v-if="activeSegment" class="flex h-full flex-col items-center justify-center px-2">
+              <span class="max-w-full truncate text-[10px] font-medium leading-[13px] text-[#8D97A5] sm:text-[11px] sm:leading-[14px]">
+                {{ activeSegment.label }}
+              </span>
+              <span class="mt-1 text-[15px] font-semibold leading-[18px] sm:text-[18px] sm:leading-[21px]" :style="{ color: activeSegment.color }">
+                {{ activeSegment.value }}%
+              </span>
+            </div>
+          </div>
+
           <svg
             class="h-full w-full overflow-visible"
             :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`"
             aria-hidden="true"
           >
-            <path
+            <g
               v-for="segment in donutSlices"
               :key="segment.id"
-              :d="segment.path"
-              :fill="segment.color"
-            />
+              :transform="segment.transform"
+              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+              :class="{ 'opacity-40': isDimmed(segment.id) }"
+              @mouseenter="setActiveSegment(segment.id)"
+              @mouseleave="clearActiveSegment"
+              @focus="setActiveSegment(segment.id)"
+              @blur="clearActiveSegment"
+            >
+              <path
+                :d="segment.path"
+                :fill="segment.color"
+                tabindex="0"
+                focusable="true"
+                class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)]"
+              />
+            </g>
           </svg>
 
           <div
