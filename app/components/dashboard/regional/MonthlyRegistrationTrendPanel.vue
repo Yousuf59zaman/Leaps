@@ -88,7 +88,7 @@ const chartOption = computed<EChartsOption>(() => ({
 
 <template>
   <article
-    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] xl:h-[421px]"
+    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] min-[1400px]:h-[421px]"
   >
     <span class="absolute left-[-1.33px] top-[21.67px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
@@ -100,7 +100,11 @@ const chartOption = computed<EChartsOption>(() => ({
     </div>
 
     <div class="mt-[18px] px-4 pb-5 sm:px-6 lg:px-[24px] lg:pb-[16px]">
-      <DashboardChartFrame :option="chartOption" :height="318" />
+      <div class="overflow-x-auto">
+        <div class="min-w-[560px] sm:min-w-0">
+          <DashboardChartFrame :option="chartOption" height="clamp(260px, 42vw, 318px)" />
+        </div>
+      </div>
     </div>
   </article>
 </template>

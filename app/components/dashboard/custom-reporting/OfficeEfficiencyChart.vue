@@ -80,6 +80,10 @@ const chartOption = computed<EChartsOption>(() => ({
     <h4 class="text-center text-[18.6667px] font-semibold leading-[27px] text-[#8D97A5]">
       {{ data.title }}
     </h4>
-    <DashboardChartFrame :option="chartOption" :height="333" />
+    <div class="overflow-x-auto">
+      <div class="min-w-[620px]">
+        <DashboardChartFrame :option="chartOption" :height="333" />
+      </div>
+    </div>
   </div>
 </template>

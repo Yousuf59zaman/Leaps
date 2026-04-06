@@ -10,18 +10,18 @@ defineProps<{
 </script>
 
 <template>
-  <article class="overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] xl:min-h-[979px]">
+  <article class="overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] min-[1400px]:min-h-[979px]">
     <div class="relative border-b border-[#DEE2E7] bg-[rgba(243,245,247,0.3)] pb-[27px] pt-[20.67px]">
       <span class="absolute left-0 top-[20.67px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-      <div class="flex flex-wrap items-start justify-between gap-4 px-8 xl:px-[33px]">
+      <div class="flex flex-wrap items-start justify-between gap-4 px-5 sm:px-8 xl:px-[33px]">
         <div class="flex items-start gap-3">
           <DashboardIcon name="benchmark" :size="27" class="mt-1 text-[#3899FA]" />
           <div>
-            <h3 class="text-[24px] font-semibold leading-[37px] text-[#15191E]">
+            <h3 class="text-[20px] font-semibold leading-[30px] text-[#15191E] sm:text-[24px] sm:leading-[37px]">
               {{ data.title }}
             </h3>
-            <p v-if="data.subtitle" class="text-[18.6667px] font-normal leading-[27px] text-[#8D97A5]">
+            <p v-if="data.subtitle" class="text-[15px] font-normal leading-[22px] text-[#8D97A5] sm:text-[18.6667px] sm:leading-[27px]">
               {{ data.subtitle }}
             </p>
           </div>
@@ -36,7 +36,7 @@ defineProps<{
       </div>
     </div>
 
-    <div class="px-6 pb-6 pt-[16px] xl:px-[34px] xl:pb-[27px]">
+    <div class="px-5 pb-6 pt-[16px] sm:px-6 xl:px-[34px] xl:pb-[27px]">
       <OfficeEfficiencyChart :data="data.chart" />
       <div class="mt-[14px]">
         <OfficeEfficiencyTable :data="data.table" />

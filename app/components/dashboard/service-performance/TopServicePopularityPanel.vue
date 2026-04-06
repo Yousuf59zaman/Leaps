@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { EChartsOption } from 'echarts'
 import type { ChartDataPoint, ChartPanelData } from '../../../../types'
-import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
 import DashboardIcon from '../shared/DashboardIcon.vue'
 
 const props = defineProps<{
@@ -21,125 +19,90 @@ function getNumericValue(point: number | null | ChartDataPoint) {
   return Number(point.value)
 }
 
-const chartValues = computed(() => props.data.series[0]?.data.map(getNumericValue) ?? [])
+const maxValue = 1000000
 
-const chartOption = computed<EChartsOption>(() => ({
-  animationDuration: 600,
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow',
-      shadowStyle: {
-        color: 'rgba(34, 195, 88, 0.08)'
-      }
-    },
-    backgroundColor: '#FFFFFF',
-    borderColor: '#DEE2E7',
-    borderWidth: 1,
-    padding: [10, 12],
-    textStyle: {
-      color: '#171A1F',
-      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-      fontSize: 12
-    },
-    formatter: (params: Array<{ axisValue: string; value: number }>) => {
-      const point = params[0]
+const barItems = computed(() => {
+  const categories = props.data.categories ?? []
+  const series = props.data.series[0]
 
-      if (!point) {
-        return ''
-      }
+  if (!series) {
+    return []
+  }
 
-      return `${point.axisValue}<br />${point.value.toLocaleString()}`
-    }
-  },
-  grid: {
-    left: 4,
-    right: 6,
-    top: 8,
-    bottom: 6,
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    min: 0,
-    max: 1000000,
-    interval: 250000,
-    axisTick: { show: false },
-    axisLine: { show: false },
-    splitLine: {
-      lineStyle: {
-        color: '#DEE2E7',
-        type: 'dashed',
-        width: 1
-      }
-    },
-    axisLabel: {
-      color: '#8D97A5',
-      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-      fontSize: 12,
-      margin: 14,
-      formatter: (value: number) => `${Math.round(value / 1000)}k`
-    }
-  },
-  yAxis: {
-    type: 'category',
-    inverse: true,
-    data: props.data.categories ?? [],
-    axisTick: { show: false },
-    axisLine: { show: false },
-    splitLine: { show: false },
-    axisLabel: {
-      color: '#171A1F',
-      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-      fontSize: 12,
-      margin: 10,
-      width: 170,
-      overflow: 'truncate'
-    }
-  },
-  series: [
-    {
-      type: 'bar',
-      data: chartValues.value,
-      barWidth: 11,
-      itemStyle: {
-        color: props.data.series[0]?.color ?? '#22C358',
-        borderRadius: 999
-      },
-      emphasis: {
-        itemStyle: {
-          color: props.data.series[0]?.color ?? '#22C358'
-        }
-      }
-    }
-  ]
-}))
+  return categories.map((label, index) => ({
+    label,
+    value: getNumericValue(series.data[index] ?? 0),
+    percent: (getNumericValue(series.data[index] ?? 0) / maxValue) * 100
+  }))
+})
+
+const xAxisLabels = ['0k', '250k', '500k', '750k', '1000k']
+const gridLinePositions = [0, 25, 50, 75, 100]
 </script>
 
 <template>
-  <article
-    class="relative w-full overflow-hidden rounded-[19px] bg-white px-5 pb-6 pt-8 shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] sm:px-7 lg:px-[33px] lg:pb-[30px] lg:pt-[31px] xl:h-[651px]"
-  >
+  <article class="relative w-full overflow-hidden rounded-[19px] bg-white shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] min-[1400px]:h-[651px]">
     <span class="absolute left-0 top-[31px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-    <div class="flex items-start gap-[12px]">
-      <DashboardIcon :name="data.icon || 'indicator'" :size="27" class="mt-[4px] text-[#3899FA]" />
+    <div class="px-5 pt-7 sm:px-6 lg:px-[33px] lg:pt-[31px]">
+      <div class="flex items-start gap-[12px]">
+        <DashboardIcon :name="data.icon || 'badge-check'" :size="27" class="mt-[6px] shrink-0 text-[#3899FA]" />
 
-      <div>
-        <h2 class="text-[20px] font-semibold leading-[30px] text-[#15191E] lg:text-[24px] lg:leading-[37px]">
-          {{ data.title }}
-        </h2>
-        <p
-          v-if="data.subtitle"
-          class="text-[15px] font-normal leading-[22px] text-[#8D97A5] lg:text-[18.6667px] lg:leading-[27px]"
-        >
-          {{ data.subtitle }}
-        </p>
+        <div class="min-w-0">
+          <h2 class="text-[20px] font-semibold leading-[30px] text-[#15191E] lg:text-[24px] lg:leading-[37px]">
+            {{ data.title }}
+          </h2>
+          <p
+            v-if="data.subtitle"
+            class="mt-[1px] text-[15px] font-normal leading-[22px] text-[#8D97A5] lg:text-[18.6667px] lg:leading-[27px]"
+          >
+            {{ data.subtitle }}
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="mt-5 lg:mt-[26px]">
-      <DashboardChartFrame :option="chartOption" :height="500" />
+    <div class="mt-5 px-5 pb-6 sm:px-6 lg:mt-[23px] lg:px-[33px] lg:pb-[29px]">
+      <div class="overflow-x-auto">
+        <div class="relative min-w-[640px] sm:min-w-[720px] lg:min-w-[840px]">
+          <div class="pointer-events-none absolute inset-x-0 bottom-[37px] top-[28px]">
+            <div
+              v-for="(pos, index) in gridLinePositions"
+              :key="index"
+              class="absolute top-0 bottom-0 border-l border-dashed border-[#DEE2E7]"
+              :style="{ left: `${pos}%` }"
+            />
+          </div>
+
+          <div class="relative">
+            <div
+              v-for="(item, index) in barItems"
+              :key="index"
+              class="h-[44px] lg:h-[46.33px]"
+            >
+              <p class="truncate pr-4 text-[11px] font-normal leading-[18px] text-[#15191E] sm:text-[12px] sm:leading-[20px] lg:text-[14.6667px] lg:leading-[23px]">
+                {{ item.label }}
+              </p>
+              <div class="mt-[3px] pr-[12px]">
+                <div
+                  class="h-[20px] rounded-r-[6px] bg-[#1DC973] transition-all duration-500"
+                  :style="{ width: `${item.percent}%` }"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-[8px] flex items-center justify-between pr-[12px]">
+            <span
+              v-for="(label, index) in xAxisLabels"
+              :key="index"
+              class="text-[14px] font-normal leading-[22px] text-[#8D97A5] lg:text-[16px] lg:leading-[24px]"
+            >
+              {{ label }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </article>
 </template>

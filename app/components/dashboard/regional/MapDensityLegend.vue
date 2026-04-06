@@ -16,7 +16,7 @@ const densityStops = [
 
 <template>
   <div
-    class="h-[102.4px] w-[255.38px] rounded-[12.6424px] border border-[#DEE2E7] bg-[rgba(249,250,251,0.9)] px-[16.44px] py-[16.44px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] backdrop-blur-[2.52848px]"
+    class="h-auto w-full max-w-[255.38px] rounded-[12.6424px] border border-[#DEE2E7] bg-[rgba(249,250,251,0.9)] px-[16.44px] py-[16.44px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] backdrop-blur-[2.52848px]"
   >
     <p class="text-[15.1709px] font-medium leading-[20px] text-[#8D97A5]">
       Registration Density
@@ -26,7 +26,7 @@ const densityStops = [
       <span
         v-for="(color, index) in densityStops"
         :key="`density-stop-${index}`"
-        class="h-[15.17px] w-[40.46px] rounded-[7.58543px]"
+        class="h-[15.17px] flex-1 rounded-[7.58543px]"
         :style="{ backgroundColor: color }"
       />
     </div>

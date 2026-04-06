@@ -78,7 +78,7 @@ const articleClass = computed(() => {
     return `min-h-[124px] rounded-[15px] px-5 py-4 shadow-[var(--shadow-card)] ${qmsCardStyles[props.data.id] ?? 'bg-white'}`
   }
 
-  return 'h-[109.333px] rounded-[15px] bg-white px-5 py-4 shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] lg:px-[33.33px] lg:py-[17.67px]'
+  return 'min-h-[109.333px] rounded-[15px] bg-white px-4 py-4 shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] sm:px-5 lg:px-[33.33px] lg:py-[17.67px]'
 })
 
 const formattedValue = computed(() => formatCount(props.data.value))
@@ -110,16 +110,16 @@ const deltaIcon = computed(() => {
       </div>
     </div>
 
-    <div v-else class="flex items-center gap-4 lg:gap-[21.33px]">
-      <span class="inline-flex h-16 w-16 shrink-0 items-center justify-center" :class="[toneStyles.iconWrap, toneStyles.radius]">
-        <DashboardIcon :name="data.icon" :size="32" :stroke-width="1.7" />
+    <div v-else class="flex items-center gap-3 sm:gap-4 lg:gap-[21.33px]">
+      <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16" :class="[toneStyles.iconWrap, toneStyles.radius]">
+        <DashboardIcon :name="data.icon" :size="28" :stroke-width="1.7" class="sm:[&_svg]:size-8" />
       </span>
 
       <div class="min-w-0 flex-1">
-        <p class="text-[15px] font-medium leading-[22px] text-[#8D97A5] lg:text-[18.6667px] lg:leading-[27px]">
+        <p class="text-sm font-medium leading-5 text-[#8D97A5] sm:text-[15px] sm:leading-[22px] lg:text-[18.6667px] lg:leading-[27px]">
           {{ data.label }}
         </p>
-        <p class="mt-[5px] text-[24px] font-bold leading-[32px] text-[#15191E] lg:text-[32px] lg:leading-[43px]">
+        <p class="mt-1.5 text-[28px] font-bold leading-[34px] text-[#15191E] lg:mt-[5px] lg:text-[32px] lg:leading-[43px]">
           {{ formattedValue }}
         </p>
         <div v-if="data.delta || data.footnote" class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">

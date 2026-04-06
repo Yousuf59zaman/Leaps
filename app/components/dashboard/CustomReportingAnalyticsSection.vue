@@ -15,7 +15,7 @@ const reportState = reactive(structuredClone(props.data.form.state))
 <template>
   <section class="space-y-4">
     <DashboardSectionHeading title="Custom Reporting & Analytics" icon="file-text" />
-    <div class="grid gap-6 xl:grid-cols-[434px_minmax(0,1fr)] xl:gap-[33px]">
+    <div class="grid gap-5 sm:gap-6 min-[1400px]:grid-cols-[434px_minmax(0,1fr)] min-[1400px]:items-start min-[1400px]:gap-[33px]">
       <CustomReportingLeftColumn :data="data.form" :state="reportState" />
       <CustomReportingRightColumn :data="data.officeEfficiency" />
     </div>

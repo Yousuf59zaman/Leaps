@@ -13,7 +13,7 @@ defineProps<{
   <article class="relative overflow-hidden rounded-[19px] bg-[#F3F5F7] shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)]">
     <span class="absolute left-0 top-[30.77px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-    <header class="border-b border-[#DEE1E6] bg-[#F8F9FA] px-6 py-6 xl:px-[29px] xl:pb-[30px] xl:pt-[31px]">
+    <header class="border-b border-[#DEE1E6] bg-[#F8F9FA] px-5 py-5 sm:px-6 sm:py-6 xl:px-[29px] xl:pb-[30px] xl:pt-[31px]">
       <div class="flex items-start justify-between gap-4">
         <div class="flex items-center gap-[10px]">
           <DashboardIcon :name="demographic.icon || 'building-2'" :size="27" class="text-[#3899FA]" />
@@ -28,7 +28,7 @@ defineProps<{
       </div>
     </header>
 
-    <div class="grid gap-[26px] px-[26px] py-[29px]">
+    <div class="grid gap-5 px-4 py-5 sm:gap-6 sm:px-5 sm:py-6 lg:gap-[26px] lg:px-[26px] lg:py-[29px]">
       <ReportingDonutCard :data="demographic" variant="demographic" />
       <ReportingDonutCard :data="vulnerability" variant="vulnerability" />
     </div>

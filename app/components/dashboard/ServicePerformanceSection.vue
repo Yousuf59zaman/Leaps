@@ -9,7 +9,9 @@ defineProps<{
 </script>
 
 <template>
-  <section class="grid gap-6 xl:grid-cols-[minmax(0,906px)_minmax(0,895px)] xl:justify-between xl:gap-[31px]">
+  <section
+    class="grid grid-cols-1 gap-4 sm:gap-5 md:gap-6 min-[1400px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-[1400px]:items-start min-[1400px]:gap-[31px]"
+  >
     <TopServicePopularityPanel :data="data.topServicePopularity" />
     <RegionalOfficePerformancePanel :data="data.regionalOfficePerformance" />
   </section>

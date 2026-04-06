@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <section class="grid gap-6 xl:grid-cols-[minmax(0,1057px)_minmax(0,747px)] xl:justify-between xl:gap-[31px]">
+  <section class="grid gap-5 sm:gap-6 min-[1400px]:grid-cols-[minmax(0,1.38fr)_minmax(320px,0.96fr)] min-[1400px]:items-start min-[1400px]:gap-[31px]">
     <RegionalRegistrationDensityPanel :data="data.density" />
     <RegionalInsightsRightColumn :request-summary="data.requestSummary" :monthly-registration-trend="data.monthlyRegistrationTrend" />
   </section>

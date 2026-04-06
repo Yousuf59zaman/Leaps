@@ -51,7 +51,7 @@ export const dashboardFixture = {
         { key: 'high', label: 'High', color: '#4C96FF' }
       ],
       highlighted_region: {
-        name: 'Cebu Province',
+        name: 'BARMM',
         status_label: 'High',
         stats: [
           { key: 'total', label: 'Total Registrations', value: 452310 },
@@ -115,7 +115,7 @@ export const dashboardFixture = {
     top_service_popularity: {
       title: 'Top 10 Service Popularity',
       subtitle: 'By total application volume',
-      icon: 'indicator',
+      icon: 'badge-check',
       categories: [
         'Business Permit Registration',
         'Birth Certificate Request',
@@ -133,7 +133,7 @@ export const dashboardFixture = {
           key: 'applications',
           label: 'Applications',
           chart_type: 'bar',
-          color: '#22C358',
+          color: '#1DC973',
           values: [920000, 790000, 650000, 555000, 492000, 410000, 350000, 300000, 250000, 180000]
         }
       ]
@@ -141,7 +141,7 @@ export const dashboardFixture = {
     regional_office_performance: {
       title: 'Regional Office Performance',
       subtitle: 'Applications Received vs Completed vs Pending',
-      icon: 'indicator',
+      icon: 'benchmark',
       categories: ['NCR North', 'Cebu City Hub', 'Davao Central', 'Iloilo Regional', 'Baguio District'],
       chart_series: [
         { key: 'received', label: 'Received', chart_type: 'bar', color: '#3899FA', values: [40000, 34500, 29800, 25900, 19800] },

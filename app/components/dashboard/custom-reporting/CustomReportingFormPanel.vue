@@ -41,18 +41,18 @@ function setPreviewMode() {
 </script>
 
 <template>
-  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] xl:min-h-[979px]">
+  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] min-[1400px]:min-h-[979px]">
     <span class="absolute left-0 top-[21.67px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-    <div class="px-8 pb-8 pt-[22.67px] xl:px-[33px] xl:pb-10">
+    <div class="px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-[22.67px] xl:px-[33px] xl:pb-10">
       <div class="flex items-center gap-3">
         <DashboardIcon name="settings-2" :size="27" class="text-[#3899FA]" />
-        <h3 class="text-[24px] font-semibold leading-[37px] text-[#15191E]">
+        <h3 class="text-[20px] font-semibold leading-[30px] text-[#15191E] sm:text-[24px] sm:leading-[37px]">
           {{ data.title }}
         </h3>
       </div>
 
-      <div class="mt-[33px] space-y-[47px]">
+      <div class="mt-8 space-y-8 sm:mt-[33px] sm:space-y-[47px]">
         <label class="block">
           <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
             Select Type
@@ -97,7 +97,7 @@ function setPreviewMode() {
           <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
             Date Range
           </span>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid gap-3 sm:grid-cols-2">
             <input
               v-model="state.dateRange.from"
               type="text"
@@ -134,7 +134,7 @@ function setPreviewMode() {
         </label>
       </div>
 
-      <div class="mt-[67px] border-t border-[#DEE2E7] pt-[22px]">
+      <div class="mt-10 border-t border-[#DEE2E7] pt-[22px] sm:mt-[67px]">
         <button
           type="button"
           class="flex h-12 w-full items-center justify-center gap-3 rounded-[13.3333px] bg-[#3899FA] text-[18.6667px] font-medium leading-[29px] text-white transition-colors hover:bg-[#2f8ef0]"
@@ -144,7 +144,7 @@ function setPreviewMode() {
           <span>Generate Report</span>
         </button>
 
-        <div class="mt-4 grid grid-cols-2 gap-[10.6667px]">
+        <div class="mt-4 grid gap-[10.6667px] sm:grid-cols-2">
           <button
             type="button"
             class="flex h-12 items-center justify-center gap-2.5 rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] text-[16px] font-medium leading-[27px] text-[#15191E] transition-colors hover:bg-[#f1f4f7]"

@@ -16,36 +16,87 @@ const chartSegments = computed(() => {
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
 })
 
-const donutStyle = computed(() => {
-  let current = 0
-  const stops: string[] = []
+const donutGeometry = {
+  viewBoxSize: 320,
+  center: 160,
+  innerRadius: 78,
+  startAngle: -10,
+  gapAngle: 1.1
+}
 
-  for (const segment of chartSegments.value) {
-    const percentage = typeof segment.percentage === 'number' ? segment.percentage : 0
-    const next = current + percentage * 3.6
-    const segmentEnd = Math.max(current, next - 1.1)
-
-    stops.push(`${segment.color} ${current}deg ${segmentEnd}deg`)
-    stops.push(`#F9FAFB ${segmentEnd}deg ${next}deg`)
-
-    current = next
+function outerRadiusForSegment(segmentId: string) {
+  switch (segmentId) {
+    case 'good':
+      return 152
+    case 'very-good':
+      return 146
+    case 'average':
+      return 140
+    case 'bad':
+      return 134
+    default:
+      return 128
   }
+}
+
+function polarToCartesian(radius: number, angleDeg: number) {
+  const radians = (angleDeg * Math.PI) / 180
 
   return {
-    background: `conic-gradient(from -10deg, ${stops.join(', ')})`
+    x: donutGeometry.center + Math.sin(radians) * radius,
+    y: donutGeometry.center - Math.cos(radians) * radius
   }
+}
+
+function buildSlicePath(startAngle: number, endAngle: number, outerRadius: number, innerRadius: number) {
+  const outerStart = polarToCartesian(outerRadius, startAngle)
+  const outerEnd = polarToCartesian(outerRadius, endAngle)
+  const innerEnd = polarToCartesian(innerRadius, endAngle)
+  const innerStart = polarToCartesian(innerRadius, startAngle)
+  const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0
+
+  return [
+    `M ${outerStart.x} ${outerStart.y}`,
+    `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEnd.x} ${outerEnd.y}`,
+    `L ${innerEnd.x} ${innerEnd.y}`,
+    `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x} ${innerStart.y}`,
+    'Z'
+  ].join(' ')
+}
+
+const donutSlices = computed(() => {
+  let currentAngle = donutGeometry.startAngle
+
+  return chartSegments.value.map((segment) => {
+    const sweepAngle = (typeof segment.percentage === 'number' ? segment.percentage : 0) * 3.6
+    const nextAngle = currentAngle + sweepAngle
+    const startAngle = currentAngle + donutGeometry.gapAngle / 2
+    const endAngle = Math.max(startAngle + 0.01, nextAngle - donutGeometry.gapAngle / 2)
+
+    currentAngle = nextAngle
+
+    return {
+      ...segment,
+      path: buildSlicePath(
+        startAngle,
+        endAngle,
+        outerRadiusForSegment(segment.id),
+        donutGeometry.innerRadius
+      )
+    }
+  })
 })
 </script>
 
 <template>
-  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] xl:min-h-[585.33px]">
+  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] min-[1600px]:min-h-[585.33px]">
     <span class="absolute left-[0.33px] top-[24.33px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-    <div class="px-8 pb-10 pt-[25.33px] xl:px-[33.33px]">
-      <div class="flex items-start justify-between gap-4">
+    <div class="px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-[25.33px] xl:px-[33.33px]">
+      <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="flex items-center gap-3">
           <DashboardIcon :name="data.icon || 'like'" :size="27" class="text-[#3899FA]" />
-          <h3 class="text-[24px] font-semibold leading-[37px] text-[#15191E]">
+          <h3 class="text-[20px] font-semibold leading-[30px] text-[#15191E] sm:text-[24px] sm:leading-[37px]">
             {{ data.title }}
           </h3>
         </div>
@@ -61,26 +112,44 @@ const donutStyle = computed(() => {
       </div>
 
       <div class="mt-[24px] flex justify-center">
-        <div class="relative h-[292px] w-[292px] rounded-full" :style="donutStyle">
-          <div class="absolute inset-[63px] rounded-full bg-white" />
+        <div class="relative h-[240px] w-[240px] sm:h-[308px] sm:w-[308px]">
+          <svg
+            class="h-full w-full overflow-visible"
+            :viewBox="`0 0 ${donutGeometry.viewBoxSize} ${donutGeometry.viewBoxSize}`"
+            aria-hidden="true"
+          >
+            <path
+              v-for="segment in donutSlices"
+              :key="segment.id"
+              :d="segment.path"
+              :fill="segment.color"
+            />
+
+            <circle
+              :cx="donutGeometry.center"
+              :cy="donutGeometry.center"
+              :r="donutGeometry.innerRadius - 1"
+              fill="#FFFFFF"
+            />
+          </svg>
         </div>
       </div>
 
-      <div class="mt-[38px] grid grid-cols-2 gap-x-[34px] gap-y-[10px] px-[22px]">
+      <div class="mt-[30px] grid gap-x-[24px] gap-y-[10px] sm:mt-[38px] sm:grid-cols-2 sm:px-[22px]">
         <div
           v-for="item in data.legend"
           :key="item.id"
           class="flex items-center justify-between gap-4"
-          :class="{ 'col-span-2 max-w-[228px]': item.id === 'very-bad' }"
+          :class="{ 'sm:col-span-2 sm:max-w-[228px]': item.id === 'very-bad' }"
         >
           <div class="flex min-w-0 items-center gap-[10px]">
             <span class="h-4 w-4 rounded-full" :style="{ backgroundColor: item.color }" />
-            <span class="truncate text-[18.6667px] font-normal leading-[27px] text-[#8D97A5]">
+            <span class="truncate text-[15px] font-normal leading-6 text-[#8D97A5] sm:text-[18.6667px] sm:leading-[27px]">
               {{ item.label }}
             </span>
           </div>
 
-          <span class="text-[18.6667px] font-medium leading-[27px] text-[#15191E]">
+          <span class="text-[15px] font-medium leading-6 text-[#15191E] sm:text-[18.6667px] sm:leading-[27px]">
             {{ item.percentage }}%
           </span>
         </div>

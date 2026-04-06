@@ -9,14 +9,14 @@ defineProps<{
 </script>
 
 <template>
-  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] xl:min-h-[585px]">
+  <article class="relative overflow-hidden rounded-[19px] bg-white shadow-[var(--shadow-card)] min-[1600px]:min-h-[585px]">
     <span class="absolute left-0 top-[24.33px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
-    <div class="px-8 pb-8 pt-[24.33px] xl:px-[31px] xl:pb-[36px]">
-      <div class="flex items-start justify-between gap-4">
+    <div class="px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-[24.33px] xl:px-[31px] xl:pb-[36px]">
+      <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="flex items-center gap-3">
           <DashboardIcon :name="data.icon || 'feedback-sheet'" :size="27" class="text-[#3899FA]" />
-          <h3 class="text-[24px] font-semibold leading-[37px] text-[#15191E]">
+          <h3 class="text-[20px] font-semibold leading-[30px] text-[#15191E] sm:text-[24px] sm:leading-[37px]">
             {{ data.title }}
           </h3>
         </div>
@@ -30,43 +30,45 @@ defineProps<{
         </button>
       </div>
 
-      <div class="mt-[30px] overflow-hidden rounded-[14px] border border-[#EEF1F5]">
-        <div class="grid h-[49px] items-center bg-[#F3F5F7] xl:grid-cols-[2.35fr_1.05fr_1.45fr_1.1fr]">
+      <div class="mt-[30px] overflow-x-auto">
+        <div class="min-w-[760px] overflow-hidden rounded-[14px] border border-[#EEF1F5]">
+          <div class="grid h-[49px] items-center bg-[#F3F5F7] grid-cols-[2.35fr_1.05fr_1.45fr_1.1fr]">
+            <div
+              v-for="column in data.columns"
+              :key="String(column.key)"
+              class="px-[18px] text-[14px] font-semibold uppercase leading-5 text-[#8D97A5] sm:text-[16px] sm:leading-[21px]"
+              :class="{
+                'text-left': !column.align || column.align === 'left',
+                'text-center': column.align === 'center',
+                'text-right': column.align === 'right'
+              }"
+            >
+              {{ column.label }}
+            </div>
+          </div>
+
           <div
-            v-for="column in data.columns"
-            :key="String(column.key)"
-            class="px-[18px] text-[16px] font-semibold uppercase leading-[21px] text-[#8D97A5]"
-            :class="{
-              'text-left': !column.align || column.align === 'left',
-              'text-center': column.align === 'center',
-              'text-right': column.align === 'right'
-            }"
+            v-for="row in data.rows"
+            :key="row.id"
+            class="grid min-h-[54px] items-center border-b border-[#DEE2E7] last:border-b-0 grid-cols-[2.35fr_1.05fr_1.45fr_1.1fr]"
           >
-            {{ column.label }}
-          </div>
-        </div>
+            <div class="px-[18px] py-[14px] text-[15px] font-normal leading-6 text-[#15191E] sm:text-[18.6667px] sm:leading-[27px]">
+              {{ row.serviceName }}
+            </div>
 
-        <div
-          v-for="row in data.rows"
-          :key="row.id"
-          class="grid min-h-[54px] items-center border-b border-[#DEE2E7] last:border-b-0 xl:grid-cols-[2.35fr_1.05fr_1.45fr_1.1fr]"
-        >
-          <div class="px-[18px] py-[14px] text-[18.6667px] font-normal leading-[27px] text-[#15191E]">
-            {{ row.serviceName }}
-          </div>
+            <div class="flex items-center justify-center gap-2 px-[18px] py-[14px] text-[15px] font-semibold leading-6 text-[#15191E] sm:text-[18.6667px] sm:leading-[27px]">
+              <span>{{ formatRating(Number(row.averageRating)) }}</span>
+              <DashboardIcon name="star" :size="15" class="text-[#15191E]" />
+            </div>
 
-          <div class="flex items-center justify-center gap-2 px-[18px] py-[14px] text-[18.6667px] font-semibold leading-[27px] text-[#15191E]">
-            <span>{{ formatRating(Number(row.averageRating)) }}</span>
-            <DashboardIcon name="star" :size="15" class="text-[#15191E]" />
-          </div>
+            <div class="flex items-center justify-center px-[18px] py-[14px]">
+              <span class="h-[8px] w-[120px] rounded-full bg-[#9AA4B2] sm:w-[140px]" />
+            </div>
 
-          <div class="flex items-center justify-center px-[18px] py-[14px]">
-            <span class="h-[8px] w-[140px] rounded-full bg-[#9AA4B2]" />
-          </div>
-
-          <div class="flex items-center justify-end gap-[10px] px-[18px] py-[14px] text-[18.6667px] font-normal leading-[27px] text-[#94A3B8]">
-            <span>{{ formatFeedbackCount(Number(row.feedbackCount)) }}</span>
-            <DashboardIcon name="eye" :size="16" class="text-[#15191E]" />
+            <div class="flex items-center justify-end gap-[10px] px-[18px] py-[14px] text-[15px] font-normal leading-6 text-[#94A3B8] sm:text-[18.6667px] sm:leading-[27px]">
+              <span>{{ formatFeedbackCount(Number(row.feedbackCount)) }}</span>
+              <DashboardIcon name="eye" :size="16" class="text-[#15191E]" />
+            </div>
           </div>
         </div>
       </div>

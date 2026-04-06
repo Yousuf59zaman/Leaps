@@ -158,7 +158,11 @@ const chartOption = computed<EChartsOption>(() => ({
     </header>
 
     <div class="px-4 pb-6 pt-6 sm:px-6 lg:px-[30.53px] lg:pb-[26px] lg:pt-[30.54px]">
-      <DashboardChartFrame :option="chartOption" :height="560" />
+      <div class="overflow-x-auto">
+        <div class="min-w-[860px]">
+          <DashboardChartFrame :option="chartOption" height="clamp(380px, 62vw, 560px)" />
+        </div>
+      </div>
 
       <div class="mt-2 flex flex-col items-center gap-[10px] lg:mt-[18px]">
         <div

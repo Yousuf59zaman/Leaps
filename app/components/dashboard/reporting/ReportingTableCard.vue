@@ -21,8 +21,8 @@ const props = defineProps<{
 }>()
 
 const templateClass = props.variant === 'age'
-  ? 'xl:grid-cols-[81px_minmax(235px,1fr)_119px_149px_223px_122px]'
-  : 'xl:grid-cols-[82px_minmax(190px,1fr)_123px_151px_175px_208px]'
+  ? 'grid-cols-[81px_minmax(235px,1fr)_119px_149px_223px_122px]'
+  : 'grid-cols-[82px_minmax(190px,1fr)_123px_151px_175px_208px]'
 
 function getCellValue(row: ReportingRow, key: string) {
   if (key in row) {
@@ -77,35 +77,37 @@ function isEmphasizedCell(column: ReportingColumn) {
       </div>
     </header>
 
-    <div class="overflow-hidden rounded-b-[19px]">
-      <div class="grid min-h-[48px] items-center bg-[#F3F5F7]" :class="templateClass">
-        <div
-          v-for="column in columns"
-          :key="column.key"
-          class="px-4 text-[16px] font-medium uppercase leading-[21px] text-[#8D97A5] xl:px-[20px]"
-          :class="cellClass(column)"
-        >
-          {{ column.label }}
+    <div class="overflow-x-auto rounded-b-[19px]">
+      <div class="min-w-[980px]">
+        <div class="grid min-h-[48px] items-center bg-[#F3F5F7]" :class="templateClass">
+          <div
+            v-for="column in columns"
+            :key="column.key"
+            class="px-4 text-[16px] font-medium uppercase leading-[21px] text-[#8D97A5] xl:px-[20px]"
+            :class="cellClass(column)"
+          >
+            {{ column.label }}
+          </div>
         </div>
-      </div>
 
-      <div
-        v-for="(row, rowIndex) in rows"
-        :key="`${variant}-${rowIndex}`"
-        class="grid min-h-[67px] items-center border-b border-[#DEE1E6] last:border-b-0"
-        :class="templateClass"
-      >
         <div
-          v-for="column in columns"
-          :key="column.key"
-          class="px-4 py-[14px] text-[18.67px] leading-[25px] text-[#171A1F] xl:px-[20px]"
-          :class="[
-            cellClass(column),
-            isEmphasizedCell(column) ? 'font-bold' : 'font-normal',
-            column.key === 'serial' ? 'text-[#565D6D]' : ''
-          ]"
+          v-for="(row, rowIndex) in rows"
+          :key="`${variant}-${rowIndex}`"
+          class="grid min-h-[67px] items-center border-b border-[#DEE1E6] last:border-b-0"
+          :class="templateClass"
         >
-          {{ getCellValue(row, column.key) }}
+          <div
+            v-for="column in columns"
+            :key="column.key"
+            class="px-4 py-[14px] text-[18.67px] leading-[25px] text-[#171A1F] xl:px-[20px]"
+            :class="[
+              cellClass(column),
+              isEmphasizedCell(column) ? 'font-bold' : 'font-normal',
+              column.key === 'serial' ? 'text-[#565D6D]' : ''
+            ]"
+          >
+            {{ getCellValue(row, column.key) }}
+          </div>
         </div>
       </div>
     </div>
