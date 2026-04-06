@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import DashboardIcon from './shared/DashboardIcon.vue'
 
-const menuAsset = '/figma-assets/topbar-menu.png'
-const logoAsset = '/figma-assets/topbar-logo.png'
-const avatarAsset = '/figma-assets/topbar-avatar.png'
+const menuAsset = '/figma-assets/topbar-menu-barmm.png'
+const logoAsset = '/figma-assets/topbar-logo-barmm.png'
+const avatarAsset = '/figma-assets/topbar-avatar-barmm.png'
 </script>
 
 <template>
