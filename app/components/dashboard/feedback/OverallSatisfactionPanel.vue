@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { DonutPanelData } from '../../../../types'
+import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 import DashboardIcon from '../shared/DashboardIcon.vue'
 
 const props = defineProps<{
@@ -38,21 +39,6 @@ const donutGeometry = {
   innerRadius: 78,
   startAngle: -10,
   gapAngle: 1.1
-}
-
-function outerRadiusForSegment(segmentId: string) {
-  switch (segmentId) {
-    case 'good':
-      return 152
-    case 'very-good':
-      return 146
-    case 'average':
-      return 140
-    case 'bad':
-      return 134
-    default:
-      return 128
-  }
 }
 
 function polarToCartesian(radius: number, angleDeg: number) {
@@ -105,6 +91,11 @@ function isDimmed(id: string) {
 }
 
 const donutSlices = computed(() => {
+  const radiusForValue = createValueRadiusScale(
+    chartSegments.value.map((segment) => segment.percentage ?? 0),
+    128,
+    152
+  )
   let currentAngle = donutGeometry.startAngle
 
   return chartSegments.value.map((segment) => {
@@ -122,7 +113,7 @@ const donutSlices = computed(() => {
       path: buildSlicePath(
         startAngle,
         endAngle,
-        outerRadiusForSegment(segment.id),
+        radiusForValue(segment.percentage ?? 0),
         donutGeometry.innerRadius
       )
     }

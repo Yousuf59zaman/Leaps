@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import type { RequestSummaryData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
+import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 import DashboardIcon from '../shared/DashboardIcon.vue'
 
 const props = defineProps<{
@@ -89,25 +90,6 @@ function buildSlicePath(startAngle: number, endAngle: number, outerRadius: numbe
   ].join(' ')
 }
 
-function outerRadiusForSegment(segmentId: string) {
-  switch (segmentId) {
-    case 'total-requests':
-      return 139
-    case 'complete':
-      return 133
-    case 'overdue':
-      return 128
-    case 'open':
-      return 123
-    case 'cancelled':
-      return 119
-    case 'rejected':
-      return 115
-    default:
-      return 120
-  }
-}
-
 const donutSlices = computed(() => {
   const summaryMap = new Map(summaryRows.value.map((row) => [row.id, row]))
   const orderedIds = ['total-requests', 'complete', 'overdue', 'open', 'cancelled', 'rejected']
@@ -117,8 +99,7 @@ const donutSlices = computed(() => {
         return {
           id: totalRow.value.id,
           color: totalRow.value.background,
-          rawValue: totalRow.value.rawValue,
-          outerRadius: outerRadiusForSegment(totalRow.value.id)
+          rawValue: totalRow.value.rawValue
         }
       }
 
@@ -131,12 +112,16 @@ const donutSlices = computed(() => {
       return {
         id: row.id,
         color: row.background,
-        rawValue: row.rawValue,
-        outerRadius: outerRadiusForSegment(row.id)
+        rawValue: row.rawValue
       }
     })
     .filter((segment): segment is NonNullable<typeof segment> => Boolean(segment))
 
+  const radiusForValue = createValueRadiusScale(
+    segmentSpecs.map((segment) => segment.rawValue),
+    115,
+    139
+  )
   const totalWeight = segmentSpecs.reduce((sum, segment) => sum + Math.max(1, Math.sqrt(segment.rawValue)), 0)
 
   let currentAngle = donutLayout.startAngle
@@ -152,9 +137,10 @@ const donutSlices = computed(() => {
 
     return {
       ...segment,
+      outerRadius: radiusForValue(segment.rawValue),
       midAngle,
       transform: buildHoverTransform(midAngle, segment.id === activeSegmentId.value ? 10 : 0),
-      path: buildSlicePath(startAngle, endAngle, segment.outerRadius, donutLayout.innerRadius)
+      path: buildSlicePath(startAngle, endAngle, radiusForValue(segment.rawValue), donutLayout.innerRadius)
     }
   })
 })
@@ -195,7 +181,17 @@ function clearActiveSegment() {
 }
 
 function isDimmed(id: string) {
-  return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
+  if (!activeSegmentId.value) {
+    return false
+  }
+
+  const activeSliceExists = donutSlices.value.some((segment) => segment.id === activeSegmentId.value)
+
+  if (!activeSliceExists) {
+    return false
+  }
+
+  return activeSegmentId.value !== id
 }
 </script>
 

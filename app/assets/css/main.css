@@ -149,8 +149,8 @@
   }
 
   .dashboard-density-map .leaflet-tile-pane {
-    opacity: 0.96;
-    filter: saturate(1.08) brightness(1.02) contrast(1.02);
+    opacity: 0.98;
+    filter: saturate(1.05) brightness(1.02) contrast(1.04);
   }
 
   .dashboard-density-map .leaflet-control-container {
@@ -161,6 +161,10 @@
   .dashboard-density-map .leaflet-top,
   .dashboard-density-map .leaflet-bottom {
     z-index: 1;
+  }
+
+  .dashboard-density-map .leaflet-tooltip-pane {
+    z-index: 680;
   }
 
   .dashboard-density-map .leaflet-control-zoom {
@@ -288,5 +292,46 @@
 
   .dashboard-province-tooltip-row strong.is-danger {
     color: #ef4343;
+  }
+
+  .dashboard-municipality-tooltip {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .dashboard-municipality-tooltip::before {
+    display: none;
+  }
+
+  .dashboard-municipality-tooltip .leaflet-tooltip-content {
+    margin: 0;
+  }
+
+  .dashboard-municipality-tooltip-card {
+    border: 1px solid rgba(219, 230, 245, 0.92);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 10px 12px;
+    box-shadow: 0 16px 34px rgba(15, 37, 82, 0.14);
+    backdrop-filter: blur(10px);
+  }
+
+  .dashboard-municipality-tooltip-name {
+    color: #15191e;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+
+  .dashboard-municipality-tooltip-province {
+    margin-top: 2px;
+    color: #6c7a92;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    white-space: nowrap;
   }
 }

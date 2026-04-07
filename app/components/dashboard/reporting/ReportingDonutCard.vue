@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { DonutPanelData } from '../../../../types'
+import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 
 const props = defineProps<{
   data: DonutPanelData
@@ -130,49 +131,6 @@ function isDimmed(id: string) {
   return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
 }
 
-function outerRadiusForSegment(segmentId: string) {
-  if (props.variant === 'vulnerability') {
-    let ratio = 0.315
-
-    switch (segmentId) {
-      case 'female':
-        ratio = 0.36
-        break
-      case 'vulnerability':
-        ratio = 0.3467
-        break
-      case 'male':
-        ratio = 0.3267
-        break
-      case 'common':
-        ratio = 0.3
-        break
-      default:
-        ratio = 0.315
-    }
-
-    return Math.min(donutLayout.value.size / 2 - 8, donutLayout.value.size * ratio)
-  }
-
-  let ratio = 0.32
-
-  switch (segmentId) {
-    case 'female':
-      ratio = 0.3733
-      break
-    case 'male':
-      ratio = 0.34
-      break
-    case 'common':
-      ratio = 0.3067
-      break
-    default:
-      ratio = 0.32
-  }
-
-  return Math.min(donutLayout.value.size / 2 - 8, donutLayout.value.size * ratio)
-}
-
 function polarToCartesian(radius: number, angleDeg: number) {
   const layout = donutLayout.value
   const radians = (angleDeg * Math.PI) / 180
@@ -213,6 +171,11 @@ function buildHoverTransform(angle: number, distance: number) {
 
 const donutSlices = computed(() => {
   const layout = donutLayout.value
+  const radiusForValue = createValueRadiusScale(
+    chartSegments.value.map((segment) => segment.percentage ?? 0),
+    Math.min(layout.size / 2 - 16, layout.size * 0.3),
+    Math.min(layout.size / 2 - 8, layout.size * 0.3733)
+  )
   let currentAngle = layout.startAngle
 
   return chartSegments.value.map((segment) => {
@@ -220,7 +183,7 @@ const donutSlices = computed(() => {
     const nextAngle = currentAngle + sweepAngle
     const startAngle = currentAngle + layout.gapAngle / 2
     const endAngle = Math.max(startAngle + 0.01, nextAngle - layout.gapAngle / 2)
-    const outerRadius = outerRadiusForSegment(segment.id)
+    const outerRadius = radiusForValue(segment.percentage ?? 0)
 
     currentAngle = nextAngle
 
