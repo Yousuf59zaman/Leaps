@@ -37,5 +37,3 @@ export type {
   TablePanelData,
   VulnerabilityRow
 } from './dashboard'
-
-export type { RawDashboardFixture } from './raw-dashboard'
