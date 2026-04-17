@@ -9,7 +9,7 @@ const props = defineProps<{
   data: DashboardPageData['customReportingAnalytics']
 }>()
 
-const reportState = reactive(structuredClone(props.data.form.state))
+const reportState = reactive({ ...props.data.form.state })
 </script>
 
 <template>

@@ -74,11 +74,12 @@ const toneStyles = computed(() => {
 })
 
 const articleClass = computed(() => {
+  const base = 'rounded-[16px] bg-white shadow-card transition-all duration-300 hover:shadow-panel hover:-translate-y-1'
   if (props.variant === 'qms') {
-    return `min-h-[124px] rounded-[15px] px-5 py-4 shadow-[var(--shadow-card)] ${qmsCardStyles[props.data.id] ?? 'bg-white'}`
+    return `${base} min-h-[120px] px-5 py-4 ${qmsCardStyles[props.data.id] ?? 'bg-white'}`
   }
 
-  return 'min-h-[109.333px] rounded-[15px] bg-white px-4 py-4 shadow-[0px_2.5px_5.5px_rgba(0,0,0,0.06)] sm:px-5 lg:px-[33.33px] lg:py-[17.67px]'
+  return `${base} min-h-[100px] px-4 py-5 lg:px-8 lg:py-6`
 })
 
 const formattedValue = computed(() => formatCount(props.data.value))
@@ -95,14 +96,14 @@ const deltaIcon = computed(() => {
 <template>
   <article :class="articleClass">
     <div v-if="variant === 'qms'" class="flex h-full flex-col">
-      <p class="text-[15px] font-medium leading-[21px] text-[#8D97A5] lg:text-[16px]">
+      <p class="text-sm font-medium leading-5 text-gray-400 lg:text-base">
         {{ data.label }}
       </p>
-      <p class="mt-1 text-[24px] font-bold leading-[32px] text-[#15191E] lg:text-[26.6667px] lg:leading-[37px]">
+      <p class="mt-1 text-2xl font-bold leading-tight text-gray-900 lg:text-3xl">
         {{ formattedValue }}
       </p>
-      <div v-if="data.delta || data.footnote" class="mt-auto flex items-center gap-1.5 pt-3 text-[13.3333px] leading-5 text-[#8D97A5]">
-        <DashboardIcon v-if="deltaIcon" :name="deltaIcon" :size="16" :stroke-width="1.9" class="text-black" />
+      <div v-if="data.delta || data.footnote" class="mt-auto flex items-center gap-1.5 pt-3 text-[13px] leading-5 text-gray-400">
+        <DashboardIcon v-if="deltaIcon" :name="deltaIcon" :size="16" :stroke-width="2" class="text-black" />
         <span v-if="data.delta">
           {{ data.delta.value }} {{ data.delta.label }}
         </span>
@@ -110,23 +111,23 @@ const deltaIcon = computed(() => {
       </div>
     </div>
 
-    <div v-else class="flex items-center gap-3 sm:gap-4 lg:gap-[21.33px]">
-      <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16" :class="[toneStyles.iconWrap, toneStyles.radius]">
-        <DashboardIcon :name="data.icon" :size="28" :stroke-width="1.7" class="sm:[&_svg]:size-8" />
+    <div v-else class="flex items-center gap-4 lg:gap-6">
+      <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px] sm:h-16 sm:w-16" :class="[toneStyles.iconWrap]">
+        <DashboardIcon :name="data.icon" :size="28" :stroke-width="1.8" class="sm:[&_svg]:size-8" />
       </span>
 
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-medium leading-5 text-[#8D97A5] sm:text-[15px] sm:leading-[22px] lg:text-[18.6667px] lg:leading-[27px]">
+        <p class="text-[14px] font-medium leading-5 text-gray-400 sm:text-[15px] lg:text-[18px] lg:leading-7">
           {{ data.label }}
         </p>
-        <p class="mt-1.5 text-[28px] font-bold leading-[34px] text-[#15191E] lg:mt-[5px] lg:text-[32px] lg:leading-[43px]">
+        <p class="mt-1 text-2xl font-bold leading-9 text-gray-900 lg:mt-1 lg:text-3xl lg:leading-10">
           {{ formattedValue }}
         </p>
         <div v-if="data.delta || data.footnote" class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-          <span v-if="data.delta" class="font-semibold text-[#15191E]">
+          <span v-if="data.delta" class="font-semibold text-gray-900">
             {{ data.delta.value }} {{ data.delta.label }}
           </span>
-          <span v-if="data.footnote" class="text-[#8D97A5]">
+          <span v-if="data.footnote" class="text-gray-400">
             {{ data.footnote }}
           </span>
         </div>

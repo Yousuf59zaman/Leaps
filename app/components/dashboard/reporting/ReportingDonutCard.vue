@@ -292,70 +292,77 @@ const sliceLabels = computed(() => {
         class="relative mx-auto w-full max-w-[440px] overflow-visible md:max-w-[500px] lg:max-w-[540px] xl:max-w-[500px]"
         :style="{ height: `${donutLayout.height}px` }"
       >
-        <button
-          v-for="item in sliceLabels"
-          :key="item.id"
-          type="button"
-          class="absolute z-10 appearance-none whitespace-nowrap border-0 bg-transparent p-0 font-medium text-[#171A1F] transition-all duration-200"
-          :class="[labelTextClass, item.class]"
-          :style="item.style"
-          @mouseenter="setActiveSegment(item.id)"
-          @mouseleave="clearActiveSegment"
-          @focus="setActiveSegment(item.id)"
-          @blur="clearActiveSegment"
-        >
-          {{ item.label }}
-        </button>
+        <ClientOnly>
+          <button
+            v-for="item in sliceLabels"
+            :key="item.id"
+            type="button"
+            class="absolute z-10 appearance-none whitespace-nowrap border-0 bg-transparent p-0 font-medium text-[#171A1F] transition-all duration-200"
+            :class="[labelTextClass, item.class]"
+            :style="item.style"
+            @mouseenter="setActiveSegment(item.id)"
+            @mouseleave="clearActiveSegment"
+            @focus="setActiveSegment(item.id)"
+            @blur="clearActiveSegment"
+          >
+            {{ item.label }}
+          </button>
 
-        <div
-          class="absolute left-1/2 top-0 z-0 -translate-x-1/2"
-          :style="{ top: `${donutLayout.top}px`, width: `${donutLayout.size}px`, height: `${donutLayout.size}px` }"
-        >
           <div
-            class="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200"
-            :class="[donutHoleClass, { 'opacity-0 scale-90': !activeSegment, 'opacity-100 scale-100': activeSegment }]"
+            class="absolute left-1/2 top-0 z-0 -translate-x-1/2"
+            :style="{ top: `${donutLayout.top}px`, width: `${donutLayout.size}px`, height: `${donutLayout.size}px` }"
           >
-            <div v-if="activeSegment" class="flex h-full flex-col items-center justify-center px-2">
-              <span class="max-w-full truncate text-[10px] font-medium leading-[13px] text-[#8D97A5] sm:text-[11px] sm:leading-[14px]">
-                {{ activeSegment.label }}
-              </span>
-              <span class="mt-1 text-[15px] font-semibold leading-[18px] sm:text-[18px] sm:leading-[21px]" :style="{ color: activeSegment.color }">
-                {{ activeSegment.value }}%
-              </span>
-            </div>
-          </div>
-
-          <svg
-            class="h-full w-full overflow-visible"
-            :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`"
-            aria-hidden="true"
-          >
-            <g
-              v-for="segment in donutSlices"
-              :key="segment.id"
-              :transform="segment.transform"
-              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
-              :class="{ 'opacity-40': isDimmed(segment.id) }"
-              @mouseenter="setActiveSegment(segment.id)"
-              @mouseleave="clearActiveSegment"
-              @focus="setActiveSegment(segment.id)"
-              @blur="clearActiveSegment"
+            <div
+              class="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200"
+              :class="[donutHoleClass, { 'opacity-0 scale-90': !activeSegment, 'opacity-100 scale-100': activeSegment }]"
             >
-              <path
-                :d="segment.path"
-                :fill="segment.color"
-                tabindex="0"
-                focusable="true"
-                class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)]"
-              />
-            </g>
-          </svg>
+              <div v-if="activeSegment" class="flex h-full flex-col items-center justify-center px-2">
+                <span class="max-w-full truncate text-[10px] font-medium leading-[13px] text-[#8D97A5] sm:text-[11px] sm:leading-[14px]">
+                  {{ activeSegment.label }}
+                </span>
+                <span class="mt-1 text-[15px] font-semibold leading-[18px] sm:text-[18px] sm:leading-[21px]" :style="{ color: activeSegment.color }">
+                  {{ activeSegment.value }}%
+                </span>
+              </div>
+            </div>
 
-          <div
-            class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0px_9.66791px_68.8838px_rgba(0,0,0,0.14)]"
-            :style="{ width: donutHoleSize, height: donutHoleSize }"
-          />
-        </div>
+            <svg
+              class="h-full w-full overflow-visible"
+              :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`"
+              aria-hidden="true"
+            >
+              <g
+                v-for="segment in donutSlices"
+                :key="segment.id"
+                :transform="segment.transform"
+                class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+                :class="{ 'opacity-40': isDimmed(segment.id) }"
+                @mouseenter="setActiveSegment(segment.id)"
+                @mouseleave="clearActiveSegment"
+                @focus="setActiveSegment(segment.id)"
+                @blur="clearActiveSegment"
+              >
+                <path
+                  :d="segment.path"
+                  :fill="segment.color"
+                  tabindex="0"
+                  focusable="true"
+                  class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)]"
+                />
+              </g>
+            </svg>
+
+            <div
+              class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0px_10px_30px_rgba(0,0,0,0.12)]"
+              :style="{ width: donutHoleSize, height: donutHoleSize }"
+            />
+          </div>
+          <template #fallback>
+            <div class="flex h-full w-full items-center justify-center italic text-gray-400">
+               Loading charts...
+            </div>
+          </template>
+        </ClientOnly>
       </div>
     </div>
   </article>

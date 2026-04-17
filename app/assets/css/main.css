@@ -19,7 +19,7 @@
 
   --text-dashboard-title: 2rem;
   --text-dashboard-title--line-height: 2.5rem;
-  --text-section-title: 1.125rem;
+  --text-section-title: 1.25rem;
   --text-section-title--line-height: 1.75rem;
   --text-panel-title: 1rem;
   --text-panel-title--line-height: 1.5rem;
@@ -28,12 +28,12 @@
 
   --spacing: 4px;
 
-  --radius-card: 15px;
-  --radius-panel: 19px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
   --radius-pill: 999px;
 
-  --shadow-card: 0px 2.5px 5.5px rgba(0, 0, 0, 0.06);
-  --shadow-panel: 0px 6.66668px 26.6667px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-panel: 0px 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 :root {
@@ -168,11 +168,11 @@
   }
 
   .dashboard-density-map .leaflet-control-zoom {
-    margin: 0 0 18px 18px;
+    margin: 0 0 20px 20px;
     overflow: hidden;
-    border: 1px solid rgba(222, 226, 231, 0.92);
-    border-radius: 14px;
-    box-shadow: 0 16px 34px rgba(15, 37, 82, 0.12);
+    border: 1px solid rgba(222, 226, 231, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(15, 37, 82, 0.1);
   }
 
   .dashboard-density-map .leaflet-control-zoom a {

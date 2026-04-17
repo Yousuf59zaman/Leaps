@@ -399,11 +399,11 @@ onMounted(async () => {
     })
   })
 
-  map.fitBounds(boundedPhilippines, { padding: [28, 28] })
+  map.fitBounds(boundedPhilippines, { padding: [40, 40] })
   const philippinesZoom = map.getZoom()
-  const barmmBounds = municipalityGroup.getBounds().extend(provinceGroup.getBounds()).pad(0.18)
+  const barmmBounds = municipalityGroup.getBounds().extend(provinceGroup.getBounds()).pad(0.2)
 
-  map.fitBounds(barmmBounds as LatLngBoundsExpression, { padding: [36, 36] })
+  map.fitBounds(barmmBounds as LatLngBoundsExpression, { padding: [50, 50] })
   map.setMinZoom(philippinesZoom)
   map.setMaxZoom(18)
 
@@ -414,10 +414,10 @@ onMounted(async () => {
   await nextTick()
   requestAnimationFrame(() => {
     map?.invalidateSize()
-    map?.fitBounds(barmmBounds as LatLngBoundsExpression, { padding: [36, 36] })
+    map?.fitBounds(barmmBounds as LatLngBoundsExpression, { padding: [50, 50] })
     map?.setMinZoom(philippinesZoom)
     if (map && map.getZoom() <= philippinesZoom + 0.25) {
-      map.setView(barmmFocusCenter, Math.min(philippinesZoom + 2.25, 8), { animate: false })
+      map.setView(barmmFocusCenter, Math.min(philippinesZoom + 2.25, 8.5), { animate: false })
     }
   })
 })

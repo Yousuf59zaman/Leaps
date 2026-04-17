@@ -31,8 +31,8 @@ const model = computed({
 </script>
 
 <template>
-  <label class="block space-y-2.5 xl:space-y-[4.76px]">
-    <span class="text-[15px] font-medium leading-[20px] text-[rgba(0,0,0,0.7)] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]">
+  <label class="block space-y-2 lg:space-y-1.5">
+    <span class="text-[14px] font-medium leading-[20px] text-black/70 lg:text-[15px] lg:leading-[22px] xl:text-[20px] xl:leading-[28px] xl:tracking-tight">
       {{ label }}
     </span>
 
@@ -40,7 +40,7 @@ const model = computed({
       <select
         v-if="type === 'select'"
         v-model="model"
-        class="dashboard-field-select h-14 w-full appearance-none rounded-[5px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-[rgba(0,0,0,0.7)] shadow-none transition-colors focus:border-[rgba(56,153,250,0.42)] focus:outline-none xl:h-[64.96px] xl:px-[19.99px] xl:pr-[54px] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]"
+        class="dashboard-field-select h-12 w-full appearance-none rounded-[8px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-black/70 shadow-none transition-all focus:border-brand-500/50 focus:outline-none xl:h-[60px] xl:px-5 xl:pr-[54px] xl:text-[20px] xl:leading-[28px] xl:tracking-tight"
       >
         <option value="" disabled>{{ placeholder }}</option>
         <option v-for="option in options" :key="option.value" :value="option.value">
@@ -52,11 +52,11 @@ const model = computed({
         v-else
         v-model="model"
         type="date"
-        class="dashboard-date-field h-14 w-full rounded-[5px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-[rgba(0,0,0,0.7)] shadow-none transition-colors focus:border-[rgba(56,153,250,0.42)] focus:outline-none xl:h-[64.96px] xl:px-[19.99px] xl:pr-[54px] xl:text-[21.3334px] xl:leading-[27px] xl:tracking-[-0.400001px]"
+        class="dashboard-date-field h-12 w-full rounded-[8px] border border-[#EFF0F6] bg-white px-4 pr-12 text-[15px] font-normal leading-[20px] text-black/70 shadow-none transition-all focus:border-brand-500/50 focus:outline-none xl:h-[60px] xl:px-5 xl:pr-[54px] xl:text-[20px] xl:leading-[28px] xl:tracking-tight"
       />
 
-      <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-black xl:right-[19px]">
-        <DashboardIcon :name="type === 'date' ? 'calendar' : icon" :size="18" :stroke-width="1.8" />
+      <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-black xl:right-5">
+        <DashboardIcon :name="type === 'date' ? 'calendar' : icon" :size="20" :stroke-width="1.8" />
       </span>
     </span>
   </label>

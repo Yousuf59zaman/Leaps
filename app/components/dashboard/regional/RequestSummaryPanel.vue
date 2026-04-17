@@ -32,8 +32,10 @@ function getBadgeStyle(id: string) {
       return { background: '#FF4343', color: '#FFFFFF' }
     case 'complete':
       return { background: '#4FD463', color: '#FFFFFF' }
-    default:
+    case 'overdue':
       return { background: '#F4C533', color: '#FFFFFF' }
+    default:
+      return { background: '#8D97A5', color: '#FFFFFF' }
   }
 }
 
@@ -58,11 +60,11 @@ const summaryRows = computed<SummaryRow[]>(() =>
 const requestRows = computed<SummaryRow[]>(() => [totalRow.value, ...summaryRows.value])
 
 const donutLayout = {
-  size: 292,
-  center: 146,
-  innerRadius: 70,
+  size: 300,
+  center: 150,
+  innerRadius: 85,
   startAngle: -10,
-  gapAngle: 1.1
+  gapAngle: 1.2
 }
 
 function polarToCartesian(radius: number, angleDeg: number) {
@@ -139,7 +141,7 @@ const donutSlices = computed(() => {
       ...segment,
       outerRadius: radiusForValue(segment.rawValue),
       midAngle,
-      transform: buildHoverTransform(midAngle, segment.id === activeSegmentId.value ? 10 : 0),
+      transform: buildHoverTransform(midAngle, segment.id === activeSegmentId.value ? 12 : 0),
       path: buildSlicePath(startAngle, endAngle, radiusForValue(segment.rawValue), donutLayout.innerRadius)
     }
   })
@@ -258,52 +260,59 @@ function isDimmed(id: string) {
         </button>
       </div>
 
-      <div class="flex items-center justify-center lg:justify-end">
-        <div class="relative size-[180px] sm:size-[210px] lg:size-[292px]">
-          <div
-            class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200 sm:h-[88px] sm:w-[88px] lg:h-[104px] lg:w-[104px]"
-            :class="{ 'opacity-0 scale-90': !activeDetail, 'opacity-100 scale-100': activeDetail }"
-          >
-            <template v-if="activeDetail">
-              <span class="max-w-[70px] text-[10px] font-medium leading-3 text-[#8D97A5] sm:max-w-[78px] sm:text-[11px] sm:leading-[14px] lg:max-w-[90px] lg:text-[12px] lg:leading-4">
-                {{ activeDetail.label }}
-              </span>
-              <span class="mt-1 text-[14px] font-semibold leading-4 text-[#15191E] sm:text-[15px] sm:leading-5 lg:text-[18px] lg:leading-6">
-                {{ activeDetail.value }}
-              </span>
-              <span class="mt-1 text-[10px] font-medium leading-3 text-[#3899FA] lg:text-[11px] lg:leading-4">
-                {{ activeDetail.percentage }}%
-              </span>
-            </template>
-          </div>
-
-          <svg class="h-full w-full overflow-visible" :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`" aria-hidden="true">
-            <g
-              v-for="segment in donutSlices"
-              :key="segment.id"
-              :transform="segment.transform"
-              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
-              :class="{ 'opacity-35': isDimmed(segment.id) }"
-              @mouseenter="setActiveSegment(segment.id)"
-              @mouseleave="clearActiveSegment"
-              @focus="setActiveSegment(segment.id)"
-              @blur="clearActiveSegment"
+      <div class="flex items-center justify-center lg:justify-end xl:pr-4">
+        <div class="relative size-[200px] sm:size-[240px] lg:size-[300px]">
+          <ClientOnly>
+            <div
+              class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200 sm:h-[88px] sm:w-[88px] lg:h-[104px] lg:w-[104px]"
+              :class="{ 'opacity-0 scale-90': !activeDetail, 'opacity-100 scale-100': activeDetail }"
             >
-              <path
-                :d="segment.path"
-                :fill="segment.color"
-                tabindex="0"
-                focusable="true"
-                class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)] transition-[filter] duration-200"
+              <template v-if="activeDetail">
+                <span class="max-w-[70px] text-[10px] font-medium leading-3 text-[#8D97A5] sm:max-w-[78px] sm:text-[11px] sm:leading-[14px] lg:max-w-[90px] lg:text-[12px] lg:leading-4">
+                  {{ activeDetail.label }}
+                </span>
+                <span class="mt-1 text-[14px] font-semibold leading-4 text-[#15191E] sm:text-[15px] sm:leading-5 lg:text-[18px] lg:leading-6">
+                  {{ activeDetail.value }}
+                </span>
+                <span class="mt-1 text-[10px] font-medium leading-3 text-[#3899FA] lg:text-[11px] lg:leading-4">
+                  {{ activeDetail.percentage }}%
+                </span>
+              </template>
+            </div>
+
+            <svg class="h-full w-full overflow-visible" :viewBox="`0 0 ${donutLayout.size} ${donutLayout.size}`" aria-hidden="true">
+              <g
+                v-for="segment in donutSlices"
+                :key="segment.id"
+                :transform="segment.transform"
+                class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+                :class="{ 'opacity-35': isDimmed(segment.id) }"
+                @mouseenter="setActiveSegment(segment.id)"
+                @mouseleave="clearActiveSegment"
+                @focus="setActiveSegment(segment.id)"
+                @blur="clearActiveSegment"
+              >
+                <path
+                  :d="segment.path"
+                  :fill="segment.color"
+                  tabindex="0"
+                  focusable="true"
+                  class="drop-shadow-[0_10px_22px_rgba(15,23,42,0.08)] transition-[filter] duration-200"
+                />
+              </g>
+              <circle
+                :cx="donutLayout.center"
+                :cy="donutLayout.center"
+                :r="donutLayout.innerRadius - 1"
+                fill="#FFFFFF"
               />
-            </g>
-            <circle
-              :cx="donutLayout.center"
-              :cy="donutLayout.center"
-              :r="donutLayout.innerRadius - 1"
-              fill="#FFFFFF"
-            />
-          </svg>
+            </svg>
+            <template #fallback>
+              <div class="flex h-full w-full items-center justify-center rounded-full bg-gray-50 border-8 border-gray-100 italic text-gray-400 text-xs">
+                Loading...
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </div>
     </div>

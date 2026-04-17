@@ -20,18 +20,18 @@ defineEmits<{
 </script>
 
 <template>
-  <section class="bg-[rgba(235,247,243,0.73)] px-4 py-4 sm:px-5 sm:py-5 lg:px-6 xl:min-h-[164.57px] xl:rounded-none xl:px-[43px] xl:pb-[17.76px] xl:pt-[11.67px]">
-    <div class="flex flex-col gap-4 xl:gap-[2px]">
-      <div class="flex justify-start sm:justify-end xl:min-h-[36px]">
+  <section class="bg-[#EBF7F3]/70 px-5 py-6 sm:px-6 sm:py-7 lg:px-8 xl:min-h-[160px] xl:px-[40px] xl:py-6 xl:rounded-lg">
+    <div class="flex flex-col gap-6 xl:gap-4">
+      <div class="flex justify-start sm:justify-end">
         <FilterActions :is-dirty="isDirty" @reset="$emit('reset')" @apply="$emit('apply')" />
       </div>
 
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,340.69px))] xl:justify-between xl:gap-[33px]">
-        <LayerField v-model="state.layer" :options="filters.layerOptions" />
-        <OfficeField v-model="state.office" :options="filters.officeOptions" />
-        <ServiceField v-model="state.service" :options="filters.serviceOptions" />
-        <FromDateField v-model="state.fromDate" />
-        <ToDateField v-model="state.toDate" />
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:flex xl:items-end xl:justify-between xl:gap-6">
+        <LayerField v-model="state.layer" :options="filters.layerOptions" class="xl:flex-1 xl:max-w-[320px]" />
+        <OfficeField v-model="state.office" :options="filters.officeOptions" class="xl:flex-1 xl:max-w-[320px]" />
+        <ServiceField v-model="state.service" :options="filters.serviceOptions" class="xl:flex-1 xl:max-w-[320px]" />
+        <FromDateField v-model="state.fromDate" class="xl:flex-1 xl:max-w-[320px]" />
+        <ToDateField v-model="state.toDate" class="xl:flex-1 xl:max-w-[320px]" />
       </div>
     </div>
   </section>
