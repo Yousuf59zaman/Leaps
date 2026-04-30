@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import DashboardIcon from './shared/DashboardIcon.vue'
-import SystemOverviewCardsGrid from './system-overview/SystemOverviewCardsGrid.vue'
 
 type DashboardTone = 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'
 

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { EChartsOption } from 'echarts'
-import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
 
 interface ChartDataPoint {
   label: string

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { formatCount } from '../../../utils/dashboard-formatters'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
-import DashboardIcon from '../shared/DashboardIcon.vue'
 
 type DashboardMetricValue = number | string
 

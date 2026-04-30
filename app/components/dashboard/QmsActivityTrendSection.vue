@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import QmsActivityTrendChart from './qms/QmsActivityTrendChart.vue'
 
 const data = {
   title: 'QMS Activity Trend',

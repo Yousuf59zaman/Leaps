@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import DashboardSectionHeading from './shared/DashboardSectionHeading.vue'
-import OverallSatisfactionPanel from './feedback/OverallSatisfactionPanel.vue'
-import ServiceRatingDetailsPanel from './feedback/ServiceRatingDetailsPanel.vue'
 
 type FeedbackVariant = 'service-feedback' | 'channel-feedback'
 

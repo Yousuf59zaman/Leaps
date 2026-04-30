@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import DashboardIcon from '../shared/DashboardIcon.vue'
-import ReportingDonutCard from './ReportingDonutCard.vue'
 
 interface LegendItem {
   id: string

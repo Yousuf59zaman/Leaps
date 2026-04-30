@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SystemOverviewCard from './SystemOverviewCard.vue'
 
 interface MetricCardData {
   id: string

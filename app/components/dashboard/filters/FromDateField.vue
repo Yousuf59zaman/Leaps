@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DashboardField from '../shared/DashboardField.vue'
 
 defineProps<{
   modelValue: string | null

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import type {
   CircleMarker as LeafletCircleMarker,
   FeatureGroup as LeafletFeatureGroup,

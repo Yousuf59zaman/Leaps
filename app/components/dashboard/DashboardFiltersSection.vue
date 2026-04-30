@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import FilterActions from './filters/FilterActions.vue'
-import FromDateField from './filters/FromDateField.vue'
-import LayerField from './filters/LayerField.vue'
-import OfficeField from './filters/OfficeField.vue'
-import ServiceField from './filters/ServiceField.vue'
-import ToDateField from './filters/ToDateField.vue'
 
 interface SelectOption {
   label: string

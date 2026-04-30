@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import QmsMetricCard from './QmsMetricCard.vue'
 
 interface MetricCardData {
   id: string

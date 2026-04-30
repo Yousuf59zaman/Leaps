@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 
 interface LegendItem {

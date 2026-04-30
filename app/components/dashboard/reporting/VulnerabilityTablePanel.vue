@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import DashboardPanelShell from '../shared/DashboardPanelShell.vue'
-import DashboardTable from '../shared/DashboardTable.vue'
 
 type TableAlign = 'left' | 'center' | 'right'
 

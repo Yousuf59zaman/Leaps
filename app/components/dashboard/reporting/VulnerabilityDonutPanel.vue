@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { buildDonutChartOption } from '../../../utils/dashboard-chart-options'
-import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
-import DashboardLegendList from '../shared/DashboardLegendList.vue'
-import DashboardPanelShell from '../shared/DashboardPanelShell.vue'
 
 interface LegendItem {
   id: string

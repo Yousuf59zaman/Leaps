@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { formatCount } from '../../../utils/dashboard-formatters'
-import DashboardIcon from './DashboardIcon.vue'
 
 interface MetricCardData {
   id: string

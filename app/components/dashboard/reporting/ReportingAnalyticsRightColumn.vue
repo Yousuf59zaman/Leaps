@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ReportingTableCard from './ReportingTableCard.vue'
 
 type TableAlign = 'left' | 'center' | 'right'
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import OfficeEfficiencyReportPanel from './OfficeEfficiencyReportPanel.vue'
 
 interface ChartDataPoint {
   label: string

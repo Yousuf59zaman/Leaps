@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import DashboardSectionHeading from './shared/DashboardSectionHeading.vue'
-import QmsMetricsGrid from './qms/QmsMetricsGrid.vue'
 
 const data = {
   title: 'Queue Management System (QMS) Analytics',

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import DashboardIcon from '../shared/DashboardIcon.vue'
-import OfficeEfficiencyChart from './OfficeEfficiencyChart.vue'
-import OfficeEfficiencyTable from './OfficeEfficiencyTable.vue'
 
 interface ChartDataPoint {
   label: string

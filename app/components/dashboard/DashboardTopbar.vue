@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import DashboardIcon from './shared/DashboardIcon.vue'
 
 const logoAsset = '/figma-assets/topbar-logo-barmm.png'
 const avatarAsset = '/figma-assets/topbar-avatar-barmm.png'

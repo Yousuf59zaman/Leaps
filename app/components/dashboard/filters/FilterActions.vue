@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DashboardActionButton from '../shared/DashboardActionButton.vue'
 
 defineProps<{
   isDirty: boolean

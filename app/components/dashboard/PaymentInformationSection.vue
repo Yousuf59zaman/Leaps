@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PaymentInformationTable from './payment-information/PaymentInformationTable.vue'
 
 const data = {
   title: 'Payment Information',

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import RegionalInsightsRightColumn from './regional/RegionalInsightsRightColumn.vue'
-import RegionalRegistrationDensityPanel from './regional/RegionalRegistrationDensityPanel.vue'
 
 const data = {
   density: {

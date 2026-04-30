@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ServiceRequestTrendlineChart from './service-request-timeline/ServiceRequestTrendlineChart.vue'
 
 const data = {
   title: 'Service Request Trendline',

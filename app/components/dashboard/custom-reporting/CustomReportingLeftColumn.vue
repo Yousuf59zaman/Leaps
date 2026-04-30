@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CustomReportingFormPanel from './CustomReportingFormPanel.vue'
 
 type ReportExportFormat = 'csv' | 'pdf' | 'xlsx' | 'preview'
 

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import DashboardSectionHeading from './shared/DashboardSectionHeading.vue'
-import ReportingAnalyticsLeftColumn from './reporting/ReportingAnalyticsLeftColumn.vue'
-import ReportingAnalyticsRightColumn from './reporting/ReportingAnalyticsRightColumn.vue'
 
 const data = {
   demographic: {

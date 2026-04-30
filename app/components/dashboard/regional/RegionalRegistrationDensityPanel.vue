@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import DashboardIcon from '../shared/DashboardIcon.vue'
-import BarmmLeafletMap from './BarmmLeafletMap.vue'
-import RegionTooltipCard from './RegionTooltipCard.vue'
 
 interface RegionTooltipData {
   name: string

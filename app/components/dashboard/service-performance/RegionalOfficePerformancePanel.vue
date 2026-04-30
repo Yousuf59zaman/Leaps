@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import DashboardIcon from '../shared/DashboardIcon.vue'
 
 interface ChartDataPoint {
   label: string

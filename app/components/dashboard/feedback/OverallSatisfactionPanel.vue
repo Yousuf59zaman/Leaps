@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
-import DashboardIcon from '../shared/DashboardIcon.vue'
 
 interface LegendItem {
   id: string

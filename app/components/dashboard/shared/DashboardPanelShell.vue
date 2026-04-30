@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import DashboardActionButton from './DashboardActionButton.vue'
-import DashboardIcon from './DashboardIcon.vue'
 
 interface PanelAction {
   id: string

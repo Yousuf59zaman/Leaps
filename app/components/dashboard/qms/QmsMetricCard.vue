@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DashboardMetricCard from '../shared/DashboardMetricCard.vue'
 
 interface MetricCardData {
   id: string

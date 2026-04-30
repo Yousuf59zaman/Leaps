@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import RegionalOfficePerformancePanel from './service-performance/RegionalOfficePerformancePanel.vue'
-import TopServicePopularityPanel from './service-performance/TopServicePopularityPanel.vue'
 
 const data = {
   topServicePopularity: {

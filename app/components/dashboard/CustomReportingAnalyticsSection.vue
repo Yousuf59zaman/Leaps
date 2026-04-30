@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import DashboardSectionHeading from './shared/DashboardSectionHeading.vue'
-import CustomReportingLeftColumn from './custom-reporting/CustomReportingLeftColumn.vue'
-import CustomReportingRightColumn from './custom-reporting/CustomReportingRightColumn.vue'
 
 const data = {
   form: {

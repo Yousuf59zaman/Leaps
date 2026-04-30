@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { formatCurrency } from '../../../utils/dashboard-formatters'
-import DashboardIcon from '../shared/DashboardIcon.vue'
 
 type TableAlign = 'left' | 'center' | 'right'
 

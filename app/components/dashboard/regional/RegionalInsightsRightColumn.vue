@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import MonthlyRegistrationTrendPanel from './MonthlyRegistrationTrendPanel.vue'
-import RequestSummaryPanel from './RequestSummaryPanel.vue'
 
 type DashboardMetricValue = number | string
 
