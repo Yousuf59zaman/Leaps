@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import type { MetricCardData } from '../../../../types'
 import DashboardMetricCard from '../shared/DashboardMetricCard.vue'
+
+interface MetricCardData {
+  id: string
+  label: string
+  value: number | string
+  icon: string
+  tone?: string
+}
 
 defineProps<{
   data: MetricCardData

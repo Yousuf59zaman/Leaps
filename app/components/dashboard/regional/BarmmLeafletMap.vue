@@ -10,7 +10,17 @@ import type {
   PathOptions,
   Polygon as LeafletPolygon
 } from 'leaflet'
-import type { RegionTooltipData } from '../../../../types'
+
+interface RegionTooltipData {
+  name: string
+  statusLabel?: string
+  stats: Array<{
+    id: string
+    label: string
+    value: number | string
+    tone?: string
+  }>
+}
 
 interface ProvinceRegion {
   id: string

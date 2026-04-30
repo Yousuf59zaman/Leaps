@@ -1,8 +1,45 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { DonutPanelData } from '../../../../types'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 import DashboardIcon from '../shared/DashboardIcon.vue'
+
+interface LegendItem {
+  id: string
+  label: string
+  color: string
+  value?: number | string
+  percentage?: number
+  tone?: string
+}
+
+interface ChartDataPoint {
+  label: string
+  value: number | string
+  color?: string
+  meta?: Record<string, string | number | boolean | null>
+}
+
+interface ChartSeriesData {
+  id: string
+  name: string
+  type: string
+  color?: string
+  stack?: string
+  smooth?: boolean
+  area?: boolean
+  data: Array<number | null | ChartDataPoint>
+}
+
+interface DonutPanelData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: Array<{ id: string, label: string, icon?: string }>
+  series: ChartSeriesData[]
+  legend: LegendItem[]
+  centerLabel?: string
+}
 
 const props = defineProps<{
   data: DonutPanelData

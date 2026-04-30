@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import type { SelectOption } from '../../../../types'
 import DashboardField from '../shared/DashboardField.vue'
+
+interface SelectOption {
+  label: string
+  value: string
+  disabled?: boolean
+}
 
 defineProps<{
   modelValue: string | null

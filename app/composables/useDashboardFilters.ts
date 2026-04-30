@@ -1,4 +1,11 @@
-import type { DashboardFilterState } from '~~/types'
+interface DashboardFilterState {
+  layer: string | null
+  office: string | null
+  service: string | null
+  fromDate: string | null
+  toDate: string | null
+  applied: boolean
+}
 
 function serializeState(state: DashboardFilterState) {
   return JSON.stringify({

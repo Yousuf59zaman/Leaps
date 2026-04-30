@@ -1,8 +1,7 @@
-import { dashboardFixture } from '~~/data/dashboard.fixture'
-import type { DashboardPageData } from '~~/types'
+type DashboardPageData = Record<string, unknown>
 
-export function useDashboardAnalytics() {
-  const dashboardData = computed<DashboardPageData>(() => dashboardFixture)
+export function useDashboardAnalytics(initialData: DashboardPageData = {}) {
+  const dashboardData = computed<DashboardPageData>(() => initialData)
 
   return {
     dashboardData

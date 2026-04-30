@@ -1,8 +1,35 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { EChartsOption } from 'echarts'
-import type { ChartPanelData } from '../../../../types'
 import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
+
+interface ChartDataPoint {
+  label: string
+  value: number | string
+  color?: string
+  meta?: Record<string, string | number | boolean | null>
+}
+
+interface ChartSeriesData {
+  id: string
+  name: string
+  type: string
+  color?: string
+  stack?: string
+  smooth?: boolean
+  area?: boolean
+  data: Array<number | null | ChartDataPoint>
+}
+
+interface ChartPanelData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: Array<{ id: string, label: string, icon?: string }>
+  categories?: string[]
+  series: ChartSeriesData[]
+}
 
 const props = defineProps<{
   data: ChartPanelData
@@ -19,7 +46,7 @@ const chartOption = computed<EChartsOption>(() => ({
   },
   xAxis: {
     type: 'category',
-    data: props.data.categories,
+    data: props.data.categories ?? [],
     axisTick: { show: false },
     axisLine: { show: false },
     axisLabel: {

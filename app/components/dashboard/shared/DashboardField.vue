@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { SelectOption } from '../../../../types'
 import DashboardIcon from './DashboardIcon.vue'
+
+interface SelectOption {
+  label: string
+  value: string
+  disabled?: boolean
+}
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,48 @@
 import type { EChartsOption } from 'echarts'
-import type { ChartDataPoint, ChartPanelData, DonutPanelData } from '../../types'
 import { formatCompactNumber, formatCount } from './dashboard-formatters'
+
+interface ChartDataPoint {
+  label: string
+  value: number | string
+  color?: string
+  meta?: Record<string, string | number | boolean | null>
+}
+
+interface ChartSeriesData {
+  id: string
+  name: string
+  type: string
+  color?: string
+  stack?: string
+  smooth?: boolean
+  area?: boolean
+  data: Array<number | null | ChartDataPoint>
+}
+
+interface LegendItem {
+  id: string
+  label: string
+  color: string
+  value?: number | string
+  percentage?: number
+  tone?: string
+}
+
+interface ChartPanelData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: Array<{ id: string, label: string, icon?: string }>
+  categories?: string[]
+  series: ChartSeriesData[]
+  legend?: LegendItem[]
+}
+
+interface DonutPanelData extends ChartPanelData {
+  legend: LegendItem[]
+  centerLabel?: string
+}
 
 interface CartesianChartConfig {
   horizontal?: boolean

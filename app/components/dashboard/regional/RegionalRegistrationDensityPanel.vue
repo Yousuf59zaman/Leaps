@@ -1,9 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { RegionTooltipData, RegionalRegistrationDensityData } from '../../../../types'
 import DashboardIcon from '../shared/DashboardIcon.vue'
 import BarmmLeafletMap from './BarmmLeafletMap.vue'
 import RegionTooltipCard from './RegionTooltipCard.vue'
+
+interface RegionTooltipData {
+  name: string
+  statusLabel?: string
+  stats: Array<{
+    id: string
+    label: string
+    value: number | string
+    tone?: string
+  }>
+}
+
+interface RegionalRegistrationDensityData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  legend: Array<{
+    id: string
+    label: string
+    color: string
+  }>
+  highlightedRegion: RegionTooltipData
+}
 
 defineProps<{
   data: RegionalRegistrationDensityData

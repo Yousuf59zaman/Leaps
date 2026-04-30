@@ -1,9 +1,37 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { RequestSummaryData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
 import DashboardIcon from '../shared/DashboardIcon.vue'
+
+type DashboardMetricValue = number | string
+
+interface ChartDataPoint {
+  label: string
+  value: DashboardMetricValue
+  color?: string
+}
+
+interface RequestSummaryData {
+  title: string
+  icon?: string
+  totalRequests: number
+  totalLabel: string
+  periodLabel: string
+  statuses: Array<{
+    id: string
+    label: string
+    value: DashboardMetricValue
+    color?: string
+  }>
+  series: Array<{
+    id: string
+    name: string
+    type: string
+    color?: string
+    data: Array<number | null | ChartDataPoint>
+  }>
+}
 
 const props = defineProps<{
   data: RequestSummaryData

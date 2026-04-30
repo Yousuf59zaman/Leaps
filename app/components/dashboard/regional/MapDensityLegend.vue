@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import type { LegendItem } from '../../../../types'
+interface LegendItem {
+  id: string
+  label: string
+  color: string
+}
 
 defineProps<{
   items: LegendItem[]

@@ -1,6 +1,16 @@
 <script setup lang="ts">
-import type { RegionTooltipData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
+
+interface RegionTooltipData {
+  name: string
+  statusLabel?: string
+  stats: Array<{
+    id: string
+    label: string
+    value: number | string
+    tone?: string
+  }>
+}
 
 const props = defineProps<{
   data: RegionTooltipData

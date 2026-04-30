@@ -1,15 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { EChartsOption } from 'echarts'
-import type { ChartDataPoint, ChartPanelData } from '../../../../types'
 import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
 import DashboardIcon from '../shared/DashboardIcon.vue'
+
+interface ChartDataPoint {
+  label: string
+  value: number | string
+  color?: string
+}
+
+interface ChartPanelData {
+  title: string
+  icon?: string
+  categories?: string[]
+  series: Array<{
+    id: string
+    name: string
+    type: string
+    color?: string
+    smooth?: boolean
+    data: Array<number | null | ChartDataPoint>
+  }>
+}
 
 const props = defineProps<{
   data: ChartPanelData
 }>()
-
-const monthlyTrendIcon = '/figma-assets/monthly-registration-trend-icon.svg'
 
 function getNumericValue(point: number | null | ChartDataPoint) {
   if (typeof point === 'number') {
