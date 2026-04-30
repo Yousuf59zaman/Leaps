@@ -1,43 +1,29 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import DashboardIcon from './shared/DashboardIcon.vue'
 
-const menuAsset = '/figma-assets/topbar-menu-barmm.png'
 const logoAsset = '/figma-assets/topbar-logo-barmm.png'
 const avatarAsset = '/figma-assets/topbar-avatar-barmm.png'
+const isProfileMenuOpen = ref(false)
 </script>
 
 <template>
   <header
     class="-mx-4 -mt-6 border-b border-black/15 bg-white sm:-mx-6 sm:-mt-8 lg:-mx-8 lg:-mt-10 xl:-mx-[var(--app-shell-gutter)]"
   >
-    <div class="flex min-h-[74px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 xl:px-[37px]">
-      <div class="flex min-w-0 items-center gap-[14px]">
-        <button
-          type="button"
-          aria-label="Open navigation"
-          class="inline-flex h-8 w-8 items-center justify-center rounded-md"
-        >
-          <img :src="menuAsset" alt="" class="h-[14.63px] w-[17.56px] object-contain" />
-        </button>
-
-        <span class="h-[38px] w-px bg-[#cacaca]" aria-hidden="true" />
-
+    <div class="flex min-h-[74px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 xl:px-[34px]">
+      <div class="flex min-w-0 items-center">
         <img :src="logoAsset" alt="LeAPS" class="h-12 w-[164px] min-w-[164px] object-contain object-left" />
       </div>
 
-      <div class="flex items-center gap-3 xl:gap-7">
-        <label class="relative hidden lg:block">
-          <input
-            type="search"
-            placeholder="Search"
-            class="h-[28.3px] w-[288.95px] rounded-[16.29px] border border-[#d5d5d5] bg-[#f5f6fa] pl-[32px] pr-3 text-[10.29px] font-light text-[#202224] placeholder:text-[#202224]/50"
-          />
-          <span class="pointer-events-none absolute inset-y-0 left-[12px] flex items-center text-[#202224]/55">
-            <DashboardIcon name="search" :size="11" :stroke-width="1.7" />
-          </span>
-        </label>
-
-        <div class="flex items-center gap-2.5">
+      <div class="relative">
+        <button
+          type="button"
+          class="flex items-center gap-2.5 rounded-[12px] px-2 py-1 text-left transition-colors hover:bg-[#F8FAFC]"
+          :aria-expanded="isProfileMenuOpen"
+          aria-haspopup="menu"
+          @click="isProfileMenuOpen = !isProfileMenuOpen"
+        >
           <div class="hidden text-right sm:block">
             <p class="text-[11px] leading-[1.17] font-light text-[#13aa13]">
               Welcome
@@ -54,6 +40,31 @@ const avatarAsset = '/figma-assets/topbar-avatar-barmm.png'
               <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </span>
+        </button>
+
+        <div
+          v-if="isProfileMenuOpen"
+          class="absolute right-0 top-[calc(100%+10px)] z-[1200] w-[184px] overflow-hidden rounded-[12px] border border-[#DEE2E7] bg-white py-2 shadow-[0_18px_42px_rgba(15,37,82,0.14)]"
+          role="menu"
+        >
+          <button
+            type="button"
+            class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-[14px] font-medium leading-5 text-[#15191E] transition-colors hover:bg-[#F8FAFC]"
+            role="menuitem"
+            @click="isProfileMenuOpen = false"
+          >
+            <DashboardIcon name="user-round" :size="17" />
+            <span>Profile</span>
+          </button>
+          <button
+            type="button"
+            class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-[14px] font-medium leading-5 text-[#EF4343] transition-colors hover:bg-[#FFF4F4]"
+            role="menuitem"
+            @click="isProfileMenuOpen = false"
+          >
+            <DashboardIcon name="log-out" :size="17" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </div>

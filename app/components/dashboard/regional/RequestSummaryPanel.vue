@@ -197,7 +197,7 @@ function isDimmed(id: string) {
 
 <template>
   <article
-    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] min-[1400px]:h-[429px]"
+    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] min-[1400px]:min-h-[429px]"
   >
     <span class="absolute left-0 top-[21.67px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
@@ -217,11 +217,11 @@ function isDimmed(id: string) {
       </div>
     </div>
 
-    <div class="grid gap-6 px-5 py-5 sm:px-6 md:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[1fr_305px] lg:px-[31.67px] lg:py-[18px]">
-      <div class="space-y-[18px] lg:pt-[2px]">
+    <div class="grid gap-5 px-5 py-5 sm:px-6 md:grid-cols-[minmax(0,1fr)_minmax(190px,230px)] md:items-center lg:grid-cols-[minmax(0,1fr)_minmax(220px,292px)] lg:gap-6 lg:px-[31.67px] lg:py-[18px]">
+      <div class="space-y-3 lg:space-y-[14px] lg:pt-[2px]">
         <button
           type="button"
-          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          class="group flex w-full items-center justify-between gap-3 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[18px] lg:leading-[27px] min-[1700px]:text-[20px] min-[1700px]:leading-[30px]"
           :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === totalRow.id }"
           @mouseenter="setActiveSegment(totalRow.id)"
           @mouseleave="clearActiveSegment"
@@ -241,7 +241,7 @@ function isDimmed(id: string) {
           v-for="row in summaryRows"
           :key="row.id"
           type="button"
-          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          class="group flex w-full items-center justify-between gap-3 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[18px] lg:leading-[27px] min-[1700px]:text-[20px] min-[1700px]:leading-[30px]"
           :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === row.id }"
           @mouseenter="setActiveSegment(row.id)"
           @mouseleave="clearActiveSegment"
@@ -258,10 +258,10 @@ function isDimmed(id: string) {
         </button>
       </div>
 
-      <div class="flex items-center justify-center lg:justify-end">
-        <div class="relative size-[180px] sm:size-[210px] lg:size-[292px]">
+      <div class="flex min-w-0 items-center justify-center md:justify-end">
+        <div class="relative aspect-square w-full max-w-[292px] min-w-[180px]">
           <div
-            class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200 sm:h-[88px] sm:w-[88px] lg:h-[104px] lg:w-[104px]"
+            class="pointer-events-none absolute left-1/2 top-1/2 z-20 flex h-[36%] w-[36%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-white/95 text-center shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-200"
             :class="{ 'opacity-0 scale-90': !activeDetail, 'opacity-100 scale-100': activeDetail }"
           >
             <template v-if="activeDetail">
