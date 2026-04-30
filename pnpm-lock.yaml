@@ -23,9 +23,6 @@ importers:
       vue-echarts:
         specifier: ^8.0.1
         version: 8.0.1(echarts@6.0.0)(vue@3.5.31(typescript@6.0.2))
-      vue-router:
-        specifier: ^5.0.4
-        version: 5.0.4(@vue/compiler-sfc@3.5.31)(vue@3.5.31(typescript@6.0.2))
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.2.2
