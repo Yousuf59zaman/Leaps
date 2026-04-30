@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import type { MetricCardData } from '../../../../types'
-import SystemOverviewCard from './SystemOverviewCard.vue'
+
+interface MetricCardData {
+  id: string
+  label: string
+  value: number | string
+  icon: string
+  tone?: string
+}
 
 defineProps<{
   cards: MetricCardData[]

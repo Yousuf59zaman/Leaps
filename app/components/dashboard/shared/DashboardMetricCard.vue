@@ -1,8 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { MetricCardData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
-import DashboardIcon from './DashboardIcon.vue'
+
+interface MetricCardData {
+  id: string
+  label: string
+  value: number | string
+  icon: string
+  tone?: string
+  delta?: {
+    value: number | string
+    label: string
+    direction: 'up' | 'down' | 'neutral'
+  }
+  footnote?: string
+}
 
 const props = withDefaults(
   defineProps<{

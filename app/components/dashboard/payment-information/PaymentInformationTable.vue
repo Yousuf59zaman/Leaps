@@ -1,8 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { PaymentInformationRow, TableColumn, TablePanelData } from '../../../../types'
 import { formatCurrency } from '../../../utils/dashboard-formatters'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+type TableAlign = 'left' | 'center' | 'right'
+
+interface TableColumn<T extends object> {
+  key: keyof T | (string & {})
+  label: string
+  align?: TableAlign
+  width?: string
+  emphasize?: boolean
+}
+
+interface PaymentInformationRow {
+  serial: number
+  serviceName: string
+  receivableAmount: number
+  receivedAmount: number
+}
+
+interface TablePanelData<T extends object> {
+  title: string
+  icon?: string
+  columns: TableColumn<T>[]
+  rows: T[]
+}
 
 type PaymentColumn = TableColumn<PaymentInformationRow> & {
   currency?: boolean
@@ -15,7 +36,7 @@ const props = defineProps<{
 const columns = computed<PaymentColumn[]>(() =>
   props.data.columns.map((column) => ({
     ...column,
-    currency: column.key === 'receivable_amount' || column.key === 'received_amount'
+    currency: column.key === 'receivableAmount' || column.key === 'receivedAmount' || column.key === 'receivable_amount' || column.key === 'received_amount'
   }))
 )
 

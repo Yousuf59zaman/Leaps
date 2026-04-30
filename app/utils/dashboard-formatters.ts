@@ -29,14 +29,6 @@ export function formatCurrency(value: number | string, currency = 'PHP'): string
   }).format(value)
 }
 
-export function formatPercent(value: number | string): string {
-  if (typeof value === 'string') {
-    return value
-  }
-
-  return `${value}%`
-}
-
 export function formatRating(value: number | string): string {
   if (typeof value === 'string') {
     return value

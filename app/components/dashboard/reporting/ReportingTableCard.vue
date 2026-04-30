@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import type { PanelAction } from '../../../../types'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+interface PanelAction {
+  id: string
+  label: string
+  icon?: string
+}
 
 type ReportingColumn = {
   key: string

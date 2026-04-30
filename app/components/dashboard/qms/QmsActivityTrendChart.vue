@@ -1,9 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { EChartsOption } from 'echarts'
-import type { ChartPanelData } from '../../../../types'
-import DashboardChartFrame from '../shared/DashboardChartFrame.vue'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+interface ChartPanelData {
+  title: string
+  subtitle?: string
+  icon?: string
+  categories?: string[]
+  legend?: Array<{
+    id: string
+    label: string
+    color: string
+  }>
+  series: Array<{
+    id: string
+    name: string
+    type: string
+    color?: string
+    smooth?: boolean
+    data: Array<number | null>
+  }>
+}
 
 const props = defineProps<{
   data: ChartPanelData

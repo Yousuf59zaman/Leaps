@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DashboardIcon from './DashboardIcon.vue'
 
 defineProps<{
   title: string

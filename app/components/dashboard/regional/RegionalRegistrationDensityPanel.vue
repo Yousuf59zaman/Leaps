@@ -1,10 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { RegionTooltipData, RegionalRegistrationDensityData } from '../../../../types'
-import DashboardIcon from '../shared/DashboardIcon.vue'
-import BarmmLeafletMap from './BarmmLeafletMap.vue'
-import MapDensityLegend from './MapDensityLegend.vue'
-import RegionTooltipCard from './RegionTooltipCard.vue'
+
+interface RegionTooltipData {
+  name: string
+  statusLabel?: string
+  stats: Array<{
+    id: string
+    label: string
+    value: number | string
+    tone?: string
+  }>
+}
+
+interface RegionalRegistrationDensityData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  legend: Array<{
+    id: string
+    label: string
+    color: string
+  }>
+  highlightedRegion: RegionTooltipData
+}
 
 defineProps<{
   data: RegionalRegistrationDensityData
@@ -37,7 +55,7 @@ const activeProvince = ref<RegionTooltipData | null>(null)
     </div>
 
     <div
-      class="mx-4 mt-6 overflow-hidden rounded-[17.6993px] bg-[rgba(243,245,247,0.5)] sm:mx-6 sm:mt-8 lg:mx-[38px] lg:mt-[65px] min-h-[460px] sm:min-h-[560px] lg:min-h-[620px] min-[1400px]:h-[677px]"
+      class="mx-5 mt-6 overflow-hidden rounded-[17.6993px] bg-[rgba(243,245,247,0.5)] sm:mx-6 sm:mt-8 lg:mx-[33px] lg:mt-[65px] min-h-[460px] sm:min-h-[560px] lg:min-h-[620px] min-[1400px]:h-[677px]"
     >
       <div class="relative isolate min-h-[460px] w-full sm:min-h-[560px] lg:min-h-[620px] min-[1400px]:h-[677px]">
         <div
@@ -46,12 +64,12 @@ const activeProvince = ref<RegionTooltipData | null>(null)
         />
 
         <ClientOnly>
-          <div class="absolute inset-x-[3%] inset-y-[0.2%] z-0 overflow-hidden rounded-[24px]">
+          <div class="absolute inset-0 z-0 overflow-hidden rounded-[17.6993px]">
             <BarmmLeafletMap @hover="activeProvince = $event" @leave="activeProvince = null" />
           </div>
 
           <template #fallback>
-            <div class="absolute inset-x-[3%] inset-y-[0.2%] z-0 overflow-hidden rounded-[24px] bg-[radial-gradient(circle_at_center,rgba(56,153,250,0.16),rgba(255,255,255,0.96)_68%)]" />
+            <div class="absolute inset-0 z-0 overflow-hidden rounded-[17.6993px] bg-[radial-gradient(circle_at_center,rgba(56,153,250,0.16),rgba(255,255,255,0.96)_68%)]" />
           </template>
         </ClientOnly>
 
@@ -60,10 +78,6 @@ const activeProvince = ref<RegionTooltipData | null>(null)
           class="pointer-events-none absolute left-4 top-4 z-[1100] max-w-[calc(100%-2rem)] sm:left-6 sm:top-6 sm:max-w-[323.65px] lg:left-[42px] lg:top-[40px]"
         >
           <RegionTooltipCard :data="activeProvince" />
-        </div>
-
-        <div class="pointer-events-none absolute bottom-4 left-4 right-4 z-[1050] flex justify-center sm:left-auto sm:right-[16px] sm:justify-end lg:bottom-[30px]">
-          <MapDensityLegend :items="data.legend" />
         </div>
       </div>
     </div>

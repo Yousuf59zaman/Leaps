@@ -1,7 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ChartDataPoint, ChartPanelData } from '../../../../types'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+interface ChartDataPoint {
+  label: string
+  value: number | string
+  color?: string
+}
+
+interface ChartPanelData {
+  title: string
+  subtitle?: string
+  icon?: string
+  categories?: string[]
+  series: Array<{
+    id: string
+    name: string
+    type: string
+    color?: string
+    data: Array<number | null | ChartDataPoint>
+  }>
+}
 
 const props = defineProps<{
   data: ChartPanelData

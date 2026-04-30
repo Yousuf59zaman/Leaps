@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import type { TableColumn } from '../../../../types'
-
 type TableRow = Record<string, unknown>
+type TableAlign = 'left' | 'center' | 'right'
+
+interface TableColumn<T extends object> {
+  key: keyof T | (string & {})
+  label: string
+  align?: TableAlign
+  width?: string
+  sortable?: boolean
+  emphasize?: boolean
+  formatter?: (value: unknown, row: T, index: number) => string
+}
 
 withDefaults(
   defineProps<{

@@ -1,9 +1,35 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { RequestSummaryData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
 import { createValueRadiusScale } from '../../../utils/dashboard-donut'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+type DashboardMetricValue = number | string
+
+interface ChartDataPoint {
+  label: string
+  value: DashboardMetricValue
+  color?: string
+}
+
+interface RequestSummaryData {
+  title: string
+  icon?: string
+  totalRequests: number
+  totalLabel: string
+  periodLabel: string
+  statuses: Array<{
+    id: string
+    label: string
+    value: DashboardMetricValue
+    color?: string
+  }>
+  series: Array<{
+    id: string
+    name: string
+    type: string
+    color?: string
+    data: Array<number | null | ChartDataPoint>
+  }>
+}
 
 const props = defineProps<{
   data: RequestSummaryData
@@ -199,7 +225,7 @@ function isDimmed(id: string) {
 
 <template>
   <article
-    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] min-[1400px]:h-[429px]"
+    class="relative overflow-hidden rounded-[19px] border border-[#EFF0F6] bg-white shadow-[0px_6.66668px_26.6667px_rgba(0,0,0,0.05)] min-[1400px]:min-h-[429px]"
   >
     <span class="absolute left-0 top-[21.67px] h-[39px] w-[10px] rounded-r-[5px] bg-[#1DC973]" />
 
@@ -219,11 +245,11 @@ function isDimmed(id: string) {
       </div>
     </div>
 
-    <div class="grid gap-6 px-5 py-5 sm:px-6 md:grid-cols-[minmax(0,1fr)_220px] lg:grid-cols-[1fr_305px] lg:px-[31.67px] lg:py-[18px]">
-      <div class="space-y-[18px] lg:pt-[2px]">
+    <div class="grid gap-5 px-5 py-5 sm:px-6 md:grid-cols-[minmax(0,1fr)_minmax(190px,230px)] md:items-center lg:grid-cols-[minmax(0,1fr)_minmax(220px,292px)] lg:gap-6 lg:px-[31.67px] lg:py-[18px]">
+      <div class="space-y-3 lg:space-y-[14px] lg:pt-[2px]">
         <button
           type="button"
-          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          class="group flex w-full items-center justify-between gap-3 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[18px] lg:leading-[27px] min-[1700px]:text-[20px] min-[1700px]:leading-[30px]"
           :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === totalRow.id }"
           @mouseenter="setActiveSegment(totalRow.id)"
           @mouseleave="clearActiveSegment"
@@ -243,7 +269,7 @@ function isDimmed(id: string) {
           v-for="row in summaryRows"
           :key="row.id"
           type="button"
-          class="group flex w-full items-center justify-between gap-4 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[20px] lg:leading-[30px]"
+          class="group flex w-full items-center justify-between gap-3 rounded-[12px] px-2 py-1 text-left text-base leading-6 text-[#15191E] transition-colors duration-200 hover:bg-[#F8FAFC] sm:text-[18px] sm:leading-[27px] lg:text-[18px] lg:leading-[27px] min-[1700px]:text-[20px] min-[1700px]:leading-[30px]"
           :class="{ 'bg-[#F8FAFC] shadow-[inset_0_0_0_1px_rgba(56,153,250,0.16)]': activeSegmentId === row.id }"
           @mouseenter="setActiveSegment(row.id)"
           @mouseleave="clearActiveSegment"

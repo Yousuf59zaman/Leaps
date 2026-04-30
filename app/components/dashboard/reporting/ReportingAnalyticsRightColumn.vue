@@ -1,10 +1,54 @@
 <script setup lang="ts">
-import type { DashboardPageData } from '../../../../types'
-import ReportingTableCard from './ReportingTableCard.vue'
+
+type TableAlign = 'left' | 'center' | 'right'
+
+interface PanelAction {
+  id: string
+  label: string
+  icon?: string
+}
+
+interface TableColumn<T extends object> {
+  key: keyof T | (string & {})
+  label: string
+  align?: TableAlign
+  width?: string
+  sortable?: boolean
+  emphasize?: boolean
+  formatter?: (value: unknown, row: T, index: number) => string
+}
+
+interface TablePanelData<T extends object> {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: PanelAction[]
+  columns: TableColumn<T>[]
+  rows: T[]
+}
+
+interface AgeGroupRow {
+  serial: number
+  groupedAge: string
+  male: number
+  female: number
+  common: number
+  total: number
+}
+
+interface VulnerabilityRow {
+  serial: number
+  vulnerability: string
+  male: number
+  female: number
+  common: number
+  grandTotal: number
+}
 
 defineProps<{
-  ageGroups: DashboardPageData['reportingAnalytics']['ageGroups']
-  vulnerabilityMatrix: DashboardPageData['reportingAnalytics']['vulnerabilityMatrix']
+  ageGroups: TablePanelData<AgeGroupRow>
+  vulnerabilityMatrix: TablePanelData<VulnerabilityRow>
 }>()
 </script>
 

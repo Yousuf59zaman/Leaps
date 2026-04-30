@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import type { LegendItem } from '../../../../types'
+interface LegendItem {
+  id: string
+  label: string
+  color: string
+  value?: number | string
+  percentage?: number
+}
 
 withDefaults(
   defineProps<{

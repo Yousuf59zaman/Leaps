@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import type {
   CircleMarker as LeafletCircleMarker,
   FeatureGroup as LeafletFeatureGroup,
@@ -10,7 +9,17 @@ import type {
   PathOptions,
   Polygon as LeafletPolygon
 } from 'leaflet'
-import type { RegionTooltipData } from '../../../../types'
+
+interface RegionTooltipData {
+  name: string
+  statusLabel?: string
+  stats: Array<{
+    id: string
+    label: string
+    value: number | string
+    tone?: string
+  }>
+}
 
 interface ProvinceRegion {
   id: string

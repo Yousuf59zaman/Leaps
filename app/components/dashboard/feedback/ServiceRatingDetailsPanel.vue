@@ -1,7 +1,41 @@
 <script setup lang="ts">
-import type { FeedbackRatingRow, TablePanelData } from '../../../../types'
 import { formatFeedbackCount, formatRating } from '../../../utils/dashboard-formatters'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+type TableAlign = 'left' | 'center' | 'right'
+
+interface PanelAction {
+  id: string
+  label: string
+  icon?: string
+}
+
+interface TableColumn<T extends object> {
+  key: keyof T | (string & {})
+  label: string
+  align?: TableAlign
+  width?: string
+  sortable?: boolean
+  emphasize?: boolean
+  formatter?: (value: unknown, row: T, index: number) => string
+}
+
+interface TablePanelData<T extends object> {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: PanelAction[]
+  columns: TableColumn<T>[]
+  rows: T[]
+}
+
+interface FeedbackRatingRow {
+  id: string
+  serviceName: string
+  averageRating: number
+  ratingVisual: number
+  feedbackCount: number
+}
 
 defineProps<{
   data: TablePanelData<FeedbackRatingRow>

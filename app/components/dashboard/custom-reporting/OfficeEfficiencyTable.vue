@@ -1,8 +1,35 @@
 <script setup lang="ts">
-import type { OfficeEfficiencyRow, TablePanelData } from '../../../../types'
 import { formatCount } from '../../../utils/dashboard-formatters'
 
-const props = defineProps<{
+interface TableColumn<T extends object> {
+  key: keyof T | (string & {})
+  label: string
+  align?: 'left' | 'center' | 'right'
+  width?: string
+  sortable?: boolean
+  emphasize?: boolean
+  formatter?: (value: unknown, row: T, index: number) => string
+}
+
+interface TablePanelData<T extends object> {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: Array<{ id: string, label: string, icon?: string }>
+  columns: TableColumn<T>[]
+  rows: T[]
+}
+
+interface OfficeEfficiencyRow {
+  officeName: string
+  totalTokens: number
+  averageServiceTime: string
+  averageWaitingTime: string
+  status: string
+}
+
+defineProps<{
   data: TablePanelData<OfficeEfficiencyRow>
 }>()
 </script>

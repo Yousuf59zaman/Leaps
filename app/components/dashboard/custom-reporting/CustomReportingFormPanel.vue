@@ -1,7 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { CustomReportState, CustomReportingFormData } from '../../../../types'
-import DashboardIcon from '../shared/DashboardIcon.vue'
+
+type ReportExportFormat = 'csv' | 'pdf' | 'xlsx' | 'preview'
+
+interface SelectOption {
+  label: string
+  value: string
+  disabled?: boolean
+}
+
+interface DateRangeValue {
+  from: string | null
+  to: string | null
+}
+
+interface CustomReportState {
+  reportType: string | null
+  layer: string | null
+  office: string | null
+  dateRange: DateRangeValue
+  exportFormat: ReportExportFormat | null
+  previewMode: boolean
+}
+
+interface CustomReportingFormData {
+  title: string
+  subtitle?: string
+  icon?: string
+  badgeLabel?: string
+  actions?: Array<{ id: string, label: string, icon?: string }>
+  state: CustomReportState
+  reportTypeOptions: SelectOption[]
+  layerOptions: SelectOption[]
+  officeOptions: SelectOption[]
+}
 
 const props = defineProps<{
   data: CustomReportingFormData
@@ -98,18 +129,28 @@ function setPreviewMode() {
             Date Range
           </span>
           <div class="grid gap-3 sm:grid-cols-2">
-            <input
-              v-model="state.dateRange.from"
-              type="text"
-              class="h-[46.67px] min-w-0 rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] text-[18.6667px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)]"
-              placeholder="YYYY-MM-DD"
-            />
-            <input
-              v-model="state.dateRange.to"
-              type="text"
-              class="h-[46.67px] min-w-0 rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] text-[18.6667px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)]"
-              placeholder="YYYY-MM-DD"
-            />
+            <label class="relative block">
+              <span class="sr-only">From date</span>
+              <input
+                v-model="state.dateRange.from"
+                type="date"
+                class="dashboard-date-field h-[46.67px] min-w-0 w-full rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] pr-12 text-[16px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[18.6667px]"
+              />
+              <span class="pointer-events-none absolute inset-y-0 right-[17px] flex items-center text-[#15191E]">
+                <DashboardIcon name="calendar" :size="17" />
+              </span>
+            </label>
+            <label class="relative block">
+              <span class="sr-only">To date</span>
+              <input
+                v-model="state.dateRange.to"
+                type="date"
+                class="dashboard-date-field h-[46.67px] min-w-0 w-full rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] pr-12 text-[16px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[18.6667px]"
+              />
+              <span class="pointer-events-none absolute inset-y-0 right-[17px] flex items-center text-[#15191E]">
+                <DashboardIcon name="calendar" :size="17" />
+              </span>
+            </label>
           </div>
         </div>
 

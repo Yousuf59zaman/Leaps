@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import type { PanelAction } from '../../../../types'
-import DashboardActionButton from './DashboardActionButton.vue'
-import DashboardIcon from './DashboardIcon.vue'
+
+interface PanelAction {
+  id: string
+  label: string
+  icon?: string
+}
 
 defineProps<{
   title: string
