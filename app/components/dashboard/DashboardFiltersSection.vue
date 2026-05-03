@@ -71,11 +71,29 @@ function applyFilters() {
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,340.69px))] xl:justify-between xl:gap-[33px]">
-        <LayerField v-model="state.layer" :options="layerOptions" />
-        <OfficeField v-model="state.office" :options="officeOptions" />
-        <ServiceField v-model="state.service" :options="serviceOptions" />
-        <FromDateField v-model="state.fromDate" />
-        <ToDateField v-model="state.toDate" />
+        <SharedSelectField
+          v-model="state.layer"
+          label="Select Layer"
+          placeholder="Choose One"
+          placeholder-disabled
+          :options="layerOptions"
+        />
+        <SharedSelectField
+          v-model="state.office"
+          label="Select Office"
+          placeholder="Choose One"
+          placeholder-disabled
+          :options="officeOptions"
+        />
+        <SharedSelectField
+          v-model="state.service"
+          label="Select Service"
+          placeholder="Choose One"
+          placeholder-disabled
+          :options="serviceOptions"
+        />
+        <SharedDateField v-model="state.fromDate" label="From Date" />
+        <SharedDateField v-model="state.toDate" label="To Date" />
       </div>
     </div>
   </section>

@@ -165,7 +165,6 @@ const donutSlices = computed(() => {
       ...segment,
       outerRadius: radiusForValue(segment.rawValue),
       midAngle,
-      transform: buildHoverTransform(midAngle, segment.id === activeSegmentId.value ? 10 : 0),
       path: buildSlicePath(startAngle, endAngle, radiusForValue(segment.rawValue), donutLayout.innerRadius)
     }
   })
@@ -185,18 +184,6 @@ const activeDetail = computed(() => {
       : 0
   }
 })
-
-function buildHoverTransform(angle: number, distance: number) {
-  if (distance === 0) {
-    return 'translate(0 0)'
-  }
-
-  const radians = (angle * Math.PI) / 180
-  const x = Math.sin(radians) * distance
-  const y = -Math.cos(radians) * distance
-
-  return `translate(${x.toFixed(2)} ${y.toFixed(2)})`
-}
 
 function setActiveSegment(id: string) {
   activeSegmentId.value = id
@@ -307,8 +294,7 @@ function isDimmed(id: string) {
             <g
               v-for="segment in donutSlices"
               :key="segment.id"
-              :transform="segment.transform"
-              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+              class="cursor-pointer transition-opacity duration-150 ease-out"
               :class="{ 'opacity-35': isDimmed(segment.id) }"
               @mouseenter="setActiveSegment(segment.id)"
               @mouseleave="clearActiveSegment"

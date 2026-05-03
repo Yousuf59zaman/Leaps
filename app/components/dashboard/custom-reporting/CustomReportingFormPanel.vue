@@ -84,95 +84,46 @@ function setPreviewMode() {
       </div>
 
       <div class="mt-8 space-y-8 sm:mt-[33px] sm:space-y-[47px]">
-        <label class="block">
-          <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
-            Select Type
-          </span>
-          <div class="relative">
-            <select
-              v-model="officeModel"
-              class="h-[53.33px] w-full appearance-none rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[21px] pr-14 text-[18px] font-normal leading-[27px] text-[rgba(0,0,0,0.7)] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[21.3334px] xl:tracking-[-0.400001px]"
-            >
-              <option value="">Choose One</option>
-              <option v-for="option in data.officeOptions" :key="option.value" :value="option.value">
-                {{ option.label }}
-              </option>
-            </select>
-            <span class="pointer-events-none absolute inset-y-0 right-[18px] flex items-center text-black">
-              <DashboardIcon name="chevron" :size="18" />
-            </span>
-          </div>
-        </label>
+        <SharedSelectField
+          v-model="officeModel"
+          label="Select Type"
+          :options="data.officeOptions"
+          variant="report-panel"
+        />
 
-        <label class="block">
-          <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
-            Select Layer
-          </span>
-          <div class="relative">
-            <select
-              v-model="layerModel"
-              class="h-[53.33px] w-full appearance-none rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[21px] pr-14 text-[18px] font-normal leading-[27px] text-[rgba(0,0,0,0.7)] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[21.3334px] xl:tracking-[-0.400001px]"
-            >
-              <option value="">Choose One</option>
-              <option v-for="option in data.layerOptions" :key="option.value" :value="option.value">
-                {{ option.label }}
-              </option>
-            </select>
-            <span class="pointer-events-none absolute inset-y-0 right-[18px] flex items-center text-black">
-              <DashboardIcon name="chevron" :size="18" />
-            </span>
-          </div>
-        </label>
+        <SharedSelectField
+          v-model="layerModel"
+          label="Select Layer"
+          :options="data.layerOptions"
+          variant="report-panel"
+        />
 
         <div>
           <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
             Date Range
           </span>
           <div class="grid gap-3 sm:grid-cols-2">
-            <label class="relative block">
-              <span class="sr-only">From date</span>
-              <input
-                v-model="state.dateRange.from"
-                type="date"
-                class="dashboard-date-field h-[46.67px] min-w-0 w-full rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] pr-12 text-[16px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[18.6667px]"
-              />
-              <span class="pointer-events-none absolute inset-y-0 right-[17px] flex items-center text-[#15191E]">
-                <DashboardIcon name="calendar" :size="17" />
-              </span>
-            </label>
-            <label class="relative block">
-              <span class="sr-only">To date</span>
-              <input
-                v-model="state.dateRange.to"
-                type="date"
-                class="dashboard-date-field h-[46.67px] min-w-0 w-full rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[19px] pr-12 text-[16px] font-normal leading-[29px] text-[#15191E] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[18.6667px]"
-              />
-              <span class="pointer-events-none absolute inset-y-0 right-[17px] flex items-center text-[#15191E]">
-                <DashboardIcon name="calendar" :size="17" />
-              </span>
-            </label>
+            <SharedDateField
+              v-model="state.dateRange.from"
+              label="From date"
+              variant="report-panel"
+              hide-label
+            />
+            <SharedDateField
+              v-model="state.dateRange.to"
+              label="To date"
+              variant="report-panel"
+              hide-label
+            />
           </div>
         </div>
 
-        <label class="block">
-          <span class="mb-3 block text-[16px] font-semibold uppercase leading-[21px] tracking-[0.8px] text-[#8D97A5]">
-            Report Type
-          </span>
-          <div class="relative">
-            <select
-              v-model="reportTypeModel"
-              class="h-[53.33px] w-full appearance-none rounded-[13.3333px] border border-[#DEE2E7] bg-[#F9FAFB] px-[21px] pr-14 text-[18px] font-normal leading-[27px] text-[rgba(0,0,0,0.7)] outline-none transition-colors focus:border-[rgba(56,153,250,0.45)] xl:text-[21.3334px] xl:tracking-[-0.400001px]"
-            >
-              <option value="">Choose One</option>
-              <option v-for="option in data.reportTypeOptions" :key="option.value" :value="option.value">
-                {{ option.label }}
-              </option>
-            </select>
-            <span class="pointer-events-none absolute inset-y-0 right-[18px] flex items-center text-black">
-              <DashboardIcon name="chevron" :size="18" />
-            </span>
-          </div>
-        </label>
+        <SharedSelectField
+          v-model="reportTypeModel"
+          label="Report Type"
+          :options="data.reportTypeOptions"
+          variant="report-panel"
+        />
       </div>
 
       <div class="mt-10 border-t border-[#DEE2E7] pt-[22px] sm:mt-[67px]">

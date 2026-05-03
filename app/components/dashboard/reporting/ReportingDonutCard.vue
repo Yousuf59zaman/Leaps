@@ -193,18 +193,6 @@ function buildSlicePath(startAngle: number, endAngle: number, outerRadius: numbe
   ].join(' ')
 }
 
-function buildHoverTransform(angle: number, distance: number) {
-  if (distance === 0) {
-    return 'translate(0 0)'
-  }
-
-  const radians = (angle * Math.PI) / 180
-  const x = Math.sin(radians) * distance
-  const y = -Math.cos(radians) * distance
-
-  return `translate(${x.toFixed(2)} ${y.toFixed(2)})`
-}
-
 const donutSlices = computed(() => {
   const layout = donutLayout.value
   const radiusForValue = createValueRadiusScale(
@@ -227,7 +215,6 @@ const donutSlices = computed(() => {
       ...segment,
       outerRadius,
       midAngle: startAngle + (endAngle - startAngle) / 2,
-      transform: buildHoverTransform(startAngle + (endAngle - startAngle) / 2, segment.id === activeSegmentId.value ? (layout.width < 300 ? 6 : layout.width < 380 ? 8 : 10) : 0),
       path: buildSlicePath(startAngle, endAngle, outerRadius, layout.innerRadius)
     }
   })
@@ -369,8 +356,7 @@ const sliceLabels = computed(() => {
             <g
               v-for="segment in donutSlices"
               :key="segment.id"
-              :transform="segment.transform"
-              class="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
+              class="cursor-pointer transition-opacity duration-150 ease-out"
               :class="{ 'opacity-40': isDimmed(segment.id) }"
               @mouseenter="setActiveSegment(segment.id)"
               @mouseleave="clearActiveSegment"
