@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createValueRadiusScale } from '../../../utils/dashboard-donut'
+import { createDonutSlices, createValueRadiusScale } from '../../../utils/dashboard-donut'
 
 interface LegendItem {
   id: string
@@ -167,32 +167,6 @@ function isDimmed(id: string) {
   return Boolean(activeSegmentId.value) && activeSegmentId.value !== id
 }
 
-function polarToCartesian(radius: number, angleDeg: number) {
-  const layout = donutLayout.value
-  const radians = (angleDeg * Math.PI) / 180
-
-  return {
-    x: layout.center + Math.sin(radians) * radius,
-    y: layout.center - Math.cos(radians) * radius
-  }
-}
-
-function buildSlicePath(startAngle: number, endAngle: number, outerRadius: number, innerRadius: number) {
-  const outerStart = polarToCartesian(outerRadius, startAngle)
-  const outerEnd = polarToCartesian(outerRadius, endAngle)
-  const innerEnd = polarToCartesian(innerRadius, endAngle)
-  const innerStart = polarToCartesian(innerRadius, startAngle)
-  const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0
-
-  return [
-    `M ${outerStart.x} ${outerStart.y}`,
-    `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEnd.x} ${outerEnd.y}`,
-    `L ${innerEnd.x} ${innerEnd.y}`,
-    `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x} ${innerStart.y}`,
-    'Z'
-  ].join(' ')
-}
-
 const donutSlices = computed(() => {
   const layout = donutLayout.value
   const radiusForValue = createValueRadiusScale(
@@ -200,23 +174,11 @@ const donutSlices = computed(() => {
     Math.min(layout.size / 2 - 16, layout.size * 0.3),
     Math.min(layout.size / 2 - 8, layout.size * 0.3733)
   )
-  let currentAngle = layout.startAngle
 
-  return chartSegments.value.map((segment) => {
-    const sweepAngle = (segment.percentage ?? 0) * 3.6
-    const nextAngle = currentAngle + sweepAngle
-    const startAngle = currentAngle + layout.gapAngle / 2
-    const endAngle = Math.max(startAngle + 0.01, nextAngle - layout.gapAngle / 2)
-    const outerRadius = radiusForValue(segment.percentage ?? 0)
-
-    currentAngle = nextAngle
-
-    return {
-      ...segment,
-      outerRadius,
-      midAngle: startAngle + (endAngle - startAngle) / 2,
-      path: buildSlicePath(startAngle, endAngle, outerRadius, layout.innerRadius)
-    }
+  return createDonutSlices(chartSegments.value, {
+    layout,
+    getOuterRadius: (segment) => radiusForValue(segment.percentage ?? 0),
+    getSweepAngle: (segment) => (segment.percentage ?? 0) * 3.6
   })
 })
 

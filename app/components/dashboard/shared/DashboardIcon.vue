@@ -9,6 +9,8 @@ const props = withDefaults(
   defineProps<{
     name: string
     size?: number
+    width?: number | string
+    height?: number | string
     strokeWidth?: number
     decorative?: boolean
   }>(),
@@ -221,12 +223,14 @@ const iconShapes: Record<string, IconShape[]> = {
 }
 
 const shapes = computed(() => iconShapes[props.name] ?? iconShapes.default)
+const iconWidth = computed(() => props.width ?? props.size)
+const iconHeight = computed(() => props.height ?? props.size)
 </script>
 
 <template>
   <svg
-    :width="size"
-    :height="size"
+    :width="iconWidth"
+    :height="iconHeight"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

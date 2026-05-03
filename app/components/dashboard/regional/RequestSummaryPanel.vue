@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatCount } from '../../../utils/dashboard-formatters'
-import { createValueRadiusScale } from '../../../utils/dashboard-donut'
+import { createDonutSlices, createValueRadiusScale } from '../../../utils/dashboard-donut'
 
 type DashboardMetricValue = number | string
 
@@ -91,31 +91,6 @@ const donutLayout = {
   gapAngle: 1.1
 }
 
-function polarToCartesian(radius: number, angleDeg: number) {
-  const radians = (angleDeg * Math.PI) / 180
-
-  return {
-    x: donutLayout.center + Math.sin(radians) * radius,
-    y: donutLayout.center - Math.cos(radians) * radius
-  }
-}
-
-function buildSlicePath(startAngle: number, endAngle: number, outerRadius: number, innerRadius: number) {
-  const outerStart = polarToCartesian(outerRadius, startAngle)
-  const outerEnd = polarToCartesian(outerRadius, endAngle)
-  const innerEnd = polarToCartesian(innerRadius, endAngle)
-  const innerStart = polarToCartesian(innerRadius, startAngle)
-  const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0
-
-  return [
-    `M ${outerStart.x} ${outerStart.y}`,
-    `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEnd.x} ${outerEnd.y}`,
-    `L ${innerEnd.x} ${innerEnd.y}`,
-    `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x} ${innerStart.y}`,
-    'Z'
-  ].join(' ')
-}
-
 const donutSlices = computed(() => {
   const summaryMap = new Map(summaryRows.value.map((row) => [row.id, row]))
   const orderedIds = ['total-requests', 'complete', 'overdue', 'open', 'cancelled', 'rejected']
@@ -150,23 +125,10 @@ const donutSlices = computed(() => {
   )
   const totalWeight = segmentSpecs.reduce((sum, segment) => sum + Math.max(1, Math.sqrt(segment.rawValue)), 0)
 
-  let currentAngle = donutLayout.startAngle
-
-  return segmentSpecs.map((segment) => {
-    const sweepAngle = 360 * (Math.max(1, Math.sqrt(segment.rawValue)) / totalWeight)
-    const nextAngle = currentAngle + sweepAngle
-    const startAngle = currentAngle + donutLayout.gapAngle / 2
-    const endAngle = Math.max(startAngle + 0.01, nextAngle - donutLayout.gapAngle / 2)
-    const midAngle = startAngle + (endAngle - startAngle) / 2
-
-    currentAngle = nextAngle
-
-    return {
-      ...segment,
-      outerRadius: radiusForValue(segment.rawValue),
-      midAngle,
-      path: buildSlicePath(startAngle, endAngle, radiusForValue(segment.rawValue), donutLayout.innerRadius)
-    }
+  return createDonutSlices(segmentSpecs, {
+    layout: donutLayout,
+    getOuterRadius: (segment) => radiusForValue(segment.rawValue),
+    getSweepAngle: (segment) => 360 * (Math.max(1, Math.sqrt(segment.rawValue)) / totalWeight)
   })
 })
 

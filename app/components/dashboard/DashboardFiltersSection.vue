@@ -12,7 +12,6 @@ interface DashboardFilterState {
   service: string | null
   fromDate: string | null
   toDate: string | null
-  applied: boolean
 }
 
 const layerOptions: SelectOption[] = [
@@ -38,11 +37,11 @@ const defaultState: DashboardFilterState = {
   office: 'metro-manila',
   service: 'all-services',
   fromDate: '2024-01-01',
-  toDate: '2024-06-30',
-  applied: true
+  toDate: '2024-06-30'
 }
 
 const state = reactive<DashboardFilterState>({ ...defaultState })
+const appliedState = reactive<DashboardFilterState>({ ...defaultState })
 
 const serializeState = (target: DashboardFilterState) => JSON.stringify({
   layer: target.layer,
@@ -52,14 +51,15 @@ const serializeState = (target: DashboardFilterState) => JSON.stringify({
   toDate: target.toDate
 })
 
-const isDirty = computed(() => serializeState(state) !== serializeState(defaultState))
+const isDirty = computed(() => serializeState(state) !== serializeState(appliedState))
 
 function resetFilters() {
   Object.assign(state, defaultState)
+  Object.assign(appliedState, defaultState)
 }
 
 function applyFilters() {
-  state.applied = true
+  Object.assign(appliedState, state)
 }
 </script>
 
@@ -67,7 +67,7 @@ function applyFilters() {
   <section class="bg-[rgba(235,247,243,0.73)] px-4 py-4 sm:px-5 sm:py-5 lg:px-6 xl:min-h-[164.57px] xl:rounded-none xl:px-[43px] xl:pb-[17.76px] xl:pt-[11.67px]">
     <div class="flex flex-col gap-4 xl:gap-[2px]">
       <div class="flex justify-start sm:justify-end xl:min-h-[36px]">
-        <FilterActions :is-dirty="isDirty" @reset="$emit('reset')" @apply="$emit('apply')" />
+        <FilterActions :is-dirty="isDirty" @reset="resetFilters" @apply="applyFilters" />
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,340.69px))] xl:justify-between xl:gap-[33px]">
