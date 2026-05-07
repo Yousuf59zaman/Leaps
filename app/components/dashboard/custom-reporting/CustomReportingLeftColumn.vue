@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-type ReportExportFormat = 'csv' | 'pdf' | 'xlsx' | 'preview'
+type ReportExportFormat = 'csv' | 'pdf' | 'preview'
 
 interface SelectOption {
   label: string
@@ -8,16 +7,17 @@ interface SelectOption {
   disabled?: boolean
 }
 
-interface DateRangeValue {
-  from: string | null
-  to: string | null
-}
-
 interface CustomReportState {
-  reportType: string | null
-  layer: string | null
-  office: string | null
-  dateRange: DateRangeValue
+  selectType: string | null
+  region: string | null
+  province: string | null
+  municipality: string | null
+  barangay: string | null
+  reportType: string
+  dateRange: {
+    from: string | null
+    to: string | null
+  }
   exportFormat: ReportExportFormat | null
   previewMode: boolean
 }
@@ -26,12 +26,12 @@ interface CustomReportingFormData {
   title: string
   subtitle?: string
   icon?: string
-  badgeLabel?: string
-  actions?: Array<{ id: string, label: string, icon?: string }>
-  state: CustomReportState
+  selectTypeOptions: SelectOption[]
+  regionOptions: SelectOption[]
+  provinceOptions: SelectOption[]
+  municipalityOptions: SelectOption[]
+  barangayOptions: SelectOption[]
   reportTypeOptions: SelectOption[]
-  layerOptions: SelectOption[]
-  officeOptions: SelectOption[]
 }
 
 defineProps<{
