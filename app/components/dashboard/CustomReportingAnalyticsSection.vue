@@ -1,19 +1,34 @@
 <script setup lang="ts">
 import ApplicationTrackingReportPanel from './custom-reporting/ApplicationTrackingReportPanel.vue'
 import ApplicationVolumeOfficeReportPanel from './custom-reporting/ApplicationVolumeOfficeReportPanel.vue'
+import AllTokenDetailsReportPanel from './custom-reporting/AllTokenDetailsReportPanel.vue'
+import AverageTimeReportPanel from './custom-reporting/AverageTimeReportPanel.vue'
+import GenderBreakdownReportPanel from './custom-reporting/GenderBreakdownReportPanel.vue'
 import GenderDistributionReportPanel from './custom-reporting/GenderDistributionReportPanel.vue'
+import LGUServiceSpecificReportPanel from './custom-reporting/LGUServiceSpecificReportPanel.vue'
 import MonthlyUserGrowthReportPanel from './custom-reporting/MonthlyUserGrowthReportPanel.vue'
+import OfficeSummaryReportPanel from './custom-reporting/OfficeSummaryReportPanel.vue'
 import ProcessingTimelineReportPanel from './custom-reporting/ProcessingTimelineReportPanel.vue'
 import RegistrationChannelsReportPanel from './custom-reporting/RegistrationChannelsReportPanel.vue'
 import StatusByServiceReportPanel from './custom-reporting/StatusByServiceReportPanel.vue'
+import TokenStartEndTimeReportPanel from './custom-reporting/TokenStartEndTimeReportPanel.vue'
 import TurnoverOfficeReportPanel from './custom-reporting/TurnoverOfficeReportPanel.vue'
 import TurnoverOfficeServiceReportPanel from './custom-reporting/TurnoverOfficeServiceReportPanel.vue'
 import TurnoverServiceReportPanel from './custom-reporting/TurnoverServiceReportPanel.vue'
 import UserDemographicsReportPanel from './custom-reporting/UserDemographicsReportPanel.vue'
+import UserSummaryReportPanel from './custom-reporting/UserSummaryReportPanel.vue'
 import VerificationStatusReportPanel from './custom-reporting/VerificationStatusReportPanel.vue'
+import type { Component } from 'vue'
 
 type ReportExportFormat = 'csv' | 'pdf' | 'preview'
 type ReportTypeValue =
+  | 'office-summary'
+  | 'user-summary'
+  | 'all-token-details'
+  | 'gender-breakdown'
+  | 'average-time'
+  | 'token-start-end-time'
+  | 'lgu-service-specific'
   | 'verification-status'
   | 'gender-distribution'
   | 'registration-channels'
@@ -87,6 +102,13 @@ const data = {
       { label: 'Information Not Provided', value: 'information-not-provided' }
     ],
     reportTypeOptions: [
+      { label: 'Office Summary', value: 'office-summary' },
+      { label: 'User Summary', value: 'user-summary' },
+      { label: 'All Token Details', value: 'all-token-details' },
+      { label: 'Gender Breakdown', value: 'gender-breakdown' },
+      { label: 'Average Time', value: 'average-time' },
+      { label: 'Token Start & End Time', value: 'token-start-end-time' },
+      { label: 'LGU Service Specific', value: 'lgu-service-specific' },
       { label: 'Verification Status', value: 'verification-status' },
       { label: 'Gender Distribution', value: 'gender-distribution' },
       { label: 'Registration Channels', value: 'registration-channels' },
@@ -105,7 +127,14 @@ const data = {
 
 const reportState = reactive<CustomReportState>(structuredClone(data.form.state))
 
-const reportComponentMap = {
+const reportComponentMap: Partial<Record<ReportTypeValue, Component>> = {
+  'office-summary': OfficeSummaryReportPanel,
+  'user-summary': UserSummaryReportPanel,
+  'all-token-details': AllTokenDetailsReportPanel,
+  'gender-breakdown': GenderBreakdownReportPanel,
+  'average-time': AverageTimeReportPanel,
+  'token-start-end-time': TokenStartEndTimeReportPanel,
+  'lgu-service-specific': LGUServiceSpecificReportPanel,
   'verification-status': VerificationStatusReportPanel,
   'gender-distribution': GenderDistributionReportPanel,
   'registration-channels': RegistrationChannelsReportPanel,
@@ -131,7 +160,7 @@ const activeReportComponent = computed(() => reportComponentMap[reportState.repo
 
     <div class="grid gap-5 sm:gap-6 min-[1400px]:grid-cols-[434px_minmax(0,1fr)] min-[1400px]:items-start min-[1400px]:gap-[33px]">
       <CustomReportingLeftColumn :data="data.form" :state="reportState" />
-      <component :is="activeReportComponent" :key="reportState.reportType" />
+      <component v-if="activeReportComponent" :is="activeReportComponent" :key="reportState.reportType" />
     </div>
   </section>
 </template>

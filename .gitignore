@@ -6,6 +6,10 @@
 .cache
 dist
 
+# Local browser/debug artifacts
+.chrome-devtools-profile/
+.codex-artifacts/
+
 # Node dependencies
 node_modules
 

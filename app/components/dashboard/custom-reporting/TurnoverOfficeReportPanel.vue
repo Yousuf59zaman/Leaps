@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { EChartsOption } from 'echarts'
+
 const turnoverColors = {
   brand: '#3899FA',
   success: '#1DC973',
@@ -38,24 +40,71 @@ const offices = [
   }
 ]
 
-const chart = {
-  width: 616.75,
-  height: 224.53,
-  left: 70,
-  right: 22,
-  top: 38,
-  bottom: 45,
-  max: 90
-}
+const turnoverMax = 90
 
-const chartWidth = chart.width - chart.left - chart.right
-const chartBottom = chart.height - chart.bottom
-const ticks = Array.from({ length: 10 }, (_, index) => index * 10)
-
-const chartRows = offices.map((office, index) => ({
-  ...office,
-  y: 56 + (index * 42),
-  barWidth: (office.minutes / chart.max) * chartWidth
+const officeComparisonOption = computed<EChartsOption>(() => ({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: { type: 'shadow' },
+    valueFormatter: value => `${value} minutes`
+  },
+  grid: {
+    left: 70,
+    right: 22,
+    top: 38,
+    bottom: 45
+  },
+  xAxis: {
+    type: 'value',
+    min: 0,
+    max: turnoverMax,
+    interval: 10,
+    name: 'Minutes',
+    nameLocation: 'middle',
+    nameGap: 30,
+    axisLine: {
+      lineStyle: { color: '#DEE2E7' }
+    },
+    axisTick: { show: false },
+    axisLabel: {
+      color: turnoverColors.muted,
+      fontSize: 13,
+      fontWeight: 600
+    },
+    splitLine: {
+      lineStyle: { color: turnoverColors.grid }
+    }
+  },
+  yAxis: {
+    type: 'category',
+    data: offices.map(office => office.office),
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: {
+      color: turnoverColors.muted,
+      fontSize: 14,
+      fontWeight: 600
+    }
+  },
+  series: [
+    {
+      name: 'Avg Turnover',
+      type: 'bar',
+      barWidth: 30,
+      data: offices.map(office => ({
+        value: office.minutes,
+        itemStyle: {
+          color: office.color,
+          borderRadius: 5,
+          opacity: 0.72
+        }
+      })),
+      emphasis: {
+        focus: 'series',
+        itemStyle: { opacity: 1 }
+      }
+    }
+  ]
 }))
 </script>
 
@@ -82,83 +131,10 @@ const chartRows = offices.map((office, index) => ({
           </div>
 
           <div class="h-[267.29px] px-[20.4209px] py-[20.4209px]">
-            <svg
-              class="h-[224.53px] w-full overflow-visible"
-              :viewBox="`0 0 ${chart.width} ${chart.height}`"
-              fill="none"
-              role="img"
-              aria-label="Average turnover minutes by office"
-            >
-              <g>
-                <line
-                  v-for="tick in ticks"
-                  :key="`grid-${tick}`"
-                  :x1="chart.left + ((tick / chart.max) * chartWidth)"
-                  :x2="chart.left + ((tick / chart.max) * chartWidth)"
-                  :y1="chart.top"
-                  :y2="chartBottom"
-                  stroke="#EFF0F6"
-                  stroke-width="1"
-                />
-                <line
-                  :x1="chart.left"
-                  :x2="chart.width - chart.right"
-                  :y1="chartBottom"
-                  :y2="chartBottom"
-                  stroke="#DEE2E7"
-                  stroke-width="1"
-                />
-              </g>
-
-              <g v-for="row in chartRows" :key="row.id">
-                <text
-                  x="14"
-                  :y="row.y + 15"
-                  fill="#8D97A5"
-                  font-family="Inter, sans-serif"
-                  font-size="14"
-                  font-weight="600"
-                >
-                  {{ row.office }}
-                </text>
-                <rect
-                  :x="chart.left"
-                  :y="row.y"
-                  :width="row.barWidth"
-                  height="30"
-                  rx="5"
-                  :fill="row.color"
-                  opacity="0.72"
-                />
-              </g>
-
-              <g>
-                <text
-                  v-for="tick in ticks"
-                  :key="`tick-${tick}`"
-                  :x="chart.left + ((tick / chart.max) * chartWidth)"
-                  :y="chartBottom + 29"
-                  text-anchor="middle"
-                  fill="#8D97A5"
-                  font-family="Inter, sans-serif"
-                  font-size="13"
-                  font-weight="600"
-                >
-                  {{ tick }}
-                </text>
-                <text
-                  :x="chart.left + (chartWidth / 2)"
-                  :y="chart.height - 2"
-                  text-anchor="middle"
-                  fill="#8D97A5"
-                  font-family="Inter, sans-serif"
-                  font-size="14"
-                  font-weight="600"
-                >
-                  Minutes
-                </text>
-              </g>
-            </svg>
+            <DashboardChartFrame
+              :option="officeComparisonOption"
+              height="224.53px"
+            />
           </div>
         </section>
 
@@ -216,7 +192,7 @@ const chartRows = offices.map((office, index) => ({
                     <span class="flex h-[5.35px] overflow-hidden rounded-[2.55262px] bg-[#EFF0F6]">
                       <span
                         class="h-full rounded-[2.55262px]"
-                        :style="{ width: `${(office.minutes / chart.max) * 100}%`, backgroundColor: office.color }"
+                        :style="{ width: `${(office.minutes / turnoverMax) * 100}%`, backgroundColor: office.color }"
                       />
                     </span>
                   </td>

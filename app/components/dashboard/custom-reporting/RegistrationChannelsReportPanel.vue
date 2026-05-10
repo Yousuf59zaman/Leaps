@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { EChartsOption } from 'echarts'
+
 const searchQuery = ref('')
 
 const channelColors = {
@@ -102,32 +104,105 @@ const metrics = [
   }
 ]
 
-const chartRows = rows.slice(0, 2)
 const chartMax = 160
-const chartTicks = [160, 120, 80, 40, 0]
-const gridTicks = [40, 80, 120, 160]
-const legendItems = [
-  { label: 'F-Web', color: channelColors.femaleWeb },
-  { label: 'F-Mobile', color: channelColors.femaleMobile },
-  { label: 'M-Web', color: channelColors.maleWeb },
-  { label: 'M-Mobile', color: channelColors.maleMobile }
-]
-const chartBars = chartRows.map((row) => {
-  const total = row.femaleWeb + row.femaleMobile + row.maleWeb + row.maleMobile
-  const scale = total > chartMax ? chartMax / total : 1
+const channelChartRows = rows.slice(0, 2)
 
-  return {
-    id: row.id,
-    label: row.id === 'unknown' ? 'Info N/A' : 'BARMM',
-    scale,
-    segments: [
-      { key: 'femaleWeb', value: row.femaleWeb, color: channelColors.femaleWeb },
-      { key: 'femaleMobile', value: row.femaleMobile, color: channelColors.femaleMobile },
-      { key: 'maleWeb', value: row.maleWeb, color: channelColors.maleWeb },
-      { key: 'maleMobile', value: row.maleMobile, color: channelColors.maleMobile }
-    ]
-  }
-})
+const channelBreakdownOption = computed<EChartsOption>(() => ({
+  color: [
+    channelColors.femaleWeb,
+    channelColors.femaleMobile,
+    channelColors.maleWeb,
+    channelColors.maleMobile
+  ],
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: { type: 'shadow' }
+  },
+  legend: {
+    top: 0,
+    left: 'center',
+    itemWidth: 30,
+    itemHeight: 8,
+    icon: 'rect',
+    textStyle: {
+      color: '#8D97A5',
+      fontSize: 12
+    }
+  },
+  grid: {
+    left: 42,
+    right: 16,
+    top: 48,
+    bottom: 30
+  },
+  xAxis: {
+    type: 'category',
+    data: channelChartRows.map(row => row.id === 'unknown' ? 'Info N/A' : 'BARMM'),
+    axisLine: {
+      lineStyle: { color: '#DEE2E7' }
+    },
+    axisTick: { show: false },
+    axisLabel: {
+      color: '#8D97A5',
+      fontSize: 12
+    }
+  },
+  yAxis: {
+    type: 'value',
+    min: 0,
+    max: chartMax,
+    interval: 40,
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: {
+      color: '#8D97A5',
+      fontSize: 12
+    },
+    splitLine: {
+      lineStyle: {
+        color: '#DEE2E7',
+        type: 'dashed'
+      }
+    }
+  },
+  series: [
+    {
+      name: 'F-Web',
+      type: 'bar',
+      stack: 'registrations',
+      barWidth: '34%',
+      data: channelChartRows.map(row => row.femaleWeb),
+      emphasis: { focus: 'series' }
+    },
+    {
+      name: 'F-Mobile',
+      type: 'bar',
+      stack: 'registrations',
+      barWidth: '34%',
+      data: channelChartRows.map(row => row.femaleMobile),
+      emphasis: { focus: 'series' }
+    },
+    {
+      name: 'M-Web',
+      type: 'bar',
+      stack: 'registrations',
+      barWidth: '34%',
+      data: channelChartRows.map(row => row.maleWeb),
+      emphasis: { focus: 'series' }
+    },
+    {
+      name: 'M-Mobile',
+      type: 'bar',
+      stack: 'registrations',
+      barWidth: '34%',
+      data: channelChartRows.map(row => row.maleMobile),
+      itemStyle: {
+        borderRadius: [3, 3, 0, 0]
+      },
+      emphasis: { focus: 'series' }
+    }
+  ]
+}))
 
 const filteredRows = computed(() => {
   const search = searchQuery.value.trim().toLowerCase()
@@ -143,13 +218,6 @@ function formatNumber(value: number) {
   return new Intl.NumberFormat('en-US').format(value)
 }
 
-function tickBottom(value: number) {
-  return `${(value / chartMax) * 100}%`
-}
-
-function segmentHeight(value: number, scale: number) {
-  return `${((value * scale) / chartMax) * 100}%`
-}
 </script>
 
 <template>
@@ -232,68 +300,10 @@ function segmentHeight(value: number, scale: number) {
       </header>
 
       <div class="px-[19.5077px] py-[19.5077px]">
-        <div class="h-[217.09px] w-full">
-          <div class="flex h-[22px] items-center justify-center gap-[14px]">
-            <span
-              v-for="item in legendItems"
-              :key="item.label"
-              class="inline-flex items-center gap-[5px] text-[12px] leading-[15px] text-[#8D97A5]"
-            >
-              <span class="h-[8px] w-[30px]" :style="{ backgroundColor: item.color }" />
-              {{ item.label }}
-            </span>
-          </div>
-
-          <div class="mt-[22px] grid h-[156px] grid-cols-[42px_minmax(0,1fr)]">
-            <div class="relative h-[132px]">
-              <span
-                v-for="tick in chartTicks"
-                :key="`tick-${tick}`"
-                class="absolute right-[10px] translate-y-1/2 text-[12px] leading-[15px] text-[#8D97A5]"
-                :style="{ bottom: tickBottom(tick) }"
-              >
-                {{ tick }}
-              </span>
-            </div>
-
-            <div class="relative h-[132px] border-b border-l border-[#DEE2E7]">
-              <span
-                v-for="tick in gridTicks"
-                :key="`grid-${tick}`"
-                class="absolute left-0 right-0 border-t border-dashed border-[#DEE2E7]"
-                :style="{ bottom: tickBottom(tick) }"
-              />
-
-              <div class="absolute inset-x-0 bottom-0 top-0 flex items-end justify-around">
-                <div
-                  v-for="bar in chartBars"
-                  :key="bar.id"
-                  class="flex h-full w-[36%] max-w-[360px] min-w-[180px] items-end"
-                >
-                  <div class="flex h-full w-full flex-col-reverse overflow-hidden">
-                    <span
-                      v-for="segment in bar.segments"
-                      :key="`${bar.id}-${segment.key}`"
-                      class="block w-full"
-                      :style="{ height: segmentHeight(segment.value, bar.scale), backgroundColor: segment.color }"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div />
-            <div class="flex justify-around pt-[11px]">
-              <span
-                v-for="bar in chartBars"
-                :key="`label-${bar.id}`"
-                class="w-[36%] max-w-[360px] min-w-[180px] text-center text-[12px] leading-[15px] text-[#8D97A5]"
-              >
-                {{ bar.label }}
-              </span>
-            </div>
-          </div>
-        </div>
+        <DashboardChartFrame
+          :option="channelBreakdownOption"
+          height="217.09px"
+        />
       </div>
     </section>
 

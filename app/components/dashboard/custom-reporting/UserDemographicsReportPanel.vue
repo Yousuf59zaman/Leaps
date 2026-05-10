@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { EChartsOption } from 'echarts'
+
 type TrendKey = 'male' | 'female' | 'vulnerability'
 
 const searchQuery = ref('')
@@ -40,19 +42,73 @@ const tableRows = [
 ]
 
 const tableHeaders = ['Month', 'Male', 'Female', 'Vuln.', 'No Data']
-const yTicks = [0, 1, 2]
 
-const chart = {
-  width: 616.75,
-  height: 200.25,
-  plotLeft: 48,
-  plotTop: 54,
-  plotWidth: 526,
-  plotHeight: 94,
-  maxValue: 2,
-  barWidth: 18,
-  barGap: 2
-}
+const monthlyTrendOption = computed<EChartsOption>(() => ({
+  color: trendSeries.map(series => series.color),
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: { type: 'shadow' }
+  },
+  legend: {
+    top: 0,
+    left: 'center',
+    itemWidth: 28,
+    itemHeight: 7,
+    icon: 'rect',
+    textStyle: {
+      color: demographicsColors.muted,
+      fontSize: 11,
+      fontWeight: 500
+    }
+  },
+  grid: {
+    left: 48,
+    right: 20,
+    top: 44,
+    bottom: 30
+  },
+  xAxis: {
+    type: 'category',
+    data: trendRows.map(row => row.shortMonth),
+    axisLine: {
+      lineStyle: { color: '#E8ECF2' }
+    },
+    axisTick: { show: false },
+    axisLabel: {
+      color: demographicsColors.muted,
+      fontSize: 11,
+      fontWeight: 500
+    }
+  },
+  yAxis: {
+    type: 'value',
+    min: 0,
+    max: 2,
+    interval: 1,
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: {
+      color: demographicsColors.muted,
+      fontSize: 11,
+      fontWeight: 500
+    },
+    splitLine: {
+      lineStyle: { color: demographicsColors.border }
+    }
+  },
+  series: trendSeries.map(series => ({
+    name: series.label,
+    type: 'bar',
+    barWidth: 18,
+    barGap: '10%',
+    data: trendRows.map(row => row[series.key]),
+    itemStyle: {
+      color: series.color,
+      borderRadius: 3
+    },
+    emphasis: { focus: 'series' }
+  }))
+}))
 
 const filteredRows = computed(() => {
   const search = searchQuery.value.trim().toLowerCase()
@@ -63,26 +119,6 @@ const filteredRows = computed(() => {
 
   return tableRows.filter((row) => row.month.toLowerCase().includes(search))
 })
-
-const getGroupCenter = (index: number) => (
-  chart.plotLeft + (chart.plotWidth / trendRows.length) * index + (chart.plotWidth / trendRows.length) / 2
-)
-
-const getBarX = (index: number, seriesIndex: number) => (
-  getGroupCenter(index) - ((trendSeries.length * chart.barWidth) + ((trendSeries.length - 1) * chart.barGap)) / 2 + (seriesIndex * (chart.barWidth + chart.barGap))
-)
-
-const getBarY = (value: number) => (
-  chart.plotTop + chart.plotHeight - ((value / chart.maxValue) * chart.plotHeight)
-)
-
-const getBarHeight = (value: number) => (
-  Math.max((value / chart.maxValue) * chart.plotHeight, value > 0 ? 1 : 0)
-)
-
-const getGridY = (value: number) => (
-  chart.plotTop + chart.plotHeight - ((value / chart.maxValue) * chart.plotHeight)
-)
 </script>
 
 <template>
@@ -119,85 +155,10 @@ const getGridY = (value: number) => (
           </header>
 
           <div class="px-[19.8863px] pb-[19.8863px] pt-[19.8863px]">
-            <svg
-              class="h-[200.25px] w-full"
-              :viewBox="`0 0 ${chart.width} ${chart.height}`"
-              role="img"
-              aria-label="Monthly registrations trend by male, female, and vulnerability"
-            >
-              <g>
-                <g class="text-[10.5px] font-medium text-[#8D97A5]">
-                  <g
-                    v-for="tick in yTicks"
-                    :key="tick"
-                  >
-                    <line
-                      :x1="chart.plotLeft"
-                      :x2="chart.plotLeft + chart.plotWidth"
-                      :y1="getGridY(tick)"
-                      :y2="getGridY(tick)"
-                      stroke="#EFF0F6"
-                      stroke-width="1"
-                    />
-                    <text
-                      :x="chart.plotLeft - 26"
-                      :y="getGridY(tick) + 4"
-                      fill="#8D97A5"
-                    >
-                      {{ tick }}
-                    </text>
-                  </g>
-                </g>
-
-                <g>
-                  <template
-                    v-for="(row, rowIndex) in trendRows"
-                    :key="row.id"
-                  >
-                    <rect
-                      v-for="(series, seriesIndex) in trendSeries"
-                      :key="`${row.id}-${series.key}`"
-                      :x="getBarX(rowIndex, seriesIndex)"
-                      :y="getBarY(row[series.key])"
-                      :width="chart.barWidth"
-                      :height="getBarHeight(row[series.key])"
-                      :fill="series.color"
-                      rx="3"
-                    />
-                    <text
-                      :x="getGroupCenter(rowIndex)"
-                      :y="chart.plotTop + chart.plotHeight + 23"
-                      fill="#8D97A5"
-                      text-anchor="middle"
-                      class="text-[10.5px] font-medium"
-                    >
-                      {{ row.shortMonth }}
-                    </text>
-                  </template>
-                </g>
-
-                <g
-                  v-for="(series, index) in trendSeries"
-                  :key="series.key"
-                  :transform="`translate(${chart.width / 2 - 100 + index * 78}, 24)`"
-                >
-                  <rect
-                    width="28"
-                    height="7"
-                    rx="1"
-                    :fill="series.color"
-                  />
-                  <text
-                    x="35"
-                    y="7"
-                    fill="#8D97A5"
-                    class="text-[10.5px] font-medium"
-                  >
-                    {{ series.label }}
-                  </text>
-                </g>
-              </g>
-            </svg>
+            <DashboardChartFrame
+              :option="monthlyTrendOption"
+              height="200.25px"
+            />
           </div>
         </section>
 

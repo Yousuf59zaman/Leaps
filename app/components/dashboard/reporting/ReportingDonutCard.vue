@@ -103,19 +103,19 @@ const donutLayout = computed(() => {
       ? 284
       : viewportWidth.value < 1024
         ? 360
-        : 468)
-  const maxWidth = viewportWidth.value >= 768 ? 500 : 440
+        : 500)
+  const maxWidth = viewportWidth.value >= 1024 ? 560 : viewportWidth.value >= 768 ? 520 : 440
   const width = Math.max(232, Math.min(measuredWidth, maxWidth))
   const compact = width < 300
   const tablet = width < 380
   const expanded = width >= 460
-  const horizontalPadding = compact ? 34 : tablet ? 42 : expanded ? 58 : 52
+  const horizontalPadding = compact ? 34 : tablet ? 38 : expanded ? 50 : 44
   const size = Math.max(
-    compact ? 172 : tablet ? 196 : expanded ? 262 : 236,
-    Math.min(width - horizontalPadding * 2, compact ? 188 : tablet ? 216 : expanded ? 288 : 258)
+    compact ? 172 : tablet ? 206 : expanded ? 316 : 258,
+    Math.min(width - horizontalPadding * 2, compact ? 188 : tablet ? 232 : expanded ? 348 : 286)
   )
-  const top = compact ? 38 : tablet ? 30 : expanded ? 18 : 22
-  const bottomPadding = compact ? 52 : tablet ? 54 : expanded ? 68 : 60
+  const top = compact ? 38 : tablet ? 28 : expanded ? 10 : 18
+  const bottomPadding = compact ? 52 : tablet ? 56 : expanded ? 58 : 58
 
   return {
     width,
@@ -274,7 +274,7 @@ const sliceLabels = computed(() => {
 
       <div
         ref="chartFrameRef"
-        class="relative mx-auto w-full max-w-[440px] overflow-visible md:max-w-[500px] lg:max-w-[540px] xl:max-w-[500px]"
+        class="relative mx-auto w-full max-w-[440px] overflow-visible md:max-w-[520px] lg:max-w-[560px] xl:max-w-[540px]"
         :style="{ height: `${donutLayout.height}px` }"
       >
         <button

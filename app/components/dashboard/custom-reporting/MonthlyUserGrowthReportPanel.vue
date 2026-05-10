@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { EChartsOption } from 'echarts'
+
 const searchQuery = ref('')
 const activePeriod = ref<'monthly' | 'quarterly'>('monthly')
-const activePointIndex = ref<number | null>(null)
 
 const growthColors = {
   brand: '#3899FA',
@@ -42,28 +43,91 @@ const rows = [
   { id: 'ncr-jun', region: 'NCR', period: '2025 June', count: 1 }
 ]
 
-const chartBounds = {
-  width: 1289.56,
-  height: 208.53,
-  left: 42,
-  top: 14,
-  right: 9,
-  bottom: 38,
-  max: 4
-} as const
-
-const tooltipBounds = {
-  width: 156,
-  height: 56,
-  offset: 12
-} as const
-
-const plotWidth = chartBounds.width - chartBounds.left - chartBounds.right
-const plotHeight = chartBounds.height - chartBounds.top - chartBounds.bottom
-const plotBottom = chartBounds.top + plotHeight
-const yTicks = [4, 3, 2, 1, 0]
 const sortIcon = '&#8645;'
 const maxCount = 4
+
+const growthTrendOption = computed<EChartsOption>(() => ({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'line',
+      lineStyle: {
+        color: growthColors.brand,
+        opacity: 0.45,
+        type: 'dashed'
+      }
+    },
+    valueFormatter: value => `${value} new registrations`
+  },
+  grid: {
+    left: 42,
+    right: 9,
+    top: 14,
+    bottom: 38
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: chartValues.map(point => point.month),
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: {
+      color: growthColors.muted,
+      fontSize: 14.7601
+    }
+  },
+  yAxis: {
+    type: 'value',
+    min: 0,
+    max: maxCount,
+    interval: 1,
+    axisLine: {
+      lineStyle: { color: growthColors.axis }
+    },
+    axisTick: { show: false },
+    axisLabel: {
+      color: growthColors.muted,
+      fontSize: 14.7601
+    },
+    splitLine: {
+      lineStyle: { color: growthColors.grid }
+    }
+  },
+  series: [
+    {
+      name: 'New Registrations',
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 9,
+      data: chartValues.map(point => point.value),
+      lineStyle: {
+        color: growthColors.brand,
+        width: 3
+      },
+      itemStyle: {
+        color: growthColors.brand
+      },
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [
+            { offset: 0, color: 'rgba(56,153,250,0.16)' },
+            { offset: 1, color: 'rgba(56,153,250,0.06)' }
+          ]
+        }
+      },
+      emphasis: {
+        focus: 'series',
+        scale: true
+      }
+    }
+  ]
+}))
 
 const filteredRows = computed(() => {
   const search = searchQuery.value.trim().toLowerCase()
@@ -74,88 +138,6 @@ const filteredRows = computed(() => {
 
   return rows.filter(row => row.region.toLowerCase().includes(search) || row.period.toLowerCase().includes(search))
 })
-
-const chartPoints = computed(() => chartValues.map((point, index) => ({
-  ...point,
-  x: chartBounds.left + (plotWidth / (chartValues.length - 1)) * index,
-  y: plotBottom - (point.value / chartBounds.max) * plotHeight
-})))
-
-const activePoint = computed(() => {
-  if (activePointIndex.value === null) {
-    return null
-  }
-
-  return chartPoints.value[activePointIndex.value] ?? null
-})
-
-const tooltipPosition = computed(() => {
-  const point = activePoint.value
-
-  if (!point) {
-    return null
-  }
-
-  const x = clamp(
-    point.x - (tooltipBounds.width / 2),
-    chartBounds.left,
-    chartBounds.width - chartBounds.right - tooltipBounds.width
-  )
-  const y = point.y - tooltipBounds.height - tooltipBounds.offset < chartBounds.top
-    ? point.y + tooltipBounds.offset
-    : point.y - tooltipBounds.height - tooltipBounds.offset
-
-  return { x, y }
-})
-
-const linePath = computed(() => createSmoothPath(chartPoints.value))
-
-const areaPath = computed(() => {
-  const points = chartPoints.value
-
-  if (!points.length) {
-    return ''
-  }
-
-  const first = points[0]
-  const last = points[points.length - 1]
-
-  return `${linePath.value} L ${round(last.x)} ${round(plotBottom)} L ${round(first.x)} ${round(plotBottom)} Z`
-})
-
-function round(value: number) {
-  return Number(value.toFixed(2))
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value))
-}
-
-function createSmoothPath(points: Array<{ x: number, y: number }>) {
-  if (!points.length) {
-    return ''
-  }
-
-  return points.reduce((path, point, index) => {
-    if (index === 0) {
-      return `M ${round(point.x)} ${round(point.y)}`
-    }
-
-    const previous = points[index - 1]
-    const beforePrevious = points[index - 2] ?? previous
-    const next = points[index + 1] ?? point
-    const controlPointOneX = previous.x + (point.x - beforePrevious.x) / 6
-    const controlPointOneY = clamp(previous.y + (point.y - beforePrevious.y) / 6, chartBounds.top, plotBottom)
-    const controlPointTwoX = point.x - (next.x - previous.x) / 6
-    const controlPointTwoY = clamp(point.y - (next.y - previous.y) / 6, chartBounds.top, plotBottom)
-
-    return `${path} C ${round(controlPointOneX)} ${round(controlPointOneY)}, ${round(controlPointTwoX)} ${round(controlPointTwoY)}, ${round(point.x)} ${round(point.y)}`
-  }, '')
-}
-
-function tickY(value: number) {
-  return plotBottom - (value / chartBounds.max) * plotHeight
-}
 
 function barWidth(value: number) {
   return `${(value / maxCount) * 100}%`
@@ -173,13 +155,6 @@ function barColor(value: number) {
   return growthColors.brand
 }
 
-function setActivePoint(index: number) {
-  activePointIndex.value = index
-}
-
-function clearActivePoint() {
-  activePointIndex.value = null
-}
 </script>
 
 <template>
@@ -232,155 +207,10 @@ function clearActivePoint() {
         </header>
 
         <div class="h-[248.25px] px-[19.6801px] py-[19.6801px]">
-          <svg
-            class="h-[208.53px] w-full"
-            :viewBox="`0 0 ${chartBounds.width} ${chartBounds.height}`"
-            role="img"
-            aria-label="Monthly user growth trend"
-            preserveAspectRatio="none"
-            @mouseleave="clearActivePoint"
-          >
-            <defs>
-              <linearGradient id="monthly-growth-fill" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stop-color="#3899FA" stop-opacity="0.16" />
-                <stop offset="100%" stop-color="#3899FA" stop-opacity="0.06" />
-              </linearGradient>
-            </defs>
-
-            <g>
-              <g v-for="tick in yTicks" :key="`grid-${tick}`">
-                <line
-                  :x1="chartBounds.left"
-                  :x2="chartBounds.width - chartBounds.right"
-                  :y1="tickY(tick)"
-                  :y2="tickY(tick)"
-                  :stroke="growthColors.grid"
-                  stroke-width="1"
-                />
-                <text
-                  x="8"
-                  :y="tickY(tick) + 4"
-                  fill="#8D97A5"
-                  font-family="Inter, ui-sans-serif, system-ui, sans-serif"
-                  font-size="14.7601"
-                >
-                  {{ tick }}
-                </text>
-              </g>
-              <line
-                :x1="chartBounds.left"
-                :x2="chartBounds.left"
-                :y1="chartBounds.top"
-                :y2="plotBottom"
-                :stroke="growthColors.axis"
-                stroke-width="1"
-              />
-            </g>
-
-            <path :d="areaPath" fill="url(#monthly-growth-fill)" />
-            <path :d="linePath" fill="none" stroke="#3899FA" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-
-            <g
-              v-if="activePoint && tooltipPosition"
-              class="pointer-events-none"
-            >
-              <line
-                :x1="activePoint.x"
-                :x2="activePoint.x"
-                :y1="chartBounds.top"
-                :y2="plotBottom"
-                stroke="#3899FA"
-                stroke-dasharray="5 5"
-                stroke-opacity="0.45"
-                stroke-width="1.5"
-              />
-              <circle
-                :cx="activePoint.x"
-                :cy="activePoint.y"
-                r="10.5"
-                fill="#3899FA"
-                opacity="0.14"
-              />
-              <circle
-                :cx="activePoint.x"
-                :cy="activePoint.y"
-                r="6.2"
-                fill="#FFFFFF"
-                stroke="#3899FA"
-                stroke-width="3"
-              />
-              <rect
-                :x="tooltipPosition.x"
-                :y="tooltipPosition.y"
-                :width="tooltipBounds.width"
-                :height="tooltipBounds.height"
-                rx="8"
-                fill="#15191E"
-                opacity="0.94"
-              />
-              <text
-                :x="tooltipPosition.x + 14"
-                :y="tooltipPosition.y + 22"
-                fill="#FFFFFF"
-                font-family="Inter, ui-sans-serif, system-ui, sans-serif"
-                font-size="13.5301"
-                font-weight="600"
-              >
-                {{ activePoint.month }} 2025
-              </text>
-              <text
-                :x="tooltipPosition.x + 14"
-                :y="tooltipPosition.y + 42"
-                fill="#CFE6FF"
-                font-family="Inter, ui-sans-serif, system-ui, sans-serif"
-                font-size="12.3"
-                font-weight="500"
-              >
-                {{ activePoint.value }} new registrations
-              </text>
-            </g>
-
-            <g
-              v-for="(point, index) in chartPoints"
-              :key="`point-${point.month}`"
-            >
-              <circle
-                :cx="point.x"
-                :cy="point.y"
-                :r="activePointIndex === index ? 5.8 : 4.6"
-                fill="#3899FA"
-              />
-              <circle
-                :cx="point.x"
-                :cy="point.y"
-                r="18"
-                fill="transparent"
-                class="cursor-pointer outline-none"
-                role="button"
-                tabindex="0"
-                :aria-label="`${point.month}: ${point.value} new registrations`"
-                @mouseenter="setActivePoint(index)"
-                @focus="setActivePoint(index)"
-                @click="setActivePoint(index)"
-                @keydown.enter.prevent="setActivePoint(index)"
-                @keydown.space.prevent="setActivePoint(index)"
-                @blur="clearActivePoint"
-              />
-            </g>
-
-            <text
-              v-for="point in chartPoints"
-              :key="`month-${point.month}`"
-              :x="point.x"
-              :y="chartBounds.height - 7"
-              fill="#8D97A5"
-              font-family="Inter, ui-sans-serif, system-ui, sans-serif"
-              font-size="14.7601"
-              text-anchor="middle"
-            >
-              {{ point.month }}
-            </text>
-          </svg>
+          <DashboardChartFrame
+            :option="growthTrendOption"
+            height="208.53px"
+          />
         </div>
       </section>
 
