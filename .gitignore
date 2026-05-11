@@ -30,3 +30,7 @@ logs
 
 # temp 
 .tmp
+
+
+# md
+*.md
